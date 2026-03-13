@@ -832,7 +832,57 @@ body {
 .astat-val { font-family:'Cormorant Garamond',serif; font-size:1.65rem; font-weight:300; color:var(--gold); }
 .astat-sub { font-size:0.55rem; color:var(--text-muted); margin-top:0.15rem; }
 .acard { background:var(--bg2); border:1px solid var(--border); padding:1.1rem; margin-bottom:1.2rem; }
-.acard-title { font-family:'Cormorant Garamond',serif; font-size:0.9rem; margin-bottom:0.8rem; color:var(--gold-light); border-bottom:1px solid var(--border); padding-bottom:0.5rem; letter-spacing:0.04em; }
+/* ─── MY PROFILE ──────────────────────── */
+.profile-section {
+  margin-top: 2rem;
+  border: 1px solid var(--border);
+}
+.profile-section-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.65rem 1.1rem;
+  background: rgba(0,0,0,0.15);
+  border-bottom: 1px solid var(--border);
+  font-size: 0.54rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.7;
+}
+.profile-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+.profile-field {
+  padding: 0.75rem 1.1rem;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  border-right: 1px solid rgba(255,255,255,0.04);
+}
+.profile-field:nth-child(even) { border-right: none; }
+.profile-field-label {
+  font-size: 0.52rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  opacity: 0.55;
+  margin-bottom: 0.25rem;
+}
+.profile-field-value {
+  font-size: 0.74rem;
+  color: var(--text);
+  letter-spacing: 0.04em;
+  word-break: break-all;
+}
+.profile-field-value a {
+  color: var(--gold);
+  text-decoration: none;
+  opacity: 0.85;
+}
+.profile-field-value a:hover { opacity: 1; text-decoration: underline; }
+
+
 .atable { width:100%; border-collapse:collapse; }
 .atable th { background:var(--bg3); padding:0.55rem 0.75rem; font-size:0.52rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--text-muted); text-align:left; border-bottom:1px solid var(--border); }
 .atable td { padding:0.6rem 0.75rem; font-size:0.72rem; border-bottom:1px solid rgba(201,168,76,0.05); }
@@ -2567,9 +2617,12 @@ const rashmiStocks = [
 ];
 
 let lenders = [
-  { id:1, name:'Rashmi',  legalName:'Rashmi Dayal', corpus:850000,  baseCorpus:850000,  ploughback:0, status:'active', pin:'5245', note:'', hasLoanStatement:true },
-  { id:2, name:'Sandeep Daniel I', corpus:2100000, baseCorpus:1600000, ploughback:500000, status:'active', pin:'1473', note:'Ploughed back amount represents reconciled underpaid interest (Mar 2020 – Feb 2026).', hasLoanStatement:true },
+  { id:1, name:'Rashmi',  legalName:'Rashmi Dayal', corpus:850000,  baseCorpus:850000,  ploughback:0, status:'active', pin:'5245', note:'', hasLoanStatement:true,
+    mobile1:'9845812626', email:'rashmidayal7@gmail.com', accountSince:'20 Feb 2023' },
+  { id:2, name:'Sandeep Daniel I', legalName:'Sandeep Daniel', corpus:2100000, baseCorpus:1600000, ploughback:500000, status:'active', pin:'1473', note:'Ploughed back amount represents reconciled underpaid interest (Mar 2020 – Feb 2026).', hasLoanStatement:true,
+    mobile1:'9739900777', email:'sandeepdaniel@gmail.com', accountSince:'28 Feb 2020' },
   { id:3, name:'Sushma',  legalName:'Sushma Dayal', address:'', mobile:'', email:'', corpus:250000,  baseCorpus:200000,  ploughback:50000, status:'active', pin:'1372', monthly:7500,
+    mobile1:'8050491819', email:'sushmasimone1@gmail.com', accountSince:'19 Nov 2022',
     note:'Murwi account — split from joint Murwi-Cruella pool as of 01 Mar 2026. Sub-lender: Dox (₹1L).',
     hasLoanStatement:true,
     subGroup:'murwi-cruella', adminRole:'admin',
@@ -2583,6 +2636,7 @@ let lenders = [
     ]
   },
   { id:4, name:'Hema',    legalName:'Hema Dayal', address:'', mobile:'', email:'', corpus:250000,  baseCorpus:200000,  ploughback:50000, status:'active', pin:'3748', monthly:7500,
+    mobile1:'9739839812', email:'Hemanewill@gmail.com', accountSince:'19 Nov 2022',
     note:'Cruella account — split from joint Murwi-Cruella pool as of 01 Mar 2026. Sub-lenders: Nirwana (₹50k), Cossack (₹50k).',
     hasLoanStatement:true,
     subGroup:'murwi-cruella', adminRole:'admin',
@@ -2596,7 +2650,8 @@ let lenders = [
       { date:'Feb 2026', amount:50000, note:'Accrued interest capitalised' }
     ]
   },
-  { id:5, name:'Ahalya',  legalName:'Ahalya Dayal', corpus:250000,  baseCorpus:250000,  ploughback:0, status:'active', pin:'2811', note:'', hasLoanStatement:true, fundsReceivable:1275, fundsReceivableNote:'Pending receipt', pendingInterest:0 }
+  { id:5, name:'Ahalya',  legalName:'Ahalya Dayal', corpus:250000,  baseCorpus:250000,  ploughback:0, status:'active', pin:'2811', note:'', hasLoanStatement:true, fundsReceivable:1275, fundsReceivableNote:'Pending receipt', pendingInterest:0,
+    mobile1:'9880027387', email:'ahalyam77@gmail.com', accountSince:'19 Aug 2023' }
 
 ];
 let friendly = [
@@ -2610,7 +2665,8 @@ let friendly = [
 let shortTerm = [
   { id:201, name:'Ronald',    amount:0,      days:150, status:'inactive', pin:'3470', note:'Closed.' },
   { id:202, name:'Siddharth', amount:0,      days:150, status:'inactive', pin:'2648', note:'Closed.' },
-  { id:203, name:'Ananda',    legalName:'Ananda Gowda', amount:300000, baseCorpus:300000, unpaidInterest:18000, days:150, status:'active',   pin:'9949', note:'2 months interest unpaid and outstanding.', hasLoanStatement:true },
+  { id:203, name:'Ananda',    legalName:'Ananda Gowda', amount:300000, baseCorpus:300000, unpaidInterest:18000, days:150, status:'active',   pin:'9949', note:'2 months interest unpaid and outstanding.', hasLoanStatement:true,
+    mobile1:'9880197398', email:'anigowda1982@gmail.com' },
   { id:204, name:'Nanda',     amount:120000, days:150, status:'active',   pin:'8300', note:'Terms to be confirmed.', hasLoanStatement:true },
 ];
 let administered = [
@@ -2932,7 +2988,7 @@ function renderDetails(m) {
   // ── HARD RESET — remove all dynamic sections from DOM entirely ──
   [
     'subLendersSection', 'adminNoticeSection', 'ownDepositSection',
-    'administeredDetailSection', 'memberStatementSection', 'rashmiStocksSection', 'l1AdminPanel'
+    'administeredDetailSection', 'memberStatementSection', 'rashmiStocksSection', 'l1AdminPanel', 'myProfileSection'
   ].forEach(function(id) {
     const el = document.getElementById(id);
     if (el) el.parentNode.removeChild(el);
@@ -3073,6 +3129,42 @@ function renderDetails(m) {
   renderMyRequests();
   document.getElementById('dcard').innerHTML=`
     <div class="dcard-head">Your Summary <span class="dtype ${tc[m.type]}">${tl[m.type]}</span></div>${rows}`;
+
+  // ── MY PROFILE SECTION ──────────────────────────────────────────
+  let profileEl = document.getElementById('myProfileSection');
+  if (!profileEl) {
+    profileEl = document.createElement('div');
+    profileEl.id = 'myProfileSection';
+    document.getElementById('dcard').after(profileEl);
+  }
+  const hasProfile = m.mobile1 || m.mobile2 || m.email || m.accountSince;
+  if (hasProfile) {
+    const fields = [
+      { label:'Legal Name',      val: m.legalName || m.name },
+      { label:'Account Since',   val: m.accountSince || null },
+      { label:'Mobile',          val: m.mobile1 ? '<a href="tel:+91' + m.mobile1 + '">+91 ' + m.mobile1 + '</a>' : null },
+      { label:'Alt Mobile',      val: m.mobile2 ? '<a href="tel:+91' + m.mobile2 + '">+91 ' + m.mobile2 + '</a>' : null },
+      { label:'Email',           val: m.email   ? '<a href="mailto:' + m.email + '">' + m.email + '</a>' : null },
+    ].filter(f => f.val);
+    // pad to even number for 2-col grid
+    if (fields.length % 2 !== 0) fields.push({ label:'', val:'\u00a0' });
+    profileEl.innerHTML = `
+      <div class="profile-section" style="margin-top:1rem;">
+        <div class="profile-section-header">
+          <span style="font-size:0.7rem;">◈</span> My Profile
+        </div>
+        <div class="profile-grid">
+          ${fields.map(f => `
+            <div class="profile-field">
+              <div class="profile-field-label">${f.label}</div>
+              <div class="profile-field-value">${f.val}</div>
+            </div>`).join('')}
+        </div>
+      </div>`;
+  } else {
+    profileEl.innerHTML = '';
+  }
+  // ────────────────────────────────────────────────────────────────
 
   // Stock holdings for Rashmi
   let stocksEl = document.getElementById('rashmiStocksSection');
