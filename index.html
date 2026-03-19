@@ -3381,20 +3381,28 @@ function renderDetails(m) {
       + '</div>';
 
     // Fetch live prices + qty from Sheets and update in place
-    sheetCall('getStockHoldings', {}).then(function(data) {
-      const stkBody = document.getElementById('stk-body');
-      if (!stkBody) return;
-      if (data && data.ok && data.holdings) {
-        const memberStocks = data.holdings[String(m.id)];
-        if (memberStocks && memberStocks.length) {
-          // Update count
-          const countEl = document.getElementById('stk-count');
-          if (countEl) countEl.textContent = memberStocks.length + ' securities';
-          stkBody.innerHTML = renderStkRows(memberStocks, data.asOf || '');
+    function fetchHoldings(retry) {
+      sheetCall('getStockHoldings', {}).then(function(data) {
+        const stkBody = document.getElementById('stk-body');
+        if (!stkBody) return;
+        if (data && data.ok && data.holdings) {
+          const memberStocks = data.holdings[String(m.id)];
+          if (memberStocks && memberStocks.length) {
+            const countEl = document.getElementById('stk-count');
+            if (countEl) countEl.textContent = memberStocks.length + ' securities';
+            // Check if any prices came back
+            const hasPrices = memberStocks.some(function(s) { return s.price !== null; });
+            stkBody.innerHTML = renderStkRows(memberStocks, data.asOf || '');
+            // If no prices yet and haven't retried, try again in 6 seconds
+            if (!hasPrices && !retry) {
+              const footerEl = stkBody.querySelector && stkBody.querySelector('[data-footer]');
+              setTimeout(function() { fetchHoldings(true); }, 6000);
+            }
+          }
         }
-      }
-      // If fetch fails, static list remains
-    }).catch(function() { /* static list stays */ });
+      }).catch(function() { /* static list stays */ });
+    }
+    fetchHoldings(false);
   } else {
     stocksEl.innerHTML = '';
   }
@@ -6262,7 +6270,7 @@ const historicalLoans = [
 //           status: 'pending'|'locked'|'repaid', pledgedAt, lockedAt }
 let capitalCalls = [];
 let ccIdSeq = 1;
-const CC_API = 'https://script.google.com/macros/s/AKfycbysKkB8N_bc7POUT0-pM3TsJuFPfdrr-3spXseCvIET9hS1zENIjn1Volqf-xHCRoppig/exec';
+const CC_API = 'https://script.google.com/macros/s/AKfycbzdnUTTW8RywjPIXReeiwhDzVzfgYfh9UYtbeHfJO_2tY-et0xWlaeqOK_lhGwhJrTFfQ/exec';
 
 // ── Market Ticker ──────────────────────────────────
 let _mktInterval = null;
