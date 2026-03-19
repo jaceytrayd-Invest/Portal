@@ -832,6 +832,41 @@ body {
 .astat-val { font-family:'Cormorant Garamond',serif; font-size:1.65rem; font-weight:300; color:var(--gold); }
 .astat-sub { font-size:0.55rem; color:var(--text-muted); margin-top:0.15rem; }
 .acard { background:var(--bg2); border:1px solid var(--border); padding:1.1rem; margin-bottom:1.2rem; }
+/* ─── MY STOCKS PAGE ─────────────────────── */
+.stk-result-card {
+  border: 1px solid var(--border);
+  background: var(--bg2);
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+}
+.stk-result-name { font-family:'Cormorant Garamond',serif; font-size:1.1rem; color:var(--text); margin-bottom:0.2rem; }
+.stk-result-ticker { font-size:0.52rem; letter-spacing:0.18em; color:var(--text-muted); text-transform:uppercase; margin-bottom:0.8rem; }
+.stk-result-price { font-size:1.8rem; color:#fff; font-weight:600; font-family:'IBM Plex Mono',monospace; }
+.stk-result-chg { font-size:0.72rem; font-family:'IBM Plex Mono',monospace; margin-left:0.6rem; }
+.stk-result-chg.up { color:var(--low); }
+.stk-result-chg.dn { color:#c97a7a; }
+.stk-chart-wrap { margin-top:1rem; height:80px; position:relative; }
+.stk-holdings-row {
+  display:grid;
+  grid-template-columns: 1fr auto auto auto auto;
+  gap:0.5rem;
+  align-items:center;
+  padding:0.5rem 0.8rem;
+  border-bottom:1px solid var(--border);
+}
+.stk-sell-btn {
+  background:none;
+  border:1px solid rgba(201,168,76,0.3);
+  color:var(--gold);
+  font-family:'IBM Plex Mono',monospace;
+  font-size:0.48rem;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  padding:0.25rem 0.5rem;
+  cursor:pointer;
+}
+.stk-sell-btn:hover { background:rgba(201,168,76,0.08); border-color:var(--gold); }
+
 /* ─── MY PROFILE ──────────────────────── */
 .profile-section {
   margin-top: 2rem;
@@ -1044,6 +1079,10 @@ body {
         <div style="font-size:1rem;margin-bottom:0.3rem;font-family:'Cormorant Garamond',serif;color:var(--gold);opacity:0.6;">◷</div>
         Markets
       </button>
+      <button onclick="openPublic('stocks')" style="flex:1;background:none;border:1px solid var(--border-mid);color:var(--text-dim);font-family:'IBM Plex Mono',monospace;font-size:0.66rem;letter-spacing:0.14em;text-transform:uppercase;padding:0.75rem 1rem;cursor:pointer;transition:all 0.18s;text-align:center;" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border-mid)';this.style.color='var(--text-dim)'">
+        <div style="font-size:1rem;margin-bottom:0.3rem;font-family:'Cormorant Garamond',serif;color:var(--gold);opacity:0.6;">⌥</div>
+        My Stocks
+      </button>
     </div>
     <div style="display:flex;gap:0.6rem;margin-top:0.6rem;">
       <button onclick="openPublic('know')" style="flex:1;background:none;border:1px solid var(--border-mid);color:var(--text-dim);font-family:'IBM Plex Mono',monospace;font-size:0.66rem;letter-spacing:0.14em;text-transform:uppercase;padding:0.65rem 1rem;cursor:pointer;transition:all 0.18s;text-align:center;display:flex;align-items:center;justify-content:center;gap:0.6rem;" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border-mid)';this.style.color='var(--text-dim)'">
@@ -1226,6 +1265,7 @@ body {
         <p id="welcomeP"></p>
       </div>
       <div class="dcard" id="dcard"></div>
+      <div id="dcards-extra"></div>
       <div id="requestForm" style="margin-top:1.2rem;">
         <div class="dcard">
           <div class="dcard-head">Submit a Request <span class="dtype lender" style="font-size:0.48rem;letter-spacing:0.08em;">Action Required by Principal</span></div>
@@ -1317,6 +1357,11 @@ body {
         <div class="acard-title">Pending Payments</div>
         <div style="font-size:0.52rem;color:var(--text-muted);margin-bottom:0.8rem;letter-spacing:0.06em;">Manage pending interest payable and funds receivable per member. Click to mark as paid / received.</div>
         <div id="paymentsTableWrap"></div>
+      </div>
+      <div class="acard" id="sellRequestsPanel">
+        <div class="acard-title">Sell Requests <span id="sellReqBadge" style="font-size:0.52rem;background:rgba(201,168,76,0.15);color:var(--gold);padding:0.1rem 0.5rem;margin-left:0.5rem;letter-spacing:0.08em;"></span></div>
+        <div style="font-size:0.52rem;color:var(--text-muted);margin-bottom:0.8rem;letter-spacing:0.06em;">Stock sell requests submitted by members. Review and action below.</div>
+        <div id="sellRequestsWrap"><div style="font-size:0.62rem;color:var(--text-muted);padding:0.5rem 0;">Loading…</div></div>
       </div>
 
       <div class="acard">
@@ -2223,6 +2268,57 @@ body {
       </div>
     </div>
 
+    <!-- ─── MY STOCKS PAGE ─── -->
+    <div id="pub-stocks" style="display:none;">
+      <div class="inner-page" style="max-width:700px;">
+
+        <div class="sec-header">
+          <div class="sec-title">My Stocks</div>
+          <div class="sec-sub">JaceyTrayd · Stock Holdings &amp; Market Lookup</div>
+        </div>
+
+        <!-- STOCK SEARCH (public) -->
+        <div style="margin-bottom:2rem;">
+          <div style="font-size:0.5rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);opacity:0.7;margin-bottom:0.8rem;">◈ Live Stock Lookup</div>
+          <div style="display:flex;gap:0.6rem;margin-bottom:0.8rem;">
+            <input id="stkSearchInput" type="text" placeholder="Type NSE ticker e.g. INFY, HDFCBANK…"
+              style="flex:1;background:var(--bg2);border:1px solid var(--border);color:var(--text);font-family:'IBM Plex Mono',monospace;font-size:0.68rem;padding:0.65rem 0.8rem;outline:none;letter-spacing:0.04em;"
+              onkeydown="if(event.key==='Enter') searchStock()" />
+            <button onclick="searchStock()" style="background:var(--gold);color:var(--bg);border:none;font-family:'IBM Plex Mono',monospace;font-size:0.6rem;letter-spacing:0.16em;text-transform:uppercase;padding:0.65rem 1.1rem;cursor:pointer;">Search</button>
+          </div>
+          <div id="stkSearchResult" style="min-height:2rem;"></div>
+        </div>
+
+        <!-- DIVIDER -->
+        <div style="border-top:1px solid var(--border);margin-bottom:2rem;"></div>
+
+        <!-- MY HOLDINGS (PIN gated) -->
+        <div style="font-size:0.5rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);opacity:0.7;margin-bottom:0.8rem;">⌥ My Holdings</div>
+
+        <!-- PIN entry state -->
+        <div id="stkPinState">
+          <div style="font-size:0.68rem;color:var(--text-dim);margin-bottom:1rem;line-height:1.7;">Enter your member PIN to view your personal stock holdings.</div>
+          <div style="display:flex;gap:0.6rem;max-width:320px;">
+            <input id="stkPinInput" type="password" placeholder="Enter PIN" maxlength="6"
+              style="flex:1;background:var(--bg2);border:1px solid var(--border);color:var(--text);font-family:'IBM Plex Mono',monospace;font-size:0.9rem;padding:0.65rem 0.8rem;outline:none;text-align:center;letter-spacing:0.3em;"
+              onkeydown="if(event.key==='Enter') unlockHoldings()" />
+            <button onclick="unlockHoldings()" style="background:var(--gold);color:var(--bg);border:none;font-family:'IBM Plex Mono',monospace;font-size:0.6rem;letter-spacing:0.16em;text-transform:uppercase;padding:0.65rem 1rem;cursor:pointer;">View</button>
+          </div>
+          <div id="stkPinErr" style="font-size:0.58rem;color:#c97a7a;margin-top:0.5rem;min-height:1rem;"></div>
+        </div>
+
+        <!-- Holdings display state (hidden until PIN unlocked) -->
+        <div id="stkHoldingsState" style="display:none;">
+          <div id="stkHoldingsHeader" style="margin-bottom:1rem;"></div>
+          <div id="stkHoldingsBody"></div>
+          <div style="margin-top:1rem;">
+            <button onclick="lockHoldings()" style="background:none;border:1px solid var(--border);color:var(--text-muted);font-family:'IBM Plex Mono',monospace;font-size:0.54rem;letter-spacing:0.14em;text-transform:uppercase;padding:0.4rem 0.8rem;cursor:pointer;">⊠ Lock / Sign Out</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
     <div id="pub-hist" style="display:none;">
   <div class="inner-page" style="max-width:680px;">
 
@@ -2617,7 +2713,7 @@ const rashmiStocks = [
 ];
 
 let lenders = [
-  { id:1, name:'Rashmi',  legalName:'Rashmi Dayal', corpus:850000,  baseCorpus:550000,  ploughback:300000, status:'active', pin:'5245', note:'', hasLoanStatement:true,
+  { id:1, name:'Rashmi',  legalName:'Rashmi Dayal', corpus:850000,  baseCorpus:850000,  ploughback:0, status:'active', pin:'5245', note:'', hasLoanStatement:true,
     mobile1:'9845812626', email:'rashmidayal7@gmail.com', accountSince:'20 Feb 2023' },
   { id:2, name:'Sandeep Daniel I', legalName:'Sandeep Daniel', corpus:2100000, baseCorpus:1600000, ploughback:500000, status:'active', pin:'1473', note:'Ploughed back amount represents reconciled underpaid interest (Mar 2020 – Feb 2026).', hasLoanStatement:true,
     mobile1:'9739900777', email:'sandeepdaniel@gmail.com', accountSince:'28 Feb 2020' },
@@ -2650,7 +2746,7 @@ let lenders = [
       { date:'Feb 2026', amount:50000, note:'Accrued interest capitalised' }
     ]
   },
-  { id:5, name:'Ahalya',  legalName:'Ahalya Dayal', corpus:250000,  baseCorpus:143700,  ploughback:106300, status:'active', pin:'2811', note:'', hasLoanStatement:true, fundsReceivable:1275, fundsReceivableNote:'Pending receipt', pendingInterest:0,
+  { id:5, name:'Ahalya',  legalName:'Ahalya Dayal', corpus:250000,  baseCorpus:250000,  ploughback:0, status:'active', pin:'2811', note:'', hasLoanStatement:true, fundsReceivable:1225, fundsReceivableNote:'Pending receipt', pendingInterest:0,
     mobile1:'9880027387', email:'ahalyam77@gmail.com', accountSince:'19 Aug 2023' }
 
 ];
@@ -2817,6 +2913,41 @@ function goStep1() {
   document.getElementById('step1').classList.add('active');
 }
 
+// ─── FETCH LIVE BALANCES + HOLDINGS FROM SHEETS ──────────────────
+// Called on every login — merges sheet data onto hardcoded member objects
+function fetchMemberData(callback) {
+  function applyBalances(data) {
+    if (data && data.ok && data.balances) {
+      const allMembers = [...lenders, ...friendly, ...shortTerm, ...administered];
+      allMembers.forEach(function(m) {
+        const b = data.balances[String(m.id)];
+        if (!b) return;
+        // Corpus fields (lenders)
+        if (b.baseCorpus  > 0) m.baseCorpus  = b.baseCorpus;
+        if (b.ploughback  > 0) m.ploughback  = b.ploughback;
+        m.corpus = (m.baseCorpus || 0) + (m.ploughback || 0);
+        // Amount (friendly / shortTerm)
+        if (b.amount > 0) m.amount = b.amount;
+        // Capital placed (administered)
+        if (b.capitalPlaced > 0) m.capitalPlaced = b.capitalPlaced;
+        // Payment fields
+        if (b.unpaidInterest  !== undefined) { m.unpaidInterest  = b.unpaidInterest;  m.pendingInterest  = b.unpaidInterest; }
+        if (b.unpaidInterestNote)            { m.unpaidInterestNote = b.unpaidInterestNote; m.pendingInterestNote = b.unpaidInterestNote; }
+        if (b.fundsReceivable !== undefined)   m.fundsReceivable     = b.fundsReceivable;
+        if (b.fundsReceivableNote)             m.fundsReceivableNote = b.fundsReceivableNote;
+        // Status
+        if (b.status) m.status = b.status;
+        // Note — only override if sheet has a value
+        if (b.note) m.note = b.note;
+      });
+    }
+    if (callback) callback();
+  }
+  sheetCall('getMemberBalances', {}).then(applyBalances).catch(function() {
+    if (callback) callback(); // render with hardcoded fallback
+  });
+}
+
 function doLogin(role, member) {
   isAdmin = (role==='admin');
   isL1Admin = (role==='l1admin');
@@ -2860,7 +2991,7 @@ function doLogin(role, member) {
       document.getElementById('nickGreeting').innerHTML = member.name + ', welcome to JaceyTrayd';
       document.getElementById('nickOverlay').classList.add('on');
     } else {
-      renderDetails(member); goPage('details');
+      fetchMemberData(function() { renderDetails(member); goPage('details'); });
     }
   }
 }
@@ -2898,7 +3029,7 @@ function logout() {
 // ─── NICKNAME ──────────────────────────────────────────
 function retainHardcodedNick() {
   document.getElementById('nickOverlay').classList.remove('on');
-  renderDetails(currentMember); goPage('details');
+  fetchMemberData(function() { renderDetails(currentMember); goPage('details'); });
 }
 
 function showNickInput() {
@@ -2933,8 +3064,7 @@ function backToNickStep1() {
 function skipNick() {
   if (currentMember) nicknames[currentMember.pin] = currentMember.name;
   document.getElementById('nickOverlay').classList.remove('on');
-  renderDetails(currentMember);
-  goPage('details');
+  fetchMemberData(function() { renderDetails(currentMember); goPage('details'); });
 }
 
 function editNick() {
@@ -2967,8 +3097,7 @@ function confirmNickPermanent(keep) {
     nicknames[currentMember.pin] = nicknames[currentMember.pin]; // keep for session
   }
   document.getElementById('nickOverlay').classList.remove('on');
-  renderDetails(currentMember);
-  goPage('details');
+  fetchMemberData(function() { renderDetails(currentMember); goPage('details'); });
 }
 
 // ─── RENDER RATES ──────────────────────────────────────
@@ -2988,11 +3117,14 @@ function renderDetails(m) {
   // ── HARD RESET — remove all dynamic sections from DOM entirely ──
   [
     'subLendersSection', 'adminNoticeSection', 'ownDepositSection',
-    'administeredDetailSection', 'memberStatementSection', 'rashmiStocksSection', 'l1AdminPanel', 'myProfileSection'
+    'l1AdminPanel'
   ].forEach(function(id) {
     const el = document.getElementById(id);
     if (el) el.parentNode.removeChild(el);
   });
+  // Clear dynSectionsWrap children but keep the wrapper
+  const _dw = document.getElementById('dynSectionsWrap');
+  if (_dw) _dw.innerHTML = '';
   // ─────────────────────────────────────────────────────────────────────
   const nick = nicknames[m.pin] || m.name;
   document.getElementById('welcomeH').innerHTML = `Welcome, <em>${nick}</em>`;
@@ -3070,11 +3202,7 @@ function renderDetails(m) {
 
     setTimeout(function() {
       var admEl = document.getElementById('administeredDetailSection');
-      if (!admEl) {
-        admEl = document.createElement('div');
-        admEl.id = 'administeredDetailSection';
-        document.getElementById('dcard').after(admEl);
-      }
+      if (!admEl) { return; } // created by dynWrap
       admEl.innerHTML =
         '<div style="margin-top:1rem;border:1px solid rgba(201,168,76,0.3);background:rgba(201,168,76,0.04);">'
         + '<div style="padding:0.7rem 0.8rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">'
@@ -3130,56 +3258,49 @@ function renderDetails(m) {
   document.getElementById('dcard').innerHTML=`
     <div class="dcard-head">Your Summary <span class="dtype ${tc[m.type]}">${tl[m.type]}</span></div>${rows}`;
 
-  // ── MY PROFILE SECTION ──────────────────────────────────────────
-  let profileEl = document.getElementById('myProfileSection');
-  if (!profileEl) {
-    profileEl = document.createElement('div');
-    profileEl.id = 'myProfileSection';
-    document.getElementById('dcard').after(profileEl);
+  // ── ALL DYNAMIC SECTIONS — single ordered wrapper ───────────────
+  let dynWrap = document.getElementById('dynSectionsWrap');
+  if (!dynWrap) {
+    dynWrap = document.createElement('div');
+    dynWrap.id = 'dynSectionsWrap';
+    document.getElementById('dcard').after(dynWrap);
   }
+  // Ensure sections exist in display order inside wrapper
+  ['memberStatementSection','rashmiStocksSection','myProfileSection',
+   'subLendersSection','adminNoticeSection','administeredDetailSection'].forEach(function(sid) {
+    if (!document.getElementById(sid)) {
+      const s = document.createElement('div');
+      s.id = sid;
+      dynWrap.appendChild(s);
+    }
+  });
+  const memberStatementEl = document.getElementById('memberStatementSection');
+  const stocksEl          = document.getElementById('rashmiStocksSection');
+  const profileEl         = document.getElementById('myProfileSection');
+
+  // Profile rendering
   const hasProfile = m.mobile1 || m.mobile2 || m.email || m.accountSince;
   if (hasProfile) {
-    const fields = [
-      { label:'Legal Name',      val: m.legalName || m.name },
-      { label:'Account Since',   val: m.accountSince || null },
-      { label:'Mobile',          val: m.mobile1 ? '<a href="tel:+91' + m.mobile1 + '">+91 ' + m.mobile1 + '</a>' : null },
-      { label:'Alt Mobile',      val: m.mobile2 ? '<a href="tel:+91' + m.mobile2 + '">+91 ' + m.mobile2 + '</a>' : null },
-      { label:'Email',           val: m.email   ? '<a href="mailto:' + m.email + '">' + m.email + '</a>' : null },
-    ].filter(f => f.val);
-    // pad to even number for 2-col grid
-    if (fields.length % 2 !== 0) fields.push({ label:'', val:'\u00a0' });
-    profileEl.innerHTML = `
-      <div class="profile-section" style="margin-top:1rem;">
-        <div class="profile-section-header">
-          <span style="font-size:0.7rem;">◈</span> My Profile
-        </div>
-        <div class="profile-grid">
-          ${fields.map(f => `
-            <div class="profile-field">
-              <div class="profile-field-label">${f.label}</div>
-              <div class="profile-field-value">${f.val}</div>
-            </div>`).join('')}
-        </div>
-      </div>`;
+    const pfields = [
+      { label:'Legal Name',    val: m.legalName || m.name },
+      { label:'Account Since', val: m.accountSince || null },
+      { label:'Mobile',        val: m.mobile1 ? '<a href="tel:+91' + m.mobile1 + '">+91 ' + m.mobile1 + '</a>' : null },
+      { label:'Alt Mobile',    val: m.mobile2 ? '<a href="tel:+91' + m.mobile2 + '">+91 ' + m.mobile2 + '</a>' : null },
+      { label:'Email',         val: m.email   ? '<a href="mailto:' + m.email + '">' + m.email + '</a>' : null },
+    ].filter(function(pf) { return pf.val; });
+    if (pfields.length % 2 !== 0) pfields.push({ label:'', val:'\u00a0' });
+    profileEl.innerHTML = '<div class="profile-section" style="margin-top:1rem;">'
+      + '<div class="profile-section-header"><span style="font-size:0.7rem;">\u25c8</span> My Profile</div>'
+      + '<div class="profile-grid">'
+      + pfields.map(function(pf) {
+          return '<div class="profile-field"><div class="profile-field-label">' + pf.label + '</div>'
+            + '<div class="profile-field-value">' + pf.val + '</div></div>';
+        }).join('')
+      + '</div></div>';
   } else {
     profileEl.innerHTML = '';
   }
-  // ────────────────────────────────────────────────────────────────
 
-  // Stock holdings for Rashmi
-  let stocksEl = document.getElementById('rashmiStocksSection');
-  if (!stocksEl) {
-    stocksEl = document.createElement('div');
-    stocksEl.id = 'rashmiStocksSection';
-    document.getElementById('dcard').after(stocksEl);
-  }
-  // Member statement card (shown for any member with hasLoanStatement:true)
-  let memberStatementEl = document.getElementById('memberStatementSection');
-  if (!memberStatementEl) {
-    memberStatementEl = document.createElement('div');
-    memberStatementEl.id = 'memberStatementSection';
-    document.getElementById('dcard').after(memberStatementEl);
-  }
   if (m.hasLoanStatement) {
     const hasPdf = m.name === 'Sandeep Daniel I' || m.name === 'Sushma' || m.name === 'Hema' || m.name === 'Ahalya' || m.name === 'Rashmi';
     const pdfDownloadFn = m.name === 'Sandeep Daniel I' ? 'downloadSandeepStatement()' :
@@ -3210,47 +3331,79 @@ function renderDetails(m) {
     memberStatementEl.innerHTML = '';
   }
 
-  if (m.name === 'Rashmi') {
-    const srows = rashmiStocks.map(s => `
-      <div style="display:flex;justify-content:space-between;align-items:center;padding:0.5rem 0.8rem;border-bottom:1px solid var(--border);">
-        <div>
-          <div style="font-size:0.65rem;color:var(--text-dim);">${s.name}</div>
-          <div style="font-size:0.5rem;color:var(--text-muted);letter-spacing:0.08em;margin-top:0.1rem;">${s.ticker}</div>
-        </div>
-        <div style="font-size:0.72rem;color:var(--gold);font-family:'IBM Plex Mono',monospace;text-align:right;">${s.qty} <span style="font-size:0.5rem;color:var(--text-muted);">shares</span></div>
-      </div>`).join('');
-    stocksEl.innerHTML = `
-      <div style="margin-top:1rem;border:1px solid var(--border);background:var(--bg2);">
-        <div style="padding:0.7rem 0.8rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
-          <div style="font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);">Stock Holdings</div>
-          <div style="font-size:0.52rem;color:var(--text-muted);">${rashmiStocks.length} securities</div>
-        </div>
-        <div style="padding:0.6rem 0.8rem;background:rgba(201,168,76,0.04);border-bottom:1px solid var(--border);font-size:0.6rem;color:var(--text-dim);line-height:1.7;">
-          These shares are held in my trading account on your behalf. I commit to transferring them to you on request or as mutually agreed. — <em>John Christopher</em>
-        </div>
-        ${srows}
-      </div>`;
+  if (m.id === 1 || m.hasStocks) {  // show stocks for Rashmi + any future member with holdings
+    // Helper: render stock rows from a stocks array (price optional)
+    function renderStkRows(stocks, asOf) {
+      let totalValue = 0, valuedCount = 0;
+      const colHead = '<div style="display:grid;grid-template-columns:1fr auto auto auto;gap:0.5rem;padding:0.35rem 0.8rem;border-bottom:1px solid var(--border);background:rgba(0,0,0,0.1);">'
+        + '<div style="font-size:0.46rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);">Security</div>'
+        + '<div style="font-size:0.46rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);text-align:right;min-width:40px;">Qty</div>'
+        + '<div style="font-size:0.46rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);text-align:right;min-width:70px;">Price</div>'
+        + '<div style="font-size:0.46rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);text-align:right;min-width:80px;">Value</div>'
+        + '</div>';
+      const rows = stocks.map(function(s) {
+        const price = s.price || null;
+        const value = (price && s.qty > 0) ? Math.round(price * s.qty) : null;
+        if (value) { totalValue += value; valuedCount++; }
+        const priceStr  = price ? '\u20b9' + price.toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2}) : '\u2014';
+        const valueStr  = value ? '\u20b9' + value.toLocaleString('en-IN') : '\u2014';
+        const tickerStr = s.ticker || '<span style="color:var(--text-muted);font-size:0.48rem;">BSE only</span>';
+        const dimName   = s.qty === 0 ? 'var(--text-muted)' : 'var(--text)';
+        const dimQty    = s.qty === 0 ? 'var(--text-muted)' : 'var(--text-dim)';
+        return '<div style="display:grid;grid-template-columns:1fr auto auto auto;gap:0.5rem;align-items:center;padding:0.45rem 0.8rem;border-bottom:1px solid var(--border);">'
+          + '<div><div style="font-size:0.62rem;color:' + dimName + ';">' + s.name + '</div>'
+          + '<div style="font-size:0.48rem;color:var(--text-muted);letter-spacing:0.08em;margin-top:0.1rem;">' + tickerStr + '</div></div>'
+          + '<div style="font-size:0.6rem;color:' + dimQty + ';text-align:right;min-width:40px;">' + s.qty + '<span style="font-size:0.45rem;color:var(--text-muted);margin-left:0.2rem;">sh</span></div>'
+          + '<div style="font-size:0.6rem;color:var(--text-dim);text-align:right;min-width:70px;font-family:\'IBM Plex Mono\',monospace;">' + priceStr + '</div>'
+          + '<div style="font-size:0.62rem;color:' + (value?'var(--gold)':'var(--text-muted)') + ';text-align:right;min-width:80px;font-family:\'IBM Plex Mono\',monospace;">' + valueStr + '</div>'
+          + '</div>';
+      }).join('');
+      const pricedLabel = valuedCount > 0 ? '(' + valuedCount + '/' + stocks.length + ' priced)' : '(prices loading\u2026)';
+      const footer = '<div style="display:flex;justify-content:space-between;align-items:center;padding:0.6rem 0.8rem;background:rgba(201,168,76,0.06);border-top:1px solid rgba(201,168,76,0.2);">'
+        + '<div style="font-size:0.5rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);">Portfolio Value <span style="opacity:0.6;">' + pricedLabel + '</span></div>'
+        + '<div style="font-size:0.78rem;color:var(--gold);font-family:\'IBM Plex Mono\',monospace;font-weight:600;">' + (totalValue > 0 ? '\u20b9' + totalValue.toLocaleString('en-IN') : '\u2014') + '</div>'
+        + '</div>'
+        + (asOf ? '<div style="padding:0.4rem 0.8rem;font-size:0.46rem;color:var(--text-muted);opacity:0.6;text-align:right;">EOD prices via Google Finance \u00b7 ' + asOf + '</div>' : '');
+      return colHead + rows + footer;
+    }
+
+    // Always render static list immediately (no prices yet)
+    const _staticStocks = rashmiStocks.map(function(s) { return { name:s.name, ticker:s.ticker, qty:s.qty, price:null }; });
+    stocksEl.innerHTML = '<div style="margin-top:1rem;border:1px solid var(--border);background:var(--bg2);">'
+      + '<div style="padding:0.7rem 0.8rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">'
+      + '<div style="font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);">Stock Holdings</div>'
+      + '<div style="font-size:0.52rem;color:var(--text-muted);" id="stk-count">' + rashmiStocks.length + ' securities</div>'
+      + '</div>'
+      + '<div style="padding:0.6rem 0.8rem;background:rgba(201,168,76,0.04);border-bottom:1px solid var(--border);font-size:0.6rem;color:var(--text-dim);line-height:1.7;">'
+      + 'These shares are held in my trading account on your behalf. I commit to transferring them to you on request or as mutually agreed. \u2014 <em>John Christopher</em>'
+      + '</div>'
+      + '<div id="stk-body" style="padding:0;">' + renderStkRows(_staticStocks, null) + '</div>'
+      + '</div>';
+
+    // Fetch live prices + qty from Sheets and update in place
+    sheetCall('getStockHoldings', {}).then(function(data) {
+      const stkBody = document.getElementById('stk-body');
+      if (!stkBody) return;
+      if (data && data.ok && data.holdings) {
+        const memberStocks = data.holdings[String(m.id)];
+        if (memberStocks && memberStocks.length) {
+          // Update count
+          const countEl = document.getElementById('stk-count');
+          if (countEl) countEl.textContent = memberStocks.length + ' securities';
+          stkBody.innerHTML = renderStkRows(memberStocks, data.asOf || '');
+        }
+      }
+      // If fetch fails, static list remains
+    }).catch(function() { /* static list stays */ });
   } else {
     stocksEl.innerHTML = '';
   }
 
   // Sub-lender panel (for Hema/Sushma as admin)
-  let subLendersEl = document.getElementById('subLendersSection');
-  if (!subLendersEl) {
-    subLendersEl = document.createElement('div');
-    subLendersEl.id = 'subLendersSection';
-    document.getElementById('dcard').after(subLendersEl);
-  }
-  subLendersEl.innerHTML = ''; // always clear on each render
-
-  // Admin notice panel (for Dox/Nirwana/Cossack as sub)
-  let adminNoticeEl = document.getElementById('adminNoticeSection');
-  if (!adminNoticeEl) {
-    adminNoticeEl = document.createElement('div');
-    adminNoticeEl.id = 'adminNoticeSection';
-    document.getElementById('dcard').after(adminNoticeEl);
-  }
-  adminNoticeEl.innerHTML = ''; // always clear on each render
+  const subLendersEl = document.getElementById('subLendersSection');
+  subLendersEl.innerHTML = '';
+  const adminNoticeEl = document.getElementById('adminNoticeSection');
+  adminNoticeEl.innerHTML = '';
 
 
 
@@ -4068,7 +4221,65 @@ function renderAdminApprovals() {
   wrap.innerHTML = html;
 }
 
-function renderAdmin() { renderAdminStats(); renderAdminTables(); renderAdminRequests(); updateReqBadge(); renderAdminPayments(); renderAdminApprovals(); }
+function renderAdmin() { renderAdminStats(); renderAdminTables(); renderAdminRequests(); updateReqBadge(); renderAdminPayments(); renderAdminApprovals(); renderAdminSellRequests(); }
+
+// ─── ADMIN SELL REQUESTS ─────────────────────────────────────────
+function renderAdminSellRequests() {
+  const wrap = document.getElementById('sellRequestsWrap');
+  if (!wrap) return;
+  wrap.innerHTML = '<div style="font-size:0.62rem;color:var(--text-muted);padding:0.5rem 0;">Loading…</div>';
+
+  sheetCall('getSellRequests', {}).then(function(data) {
+    if (!data || !data.ok || !data.requests || data.requests.length === 0) {
+      wrap.innerHTML = '<div style="font-size:0.62rem;color:var(--text-muted);padding:0.5rem 0;">No sell requests on record.</div>';
+      const badge = document.getElementById('sellReqBadge');
+      if (badge) badge.textContent = '';
+      return;
+    }
+
+    const reqs = data.requests.filter(function(r) { return r.requestId; });
+    const pending = reqs.filter(function(r) { return r.status === 'pending'; });
+    const badge = document.getElementById('sellReqBadge');
+    if (badge) badge.textContent = pending.length > 0 ? pending.length + ' pending' : '';
+
+    const rows = reqs.map(function(r) {
+      const isPending = r.status === 'pending';
+      const statusColor = r.status === 'pending' ? '#e0a85f' : r.status === 'actioned' ? '#4ecdc4' : 'var(--text-muted)';
+      return '<div style="border:1px solid var(--border);margin-bottom:0.6rem;background:var(--bg3);">'
+        + '<div style="display:grid;grid-template-columns:1fr auto;gap:0.5rem;padding:0.65rem 0.8rem;border-bottom:1px solid var(--border);">'
+        + '<div>'
+        + '<div style="font-size:0.65rem;color:var(--text);">' + (r.memberName || 'Unknown') + '</div>'
+        + '<div style="font-size:0.5rem;color:var(--text-muted);margin-top:0.2rem;letter-spacing:0.08em;">' + (r.requestId || '') + ' &nbsp;·  ' + (r.requestedAt || '') + '</div>'
+        + '</div>'
+        + '<div style="font-size:0.54rem;color:' + statusColor + ';text-transform:uppercase;letter-spacing:0.1em;padding-top:0.15rem;">' + (r.status || '') + '</div>'
+        + '</div>'
+        + '<div style="padding:0.6rem 0.8rem;display:grid;grid-template-columns:1fr auto auto auto;gap:0.6rem;align-items:center;">'
+        + '<div>'
+        + '<div style="font-size:0.62rem;color:var(--text-dim);">' + (r.name || '') + '</div>'
+        + '<div style="font-size:0.5rem;color:var(--text-muted);letter-spacing:0.08em;">' + (r.ticker || 'BSE only') + '</div>'
+        + (r.note ? '<div style="font-size:0.5rem;color:var(--text-muted);margin-top:0.2rem;font-style:italic;">"' + r.note + '"</div>' : '')
+        + '</div>'
+        + '<div style="font-size:0.62rem;color:var(--gold);font-family:\'IBM Plex Mono\',monospace;text-align:right;">' + (r.qtyRequested || '') + '<span style="font-size:0.46rem;color:var(--text-muted);margin-left:0.2rem;">shares</span></div>'
+        + (isPending
+          ? '<button class="btn-g" style="font-size:0.5rem;padding:0.25rem 0.6rem;" onclick="actionSellRequest(\'' + r.requestId + '\',\'actioned\')">&#x2713; Actioned</button>'
+            + '<button class="btn-d" style="font-size:0.5rem;padding:0.25rem 0.6rem;" onclick="actionSellRequest(\'' + r.requestId + '\',\'dismissed\')">&#x2715; Dismiss</button>'
+          : '<span></span><span></span>')
+        + '</div>'
+        + '</div>';
+    }).join('');
+
+    wrap.innerHTML = rows;
+  }).catch(function() {
+    wrap.innerHTML = '<div style="font-size:0.62rem;color:#c97a7a;padding:0.5rem 0;">Could not load sell requests.</div>';
+  });
+}
+
+function actionSellRequest(requestId, newStatus) {
+  sheetCall('updateSellRequest', { requestId: requestId, status: newStatus }).then(function() {
+    showToast('Request ' + newStatus + '.');
+    renderAdminSellRequests();
+  });
+}
 function renderAdminStats() {
   const tc = lenders.reduce((s,m)=>s+m.corpus,0)+friendly.reduce((s,m)=>s+m.amount,0)+shortTerm.reduce((s,m)=>s+(m.amount||0),0);
   const tm = lenders.reduce((s,m)=>s+calcMo(m.corpus),0);
@@ -5513,8 +5724,282 @@ function printAgreement() {
 }
 
 
+// ─── MY STOCKS PAGE ────────────────────────────────────────────────
+
+let _stkMember = null; // currently unlocked member on stocks page
+
+function initStocksPage() {
+  // Reset to PIN entry state
+  _stkMember = null;
+  document.getElementById('stkPinInput').value = '';
+  document.getElementById('stkPinErr').textContent = '';
+  document.getElementById('stkSearchInput').value = '';
+  document.getElementById('stkSearchResult').innerHTML = '';
+  document.getElementById('stkPinState').style.display = 'block';
+  document.getElementById('stkHoldingsState').style.display = 'none';
+}
+
+function lockHoldings() {
+  _stkMember = null;
+  document.getElementById('stkPinInput').value = '';
+  document.getElementById('stkPinErr').textContent = '';
+  document.getElementById('stkPinState').style.display = 'block';
+  document.getElementById('stkHoldingsState').style.display = 'none';
+}
+
+function unlockHoldings() {
+  const pin = document.getElementById('stkPinInput').value.trim();
+  const errEl = document.getElementById('stkPinErr');
+  errEl.textContent = '';
+  if (!pin) { errEl.textContent = 'Please enter your PIN.'; return; }
+
+  // Find member across all arrays
+  const allMembers = [...lenders, ...friendly, ...shortTerm, ...administered];
+  const m = allMembers.find(function(x) { return x.pin === pin; });
+  if (!m) { errEl.textContent = 'PIN not recognised.'; return; }
+
+  _stkMember = m;
+  document.getElementById('stkPinState').style.display = 'none';
+  document.getElementById('stkHoldingsState').style.display = 'block';
+
+  // Header
+  const nick = nicknames[m.pin] || m.name;
+  document.getElementById('stkHoldingsHeader').innerHTML =
+    '<div style="font-size:0.62rem;color:var(--text-dim);margin-bottom:0.3rem;">Welcome, <strong style="color:var(--gold);">' + nick + '</strong></div>';
+
+  // Load holdings
+  const bodyEl = document.getElementById('stkHoldingsBody');
+  bodyEl.innerHTML = '<div style="padding:1rem;font-size:0.62rem;color:var(--text-muted);text-align:center;">◌ Loading holdings…</div>';
+
+  sheetCall('getStockHoldings', {}).then(function(data) {
+    if (!data || !data.ok) { bodyEl.innerHTML = stkNoHoldings(); return; }
+    const holdings = data.holdings && data.holdings[String(m.id)];
+    if (!holdings || holdings.length === 0) { bodyEl.innerHTML = stkNoHoldings(); return; }
+    renderHoldingsTable(holdings, data.asOf, bodyEl);
+  }).catch(function() { bodyEl.innerHTML = stkNoHoldings(); });
+}
+
+function stkNoHoldings() {
+  return '<div style="border:1px solid var(--border);padding:1.5rem;text-align:center;">'
+    + '<div style="font-size:1.4rem;color:var(--gold);opacity:0.3;margin-bottom:0.5rem;">⌥</div>'
+    + '<div style="font-size:0.65rem;color:var(--text-muted);">No stock holdings on record for this account.</div>'
+    + '</div>';
+}
+
+function renderHoldingsTable(holdings, asOf, container) {
+  let totalValue = 0, valuedCount = 0;
+  const colHead = '<div style="display:grid;grid-template-columns:1fr auto auto auto auto;gap:0.5rem;padding:0.35rem 0.8rem;background:rgba(0,0,0,0.15);border-bottom:1px solid var(--border);">'
+    + '<div style="font-size:0.44rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);">Security</div>'
+    + '<div style="font-size:0.44rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);text-align:right;">Qty</div>'
+    + '<div style="font-size:0.44rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);text-align:right;">Price</div>'
+    + '<div style="font-size:0.44rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);text-align:right;">Value</div>'
+    + '<div style="font-size:0.44rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);text-align:center;">Sell</div>'
+    + '</div>';
+
+  const rows = holdings.map(function(s, idx) {
+    const price = s.price || null;
+    const value = (price && s.qty > 0) ? Math.round(price * s.qty) : null;
+    if (value) { totalValue += value; valuedCount++; }
+    const priceStr = price ? '₹' + price.toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2}) : '—';
+    const valueStr = value ? '₹' + value.toLocaleString('en-IN') : '—';
+    const dimName  = s.qty === 0 ? 'var(--text-muted)' : 'var(--text)';
+    const sellBtn  = s.qty > 0
+      ? '<button class="stk-sell-btn" onclick="showSellDialog(\'' + (s.ticker||'') + '\',\'' + s.name.replace(/'/g,"\\'") + '\',' + s.qty + ')">Sell</button>'
+      : '<span style="font-size:0.44rem;color:var(--text-muted);">nil</span>';
+    return '<div style="display:grid;grid-template-columns:1fr auto auto auto auto;gap:0.5rem;align-items:center;padding:0.45rem 0.8rem;border-bottom:1px solid var(--border);">'
+      + '<div><div style="font-size:0.6rem;color:' + dimName + ';">' + s.name + '</div>'
+      + '<div style="font-size:0.46rem;color:var(--text-muted);margin-top:0.1rem;letter-spacing:0.08em;">' + (s.ticker || 'BSE only') + '</div></div>'
+      + '<div style="font-size:0.58rem;color:var(--text-dim);text-align:right;min-width:36px;">' + s.qty + '</div>'
+      + '<div style="font-size:0.58rem;color:var(--text-dim);text-align:right;min-width:70px;font-family:\'IBM Plex Mono\',monospace;">' + priceStr + '</div>'
+      + '<div style="font-size:0.6rem;color:' + (value?'var(--gold)':'var(--text-muted)') + ';text-align:right;min-width:75px;font-family:\'IBM Plex Mono\',monospace;">' + valueStr + '</div>'
+      + '<div style="text-align:center;">' + sellBtn + '</div>'
+      + '</div>';
+  }).join('');
+
+  const footer = '<div style="display:flex;justify-content:space-between;align-items:center;padding:0.7rem 0.8rem;background:rgba(201,168,76,0.05);border-top:1px solid rgba(201,168,76,0.2);">'
+    + '<div style="font-size:0.48rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);">Portfolio Value <span style="opacity:0.6;">(' + valuedCount + '/' + holdings.length + ' priced)</span></div>'
+    + '<div style="font-size:0.82rem;color:var(--gold);font-family:\'IBM Plex Mono\',monospace;font-weight:600;">' + (totalValue > 0 ? '₹' + totalValue.toLocaleString('en-IN') : '—') + '</div>'
+    + '</div>'
+    + (asOf ? '<div style="padding:0.3rem 0.8rem;font-size:0.44rem;color:var(--text-muted);opacity:0.5;text-align:right;">EOD prices via Google Finance · ' + asOf + '</div>' : '');
+
+  container.innerHTML = '<div style="border:1px solid var(--border);background:var(--bg2);">' + colHead + rows + footer + '</div>';
+}
+
+// ─── SELL REQUEST DIALOG ──────────────────
+function showSellDialog(ticker, name, maxQty) {
+  const existing = document.getElementById('stkSellDialog');
+  if (existing) existing.remove();
+
+  const dlg = document.createElement('div');
+  dlg.id = 'stkSellDialog';
+  dlg.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:9999;display:flex;align-items:center;justify-content:center;padding:1rem;box-sizing:border-box;';
+  dlg.innerHTML = '<div style="background:var(--bg2);border:1px solid var(--border);max-width:360px;width:100%;padding:1.5rem;">'
+    + '<div style="font-size:0.5rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);margin-bottom:0.8rem;">Sell Request</div>'
+    + '<div style="font-size:0.8rem;color:var(--text);margin-bottom:0.3rem;">' + name + '</div>'
+    + '<div style="font-size:0.54rem;color:var(--text-muted);margin-bottom:1rem;letter-spacing:0.08em;">' + (ticker||'BSE only') + ' &nbsp;·&nbsp; You hold ' + maxQty + ' shares</div>'
+    + '<div style="font-size:0.56rem;color:var(--text-dim);margin-bottom:0.4rem;">Quantity to sell</div>'
+    + '<input id="stkSellQty" type="number" min="1" max="' + maxQty + '" placeholder="Enter quantity"'
+    + ' style="width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);font-family:\'IBM Plex Mono\',monospace;font-size:0.8rem;padding:0.6rem 0.8rem;outline:none;box-sizing:border-box;margin-bottom:0.6rem;" />'
+    + '<div style="font-size:0.56rem;color:var(--text-dim);margin-bottom:0.4rem;">Note (optional)</div>'
+    + '<input id="stkSellNote" type="text" placeholder="e.g. sell at market price"'
+    + ' style="width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);font-family:\'IBM Plex Mono\',monospace;font-size:0.68rem;padding:0.6rem 0.8rem;outline:none;box-sizing:border-box;margin-bottom:1rem;" />'
+    + '<div id="stkSellErr" style="font-size:0.56rem;color:#c97a7a;min-height:1rem;margin-bottom:0.5rem;"></div>'
+    + '<div style="display:flex;gap:0.6rem;">'
+    + '<button onclick="submitSellRequest(\'' + ticker + '\',\'' + name.replace(/'/g,"\\'") + '\',' + maxQty + ')" style="flex:1;background:var(--gold);color:var(--bg);border:none;font-family:\'IBM Plex Mono\',monospace;font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;padding:0.6rem;cursor:pointer;">Submit Request</button>'
+    + '<button onclick="document.getElementById(\'stkSellDialog\').remove()" style="flex:1;background:none;border:1px solid var(--border);color:var(--text-muted);font-family:\'IBM Plex Mono\',monospace;font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;padding:0.6rem;cursor:pointer;">Cancel</button>'
+    + '</div></div>';
+  document.body.appendChild(dlg);
+  setTimeout(function() { document.getElementById('stkSellQty').focus(); }, 100);
+}
+
+function submitSellRequest(ticker, name, maxQty) {
+  const qtyEl = document.getElementById('stkSellQty');
+  const noteEl = document.getElementById('stkSellNote');
+  const errEl = document.getElementById('stkSellErr');
+  const qty = parseInt(qtyEl.value);
+  if (!qty || qty < 1) { errEl.textContent = 'Enter a valid quantity.'; return; }
+  if (qty > maxQty)    { errEl.textContent = 'Cannot exceed ' + maxQty + ' shares.'; return; }
+
+  const m = _stkMember;
+  if (!m) { errEl.textContent = 'Session expired. Please re-enter PIN.'; return; }
+
+  const requestId = 'SR-' + Date.now();
+  const body = {
+    requestId:    requestId,
+    memberId:     m.id,
+    memberName:   m.legalName || m.name,
+    ticker:       ticker || '',
+    name:         name,
+    qtyRequested: qty,
+    note:         noteEl ? noteEl.value.trim() : '',
+    status:       'pending',
+    requestedAt:  new Date().toLocaleString('en-IN',{timeZone:'Asia/Kolkata'})
+  };
+
+  errEl.textContent = 'Submitting…';
+  sheetCall('postSellRequest', body).then(function(data) {
+    document.getElementById('stkSellDialog').remove();
+    showToast('Sell request submitted — ' + qty + ' × ' + name + '. Admin will be in touch.');
+  }).catch(function() {
+    errEl.textContent = 'Failed to submit. Please try again.';
+  });
+}
+
+// ─── STOCK SEARCH ────────────────────────────────────────────────
+let _stkSearchCache = {};
+
+function searchStock() {
+  const raw = (document.getElementById('stkSearchInput').value || '').trim().toUpperCase().replace(/\s+/g,'');
+  const resultEl = document.getElementById('stkSearchResult');
+  if (!raw) { resultEl.innerHTML = ''; return; }
+
+  resultEl.innerHTML = '<div style="font-size:0.6rem;color:var(--text-muted);padding:0.5rem 0;">◌ Looking up ' + raw + '…</div>';
+
+  // Use Apps Script to fetch via GOOGLEFINANCE
+  sheetCall('getStockQuote', { ticker: raw }).then(function(data) {
+    if (!data || !data.ok || data.price === null) {
+      resultEl.innerHTML = '<div style="font-size:0.62rem;color:#c97a7a;padding:0.5rem 0;">No data found for <strong>' + raw + '</strong>. Check the NSE ticker symbol.</div>';
+      return;
+    }
+    renderStockQuote(data, raw, resultEl);
+  }).catch(function() {
+    resultEl.innerHTML = '<div style="font-size:0.62rem;color:#c97a7a;padding:0.5rem 0;">Could not fetch quote. Try again.</div>';
+  });
+}
+
+function renderStockQuote(data, ticker, container) {
+  const price   = data.price;
+  const chg     = data.changepct;
+  const name    = data.name || ticker;
+  const history = data.history || []; // array of {date, close} for sparkline
+
+  const chgStr  = chg !== null ? (chg >= 0 ? '+' : '') + chg.toFixed(2) + '%' : '';
+  const chgCls  = chg === null ? '' : chg >= 0 ? 'up' : 'dn';
+
+  let html = '<div class="stk-result-card">'
+    + '<div class="stk-result-name">' + name + '</div>'
+    + '<div class="stk-result-ticker">' + ticker + ' &nbsp;·&nbsp; NSE</div>'
+    + '<div style="display:flex;align-items:baseline;gap:0.5rem;">'
+    + '<span class="stk-result-price">₹' + price.toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2}) + '</span>'
+    + (chgStr ? '<span class="stk-result-chg ' + chgCls + '">' + chgStr + '</span>' : '')
+    + '</div>';
+
+  if (history.length > 1) {
+    html += '<div class="stk-chart-wrap"><canvas id="stkSparkCanvas" style="width:100%;height:80px;"></canvas></div>';
+  }
+  html += '<div style="font-size:0.46rem;color:var(--text-muted);opacity:0.5;margin-top:0.6rem;">Delayed price via Google Finance</div>';
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  // Draw sparkline if history available
+  if (history.length > 1) {
+    const _hist = history.map(function(h) { return h.close; });
+    setTimeout(function() {
+      // Try with rAF inside timeout for reliable layout
+      requestAnimationFrame(function() {
+        drawSparkline('stkSparkCanvas', _hist);
+      });
+    }, 200);
+  }
+}
+
+function drawSparkline(canvasId, values) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const dpr = window.devicePixelRatio || 1;
+  // Use parent width if offsetWidth is 0 (not yet laid out)
+  const W = canvas.offsetWidth || canvas.parentElement && canvas.parentElement.offsetWidth || 320;
+  const H = 80;
+  canvas.width  = W * dpr;
+  canvas.height = H * dpr;
+  canvas.style.width  = W + 'px';
+  canvas.style.height = H + 'px';
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+  const min = Math.min(...values), max = Math.max(...values);
+  const range = max - min || 1;
+  const pad = 8;
+
+  const points = values.map(function(v, i) {
+    return {
+      x: pad + (i / (values.length - 1)) * (W - pad * 2),
+      y: H - pad - ((v - min) / range) * (H - pad * 2)
+    };
+  });
+
+  // Gradient fill
+  const grad = ctx.createLinearGradient(0, 0, 0, H);
+  const isUp = values[values.length-1] >= values[0];
+  grad.addColorStop(0, isUp ? 'rgba(76,205,196,0.25)' : 'rgba(201,122,122,0.25)');
+  grad.addColorStop(1, 'rgba(0,0,0,0)');
+
+  ctx.beginPath();
+  ctx.moveTo(points[0].x, H);
+  points.forEach(function(p) { ctx.lineTo(p.x, p.y); });
+  ctx.lineTo(points[points.length-1].x, H);
+  ctx.closePath();
+  ctx.fillStyle = grad;
+  ctx.fill();
+
+  // Line
+  ctx.beginPath();
+  ctx.moveTo(points[0].x, points[0].y);
+  points.forEach(function(p) { ctx.lineTo(p.x, p.y); });
+  ctx.strokeStyle = isUp ? '#4ecdc4' : '#c97a7a';
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+
+  // End dot
+  const last = points[points.length-1];
+  ctx.beginPath();
+  ctx.arc(last.x, last.y, 3, 0, Math.PI * 2);
+  ctx.fillStyle = isUp ? '#4ecdc4' : '#c97a7a';
+  ctx.fill();
+}
+
 function openPublic(page) {
-  ['pub-rates','pub-about','pub-calc','pub-know','pub-hist','pub-market'].forEach(function(id){
+  ['pub-rates','pub-about','pub-calc','pub-know','pub-hist','pub-market','pub-stocks'].forEach(function(id){
     var el = document.getElementById(id);
     if (el) el.style.display = 'none';
   });
@@ -5523,6 +6008,7 @@ function openPublic(page) {
   if (page === 'rates') renderPubRates();
   if (page === 'hist') renderHistStats();
   if (page === 'market') loadMarketPage();
+  if (page === 'stocks') initStocksPage();
   document.getElementById('publicOverlay').style.display = 'flex';
 }
 
@@ -5776,7 +6262,7 @@ const historicalLoans = [
 //           status: 'pending'|'locked'|'repaid', pledgedAt, lockedAt }
 let capitalCalls = [];
 let ccIdSeq = 1;
-const CC_API = 'https://script.google.com/macros/s/AKfycbzIq7U-kMlM6mwDqOo8aORHlumQH7Su7wBjEw1VR_-unQcIdKegHSOuhl-3Vq4oK8WlRw/exec';
+const CC_API = 'https://script.google.com/macros/s/AKfycbysKkB8N_bc7POUT0-pM3TsJuFPfdrr-3spXseCvIET9hS1zENIjn1Volqf-xHCRoppig/exec';
 
 // ── Market Ticker ──────────────────────────────────
 let _mktInterval = null;
@@ -5977,21 +6463,21 @@ function renderCallPageAdmin(el) {
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;">
           <div class="fg"><label>Approx. Amount Required (₹)</label>
             <input type="number" id="cc-amount" placeholder="e.g. 100000"
-              style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:'IBM Plex Mono',monospace;font-size:0.72rem;padding:0.45rem 0.65rem;outline:none;box-sizing:border-box;"
+              style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:\'IBM Plex Mono\',monospace;font-size:0.72rem;padding:0.45rem 0.65rem;outline:none;box-sizing:border-box;"
               onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'"></div>
           <div class="fg"><label>Note (optional)</label>
             <input type="text" id="cc-note" placeholder="e.g. NSE F&O margin top-up"
-              style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:'IBM Plex Mono',monospace;font-size:0.72rem;padding:0.45rem 0.65rem;outline:none;box-sizing:border-box;"
+              style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:\'IBM Plex Mono\',monospace;font-size:0.72rem;padding:0.45rem 0.65rem;outline:none;box-sizing:border-box;"
               onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'"></div>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;">
           <div class="fg"><label>Available From</label>
             <input type="date" id="cc-from"
-              style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:'IBM Plex Mono',monospace;font-size:0.72rem;padding:0.45rem 0.65rem;outline:none;box-sizing:border-box;"
+              style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:\'IBM Plex Mono\',monospace;font-size:0.72rem;padding:0.45rem 0.65rem;outline:none;box-sizing:border-box;"
               onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'"></div>
           <div class="fg"><label>Latest Return By (outer limit)</label>
             <input type="date" id="cc-to"
-              style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:'IBM Plex Mono',monospace;font-size:0.72rem;padding:0.45rem 0.65rem;outline:none;box-sizing:border-box;"
+              style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:\'IBM Plex Mono\',monospace;font-size:0.72rem;padding:0.45rem 0.65rem;outline:none;box-sizing:border-box;"
               onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'"></div>
         </div>
         <div style="display:flex;align-items:center;gap:1rem;">
@@ -6032,14 +6518,14 @@ function ccAdminCard(c) {
     return `<tr style="border-bottom:1px solid var(--border);">
       <td style="padding:0.45rem 0.5rem;color:var(--text);">${p.memberName}</td>
       <td style="padding:0.45rem 0.5rem;color:var(--text-muted);font-size:0.58rem;">${p.toDate} (${p.days}d)</td>
-      <td style="padding:0.45rem 0.5rem;text-align:right;color:var(--gold);font-family:'IBM Plex Mono',monospace;">${f(p.amount)}</td>
-      <td style="padding:0.45rem 0.5rem;text-align:right;color:var(--low);font-family:'IBM Plex Mono',monospace;">${f(p.returnDue)}</td>
+      <td style="padding:0.45rem 0.5rem;text-align:right;color:var(--gold);font-family:\'IBM Plex Mono\',monospace;">${f(p.amount)}</td>
+      <td style="padding:0.45rem 0.5rem;text-align:right;color:var(--low);font-family:\'IBM Plex Mono\',monospace;">${f(p.returnDue)}</td>
       <td style="padding:0.45rem 0.5rem;text-align:center;">
         <span style="font-size:0.46rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.15rem 0.4rem;border:1px solid ${isPending?'rgba(201,168,76,0.4)':isLocked?'rgba(107,168,120,0.5)':'rgba(180,140,210,0.4)'};color:${isPending?'var(--gold)':isLocked?'var(--low)':'#b48cd2'};">${p.status}</span>
       </td>
       ${c.status==='open' ? `<td style="padding:0.45rem 0.5rem;text-align:right;display:flex;gap:0.3rem;justify-content:flex-end;">
-        ${isPending ? `<button onclick="ccLockPledge('${c.id}','${p.pledgeId}')" style="font-size:0.48rem;padding:0.2rem 0.5rem;background:var(--gold);border:none;color:#080809;font-family:'IBM Plex Mono',monospace;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;" title="Money received — lock this pledge">Lock ✓</button>` : ''}
-        ${isPending ? `<button onclick="ccRemovePledge('${c.id}','${p.pledgeId}')" style="font-size:0.48rem;padding:0.2rem 0.5rem;background:none;border:1px solid #e07a5f;color:#e07a5f;font-family:'IBM Plex Mono',monospace;cursor:pointer;">✕</button>` : ''}
+        ${isPending ? `<button onclick="ccLockPledge('${c.id}','${p.pledgeId}')" style="font-size:0.48rem;padding:0.2rem 0.5rem;background:var(--gold);border:none;color:#080809;font-family:\'IBM Plex Mono\',monospace;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;" title="Money received — lock this pledge">Lock ✓</button>` : ''}
+        ${isPending ? `<button onclick="ccRemovePledge('${c.id}','${p.pledgeId}')" style="font-size:0.48rem;padding:0.2rem 0.5rem;background:none;border:1px solid #e07a5f;color:#e07a5f;font-family:\'IBM Plex Mono\',monospace;cursor:pointer;">✕</button>` : ''}
       </td>` : '<td></td>'}
     </tr>`;
   }).join('');
@@ -6049,7 +6535,7 @@ function ccAdminCard(c) {
     <div style="padding:0.8rem 1rem;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;">
       <div>
         <div style="font-size:0.46rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.2rem;">${c.ref}</div>
-        <div style="font-size:0.95rem;font-family:'Cormorant Garamond',serif;color:var(--gold);">~${f(c.amount)} needed</div>
+        <div style="font-size:0.95rem;font-family:\'Cormorant Garamond\',serif;color:var(--gold);">~${f(c.amount)} needed</div>
         <div style="font-size:0.6rem;color:var(--text-dim);margin-top:0.2rem;">From ${c.fromDate} · latest return by ${c.toDate}</div>
         ${c.note ? `<div style="font-size:0.58rem;color:var(--text-muted);margin-top:0.15rem;font-style:italic;">${c.note}</div>` : ''}
       </div>
@@ -6080,13 +6566,13 @@ function ccAdminCard(c) {
           </table>`}
       <div style="display:flex;gap:0.6rem;margin-top:0.9rem;flex-wrap:wrap;">
         ${c.status==='open' ? `
-          <button onclick="ccCloseCall('${c.id}')" style="font-size:0.55rem;padding:0.35rem 0.8rem;background:var(--low);border:none;color:#fff;font-family:'IBM Plex Mono',monospace;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;">✓ Close Call</button>
-          <button onclick="ccCancelCall('${c.id}')" style="font-size:0.55rem;padding:0.35rem 0.8rem;background:none;border:1px solid #e07a5f;color:#e07a5f;font-family:'IBM Plex Mono',monospace;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;">Cancel</button>
+          <button onclick="ccCloseCall('${c.id}')" style="font-size:0.55rem;padding:0.35rem 0.8rem;background:var(--low);border:none;color:#fff;font-family:\'IBM Plex Mono\',monospace;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;">✓ Close Call</button>
+          <button onclick="ccCancelCall('${c.id}')" style="font-size:0.55rem;padding:0.35rem 0.8rem;background:none;border:1px solid #e07a5f;color:#e07a5f;font-family:\'IBM Plex Mono\',monospace;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;">Cancel</button>
         ` : c.status==='closed' ? `
-          <button onclick="ccMarkRepaid('${c.id}')" style="font-size:0.55rem;padding:0.35rem 0.8rem;background:#b48cd2;border:none;color:#fff;font-family:'IBM Plex Mono',monospace;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;">Mark as Repaid</button>
-          <button onclick="ccPrintSummary('${c.id}')" style="font-size:0.55rem;padding:0.35rem 0.8rem;background:none;border:1px solid var(--gold);color:var(--gold);font-family:'IBM Plex Mono',monospace;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;">⊞ Print Summary</button>
+          <button onclick="ccMarkRepaid('${c.id}')" style="font-size:0.55rem;padding:0.35rem 0.8rem;background:#b48cd2;border:none;color:#fff;font-family:\'IBM Plex Mono\',monospace;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;">Mark as Repaid</button>
+          <button onclick="ccPrintSummary('${c.id}')" style="font-size:0.55rem;padding:0.35rem 0.8rem;background:none;border:1px solid var(--gold);color:var(--gold);font-family:\'IBM Plex Mono\',monospace;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;">⊞ Print Summary</button>
         ` : `
-          <button onclick="ccPrintSummary('${c.id}')" style="font-size:0.55rem;padding:0.35rem 0.8rem;background:none;border:1px solid var(--border-mid);color:var(--text-muted);font-family:'IBM Plex Mono',monospace;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;">⊞ Print Summary</button>
+          <button onclick="ccPrintSummary('${c.id}')" style="font-size:0.55rem;padding:0.35rem 0.8rem;background:none;border:1px solid var(--border-mid);color:var(--text-muted);font-family:\'IBM Plex Mono\',monospace;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;">⊞ Print Summary</button>
         `}
       </div>
     </div>
@@ -6127,7 +6613,7 @@ function ccMemberCard(c, m) {
   <div style="border:1px solid rgba(201,168,76,0.4);border-top:2px solid var(--gold);background:var(--bg3);margin-bottom:1.2rem;">
     <div style="padding:0.9rem 1rem;border-bottom:1px solid var(--border);">
       <div style="font-size:0.46rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:0.3rem;">Active Capital Call · ${c.ref}</div>
-      <div style="font-size:1.05rem;font-family:'Cormorant Garamond',serif;color:var(--text);">JaceyTrayd requires approximately <span style="color:var(--gold);">${f(c.amount)}</span></div>
+      <div style="font-size:1.05rem;font-family:\'Cormorant Garamond\',serif;color:var(--text);">JaceyTrayd requires approximately <span style="color:var(--gold);">${f(c.amount)}</span></div>
       <div style="font-size:0.6rem;color:var(--text-dim);margin-top:0.3rem;">Available from <strong>${c.fromDate}</strong> · repay by <strong>${c.toDate}</strong> at the latest</div>
       ${c.note ? `<div style="font-size:0.58rem;color:var(--text-muted);margin-top:0.25rem;font-style:italic;">${c.note}</div>` : ''}
     </div>
@@ -6141,7 +6627,7 @@ function ccMemberCard(c, m) {
 
     <div style="padding:0.7rem 1rem;border-bottom:1px solid var(--border);background:rgba(201,168,76,0.03);">
       <div style="font-size:0.46rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.4rem;">Your Return Rate</div>
-      <div style="font-size:0.75rem;color:var(--gold);font-family:'IBM Plex Mono',monospace;">${dailyPct}% per day</div>
+      <div style="font-size:0.75rem;color:var(--gold);font-family:\'IBM Plex Mono\',monospace;">${dailyPct}% per day</div>
       <div style="font-size:0.56rem;color:var(--text-muted);margin-top:0.15rem;">Rate based on amount lent — up to ₹5L: 3% / month · above ₹5L: 2% / month</div>
     </div>
 
@@ -6154,28 +6640,28 @@ function ccMemberCard(c, m) {
         </div>
         <div style="font-size:0.6rem;color:var(--text-muted);margin-bottom:0.6rem;">Return due on ${myPledge.toDate}: <span style="color:var(--low);">${f(myPledge.returnDue)}</span> &nbsp;·&nbsp; Total repayable: <span style="color:var(--text);">${f(myPledge.amount + myPledge.returnDue)}</span></div>
         <div style="display:flex;gap:0.6rem;flex-wrap:wrap;">
-          ${myPledge.status==='locked' ? `<button onclick="ccViewConfirmation('${c.id}','${myPledge.pledgeId}')" style="font-size:0.55rem;padding:0.35rem 0.8rem;background:none;border:1px solid var(--gold);color:var(--gold);font-family:'IBM Plex Mono',monospace;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;">⊞ View Confirmation</button>` : ''}
-          ${myPledge.status==='pending' ? `<button onclick="ccWithdrawPledge('${c.id}','${myPledge.pledgeId}')" style="font-size:0.55rem;padding:0.35rem 0.8rem;background:none;border:1px solid #e07a5f;color:#e07a5f;font-family:'IBM Plex Mono',monospace;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;">Withdraw Application</button>` : ''}
+          ${myPledge.status==='locked' ? `<button onclick="ccViewConfirmation('${c.id}','${myPledge.pledgeId}')" style="font-size:0.55rem;padding:0.35rem 0.8rem;background:none;border:1px solid var(--gold);color:var(--gold);font-family:\'IBM Plex Mono\',monospace;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;">⊞ View Confirmation</button>` : ''}
+          ${myPledge.status==='pending' ? `<button onclick="ccWithdrawPledge('${c.id}','${myPledge.pledgeId}')" style="font-size:0.55rem;padding:0.35rem 0.8rem;background:none;border:1px solid #e07a5f;color:#e07a5f;font-family:\'IBM Plex Mono\',monospace;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;">Withdraw Application</button>` : ''}
         </div>
       ` : `
         <div style="font-size:0.62rem;color:var(--text-muted);margin-bottom:0.9rem;line-height:1.7;border-left:2px solid rgba(201,168,76,0.3);padding-left:0.8rem;">You choose your own amount and your own return-by date within the outer limit. Once you apply, you are obligated to transfer the funds to John within <strong style="color:var(--text);">24 hours</strong> — or withdraw your application.</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin-bottom:0.8rem;">
           <div class="fg"><label>Amount you will lend (₹)</label>
             <input type="number" id="cc-amt-${c.id}" placeholder="e.g. 25000"
-              style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:'IBM Plex Mono',monospace;font-size:0.72rem;padding:0.45rem 0.65rem;outline:none;box-sizing:border-box;"
+              style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:\'IBM Plex Mono\',monospace;font-size:0.72rem;padding:0.45rem 0.65rem;outline:none;box-sizing:border-box;"
               onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'"
               oninput="ccPreview('${c.id}',${corpus},'${c.fromDate}','${c.toDate}')">
           </div>
           <div class="fg"><label>You want repayment by</label>
             <input type="date" id="cc-date-${c.id}" min="${c.fromDate}" max="${c.toDate}" value="${ccDefaultDate(c.fromDate, c.toDate)}"
-              style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:'IBM Plex Mono',monospace;font-size:0.72rem;padding:0.45rem 0.65rem;outline:none;box-sizing:border-box;"
+              style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:\'IBM Plex Mono\',monospace;font-size:0.72rem;padding:0.45rem 0.65rem;outline:none;box-sizing:border-box;"
               onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'"
               oninput="ccPreview('${c.id}',${corpus},'${c.fromDate}','${c.toDate}')">
           </div>
         </div>
         <div id="cc-preview-${c.id}" style="font-size:0.62rem;color:var(--text-muted);margin-bottom:0.8rem;min-height:1.2rem;"></div>
         <div style="display:flex;align-items:center;gap:0.8rem;flex-wrap:wrap;">
-          <button onclick="ccSubmitPledge('${c.id}',${m.id},'${m.legalName||m.name}',${corpus},'${c.fromDate}','${c.toDate}')" style="padding:0.5rem 1.2rem;background:var(--gold);border:none;color:#080809;font-family:'IBM Plex Mono',monospace;font-size:0.6rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;">Apply to Lend →</button>
+          <button onclick="ccSubmitPledge('${c.id}',${m.id},'${m.legalName||m.name}',${corpus},'${c.fromDate}','${c.toDate}')" style="padding:0.5rem 1.2rem;background:var(--gold);border:none;color:#080809;font-family:\'IBM Plex Mono\',monospace;font-size:0.6rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;">Apply to Lend →</button>
           <div id="cc-err-${c.id}" style="font-size:0.58rem;color:#e07a5f;display:none;"></div>
         </div>
       `}
@@ -6190,7 +6676,7 @@ function ccHistoricalLoanCard(h) {
     <div style="padding:0.7rem 1rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem;">
       <div>
         <div style="font-size:0.44rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.2rem;">${h.ref}</div>
-        <div style="font-size:0.88rem;font-family:'Cormorant Garamond',serif;color:var(--text);">₹${h.principal.toLocaleString('en-IN')} lent to JaceyTrayd</div>
+        <div style="font-size:0.88rem;font-family:\'Cormorant Garamond\',serif;color:var(--text);">₹${h.principal.toLocaleString('en-IN')} lent to JaceyTrayd</div>
         <div style="font-size:0.56rem;color:var(--text-muted);margin-top:0.15rem;">${h.lentOn} → settled ${h.settledOn}</div>
       </div>
       <span style="font-size:0.44rem;letter-spacing:0.12em;text-transform:uppercase;padding:0.2rem 0.55rem;border:1px solid rgba(107,168,120,0.4);color:var(--low);">Closed</span>
@@ -6198,21 +6684,21 @@ function ccHistoricalLoanCard(h) {
     <div style="padding:0.75rem 1rem;display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.5rem;">
       <div>
         <div style="font-size:0.44rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.2rem;">Principal</div>
-        <div style="font-size:0.72rem;font-family:'IBM Plex Mono',monospace;color:var(--gold);">₹${h.principal.toLocaleString('en-IN')}</div>
+        <div style="font-size:0.72rem;font-family:\'IBM Plex Mono\',monospace;color:var(--gold);">₹${h.principal.toLocaleString('en-IN')}</div>
       </div>
       <div>
         <div style="font-size:0.44rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.2rem;">Interest by Bank</div>
-        <div style="font-size:0.72rem;font-family:'IBM Plex Mono',monospace;color:var(--low);">₹${(h.interestByBank||0).toLocaleString('en-IN')}</div>
+        <div style="font-size:0.72rem;font-family:\'IBM Plex Mono\',monospace;color:var(--low);">₹${(h.interestByBank||0).toLocaleString('en-IN')}</div>
       </div>
       <div>
         <div style="font-size:0.44rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.2rem;">By Capitalisation</div>
-        <div style="font-size:0.72rem;font-family:'IBM Plex Mono',monospace;color:#b48cd2;">₹${(h.interestByCapitalisation||0).toLocaleString('en-IN')}</div>
+        <div style="font-size:0.72rem;font-family:\'IBM Plex Mono\',monospace;color:#b48cd2;">₹${(h.interestByCapitalisation||0).toLocaleString('en-IN')}</div>
       </div>
     </div>
     <div style="padding:0 1rem 0.75rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem;">
       <div style="font-size:0.58rem;color:var(--text-muted);">Total interest earned: <span style="color:var(--text);">₹${interestTotal.toLocaleString('en-IN')}</span> &nbsp;·&nbsp; Total returned: <span style="color:var(--text);">₹${(h.principal+interestTotal).toLocaleString('en-IN')}</span></div>
       ${h.note ? `<div style="font-size:0.52rem;color:var(--text-muted);font-style:italic;margin-top:0.15rem;width:100%;">${h.note}</div>` : ''}
-      <button onclick="genHistoricalLoanDoc('${h.ref}')" style="font-size:0.5rem;padding:0.25rem 0.65rem;background:none;border:1px solid rgba(180,140,210,0.4);color:#b48cd2;font-family:'IBM Plex Mono',monospace;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;margin-top:0.3rem;">⊞ Settlement Doc</button>
+      <button onclick="genHistoricalLoanDoc('${h.ref}')" style="font-size:0.5rem;padding:0.25rem 0.65rem;background:none;border:1px solid rgba(180,140,210,0.4);color:#b48cd2;font-family:\'IBM Plex Mono\',monospace;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;margin-top:0.3rem;">⊞ Settlement Doc</button>
     </div>
   </div>`;
 }
@@ -6227,7 +6713,7 @@ function ccMemberHistoryCard(p) {
       <div style="font-size:0.75rem;color:var(--text);">${f(p.amount)} · return ${f(p.returnDue)}</div>
       <div style="font-size:0.54rem;color:${col};margin-top:0.2rem;text-transform:uppercase;letter-spacing:0.08em;">${p.status}</div>
     </div>
-    ${p.status==='locked'||p.status==='repaid' ? `<button onclick="ccViewConfirmation('${c.id}','${p.pledgeId}')" style="font-size:0.52rem;padding:0.3rem 0.7rem;background:none;border:1px solid var(--gold);color:var(--gold);font-family:'IBM Plex Mono',monospace;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;">⊞ Confirmation</button>` : ''}
+    ${p.status==='locked'||p.status==='repaid' ? `<button onclick="ccViewConfirmation('${c.id}','${p.pledgeId}')" style="font-size:0.52rem;padding:0.3rem 0.7rem;background:none;border:1px solid var(--gold);color:var(--gold);font-family:\'IBM Plex Mono\',monospace;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;">⊞ Confirmation</button>` : ''}
   </div>`;
 }
 
@@ -6333,7 +6819,7 @@ function ccViewConfirmation(callId, pledgeId) {
   if (!p) return;
   document.getElementById('agreementContent').innerHTML = ccConfirmationHTML(c,p) + `
     <div style="margin-top:2rem;text-align:center;" class="no-print">
-      <button onclick="window.print()" style="background:#c9a84c;color:#080809;border:none;font-family:'IBM Plex Mono',monospace;font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;padding:0.7rem 2rem;cursor:pointer;">🖨 Print / Save as PDF</button>
+      <button onclick="window.print()" style="background:#c9a84c;color:#080809;border:none;font-family:\'IBM Plex Mono\',monospace;font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;padding:0.7rem 2rem;cursor:pointer;">🖨 Print / Save as PDF</button>
     </div>`;
   document.getElementById('agreementModal').style.display='flex';
 }
@@ -6433,7 +6919,7 @@ function ccPrintSummary(callId) {
   </div>`;
   document.getElementById('agreementContent').innerHTML = html + `
     <div style="margin-top:2rem;text-align:center;" class="no-print">
-      <button onclick="window.print()" style="background:#c9a84c;color:#080809;border:none;font-family:'IBM Plex Mono',monospace;font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;padding:0.7rem 2rem;cursor:pointer;">🖨 Print / Save as PDF</button>
+      <button onclick="window.print()" style="background:#c9a84c;color:#080809;border:none;font-family:\'IBM Plex Mono\',monospace;font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;padding:0.7rem 2rem;cursor:pointer;">🖨 Print / Save as PDF</button>
     </div>`;
   document.getElementById('agreementModal').style.display='flex';
 }
