@@ -3412,29 +3412,25 @@ function renderDetails(m) {
       + '<div id="stk-body" style="padding:0;">' + renderStkRows(_staticStocks, null) + '</div>'
       + '</div>';
 
-    // Fetch live prices + qty from Sheets and update in place
-    function fetchHoldings(retry) {
-      sheetCall('getStockHoldings', {}).then(function(data) {
-        const stkBody = document.getElementById('stk-body');
-        if (!stkBody) return;
-        if (data && data.ok && data.holdings) {
-          const memberStocks = data.holdings[String(m.id)];
-          if (memberStocks && memberStocks.length) {
-            const countEl = document.getElementById('stk-count');
-            if (countEl) countEl.textContent = memberStocks.length + ' securities';
-            // Check if any prices came back
-            const hasPrices = memberStocks.some(function(s) { return s.price !== null; });
-            stkBody.innerHTML = renderStkRows(memberStocks, data.asOf || '');
-            // If no prices yet and haven't retried, try again in 6 seconds
-            if (!hasPrices && !retry) {
-              const footerEl = stkBody.querySelector && stkBody.querySelector('[data-footer]');
-              setTimeout(function() { fetchHoldings(true); }, 6000);
-            }
-          }
-        }
-      }).catch(function() { /* static list stays */ });
-    }
-    fetchHoldings(false);
+    // Fetch live prices from Sheets and overlay onto static list
+    sheetCall('getStockHoldings', {}).then(function(data) {
+      const stkBody = document.getElementById('stk-body');
+      if (!stkBody || !data || !data.ok || !data.prices) return;
+      const priceMap = data.prices;
+      const staleSet2 = {};
+      (data.staleList || []).forEach(function(t) { staleSet2[t.toUpperCase()] = true; });
+      const enriched = rashmiStocks.map(function(s) {
+        const key   = (s.ticker || '').toUpperCase();
+        const price = priceMap[key] || null;
+        const value = (price && s.qty > 0) ? Math.round(price * s.qty) : null;
+        return { ticker: s.ticker, name: s.name, qty: s.qty,
+                 price: price, stale: !!staleSet2[key], value: value };
+      });
+      const countEl = document.getElementById('stk-count');
+      if (countEl) countEl.textContent = enriched.length + ' securities';
+      stkBody.style.padding = '0';
+      stkBody.innerHTML = renderStkRows(enriched, data.asOf || '');
+    }).catch(function() { /* static list stays */ });
   } else {
     stocksEl.innerHTML = '';
   }
@@ -5823,16 +5819,39 @@ function unlockHoldings() {
       + '</div>';
   });
 
-  // Load holdings
+  // Load holdings — merge hardcoded stock list with live prices from Sheets
   const bodyEl = document.getElementById('stkHoldingsBody');
-  bodyEl.innerHTML = '<div style="padding:1rem;font-size:0.62rem;color:var(--text-muted);text-align:center;">◌ Loading holdings…</div>';
+  bodyEl.innerHTML = '<div style="padding:1rem;font-size:0.62rem;color:var(--text-muted);text-align:center;">◌ Loading prices…</div>';
 
+  // Build stock list for this member from hardcoded array
+  function getMemberStocks(memberId) {
+    if (memberId === 1) return rashmiStocks.map(function(s) {
+      return { ticker: s.ticker, name: s.name, qty: s.qty, price: null, stale: false, value: null };
+    });
+    return [];
+  }
+
+  const stocks = getMemberStocks(m.id);
+  if (!stocks.length) { bodyEl.innerHTML = stkNoHoldings(); return; }
+
+  // Show static list immediately
+  renderHoldingsTable(stocks, null, bodyEl);
+
+  // Fetch prices and update
   sheetCall('getStockHoldings', {}).then(function(data) {
-    if (!data || !data.ok) { bodyEl.innerHTML = stkNoHoldings(); return; }
-    const holdings = data.holdings && data.holdings[String(m.id)];
-    if (!holdings || holdings.length === 0) { bodyEl.innerHTML = stkNoHoldings(); return; }
-    renderHoldingsTable(holdings, data.asOf, bodyEl);
-  }).catch(function() { bodyEl.innerHTML = stkNoHoldings(); });
+    if (!data || !data.ok || !data.prices) return;
+    const priceMap  = data.prices;
+    const staleSet  = {};
+    (data.staleList || []).forEach(function(t) { staleSet[t.toUpperCase()] = true; });
+    const enriched = stocks.map(function(s) {
+      const key   = (s.ticker || '').toUpperCase();
+      const price = priceMap[key] || null;
+      const value = (price && s.qty > 0) ? Math.round(price * s.qty) : null;
+      return { ticker: s.ticker, name: s.name, qty: s.qty,
+               price: price, stale: !!staleSet[key], value: value };
+    });
+    renderHoldingsTable(enriched, data.asOf, bodyEl);
+  }).catch(function() { /* static list stays */ });
 }
 
 function stkNoHoldings() {
@@ -6425,7 +6444,7 @@ const historicalLoans = [
 //           status: 'pending'|'locked'|'repaid', pledgedAt, lockedAt }
 let capitalCalls = [];
 let ccIdSeq = 1;
-const CC_API = 'https://script.google.com/macros/s/AKfycbxxTwgMXmLXSp1-U5t6sN4WGRYxrwpEY54WSib3ee2JnF0S9DqNkSZisD1rrVe_GMSwMg/exec';
+const CC_API = 'https://script.google.com/macros/s/AKfycbwWq-aQe80ZrGZhdwf79aJ3fiNLzzHFcmzf3iAYaC3_0Mov2B_fcxnLq6GE22ISxxGMlA/exec';
 
 // ── Market Ticker ──────────────────────────────────
 let _mktInterval = null;
