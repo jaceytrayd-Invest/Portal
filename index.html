@@ -2742,7 +2742,7 @@ const rashmiStocks = [
 ];
 
 let lenders = [
-  { id:1, name:'Rashmi',  legalName:'Rashmi Dayal', corpus:850000,  baseCorpus:850000,  ploughback:0, status:'active', pin:'5245', note:'', hasLoanStatement:true,
+  { id:1, name:'Rashmi',  legalName:'Rashmi Dayal', corpus:850000,  baseCorpus:550000,  ploughback:300000, status:'active', pin:'5245', note:'', hasLoanStatement:true,
     mobile1:'9845812626', email:'rashmidayal7@gmail.com', accountSince:'20 Feb 2023' },
   { id:2, name:'Sandeep Daniel I', legalName:'Sandeep Daniel', corpus:2100000, baseCorpus:1600000, ploughback:500000, status:'active', pin:'1473', note:'Ploughed back amount represents reconciled underpaid interest (Mar 2020 – Feb 2026).', hasLoanStatement:true,
     mobile1:'9739900777', email:'sandeepdaniel@gmail.com', accountSince:'28 Feb 2020' },
@@ -2775,7 +2775,7 @@ let lenders = [
       { date:'Feb 2026', amount:50000, note:'Accrued interest capitalised' }
     ]
   },
-  { id:5, name:'Ahalya',  legalName:'Ahalya Dayal', corpus:250000,  baseCorpus:250000,  ploughback:0, status:'active', pin:'2811', note:'', hasLoanStatement:true, fundsReceivable:0, fundsReceivableNote:'', pendingInterest:0,
+  { id:5, name:'Ahalya',  legalName:'Ahalya Dayal', corpus:250000,  baseCorpus:143700,  ploughback:106300, status:'active', pin:'2811', note:'', hasLoanStatement:true, fundsReceivable:0, fundsReceivableNote:'', pendingInterest:0,
     mobile1:'9880027387', email:'ahalyam77@gmail.com', accountSince:'19 Aug 2023' }
 
 ];
@@ -6439,7 +6439,7 @@ const historicalLoans = [
 //           status: 'pending'|'locked'|'repaid', pledgedAt, lockedAt }
 let capitalCalls = [];
 let ccIdSeq = 1;
-const CC_API = 'https://script.google.com/macros/s/AKfycbybpsB8trNGvnmfhE6aM8PXidFO5vTWmUIXkGR4pfBkT7a9xl5OFBM6lh4BQ3siszACKA/exec';
+const CC_API = 'https://script.google.com/macros/s/AKfycbwVpVoLTI6eN6SZLmDNMepV4t3ZIIP8_UyGSZacHj8Gkvo761OwqERy1UD5CCNgVSqY/exec';
 
 // ── Market Ticker ──────────────────────────────────
 let _mktInterval = null;
