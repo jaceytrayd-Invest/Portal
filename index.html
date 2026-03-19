@@ -5798,30 +5798,16 @@ function unlockHoldings() {
   document.getElementById('stkPinState').style.display = 'none';
   document.getElementById('stkHoldingsState').style.display = 'block';
 
-  // Header
+  // Header — show immediately with name, update with portfolio value after prices load
   const nick = nicknames[m.pin] || m.name;
-  // Count holdings for summary line
-  sheetCall('getStockHoldings', {}).then(function(_d) {
-    const _h = _d && _d.ok && _d.holdings && _d.holdings[String(_stkMember.id)];
-    const _cnt = _h ? _h.length : 0;
-    const _val = _h ? _h.reduce(function(a,s){ return a + (s.value||0); }, 0) : 0;
+  function setHoldingsHeader(cnt, val) {
     document.getElementById('stkHoldingsHeader').innerHTML =
       '<div style="padding:1.2rem 0 1rem 0;border-bottom:1px solid var(--border);margin-bottom:1.2rem;">'
       + '<div style="font-size:0.5rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);opacity:0.7;margin-bottom:0.5rem;">Your Holdings</div>'
       + '<div style="font-family:\'Cormorant Garamond\',serif;font-size:1.6rem;font-weight:300;color:var(--text);margin-bottom:0.3rem;">Welcome, <em style="color:var(--gold);">' + nick + '</em></div>'
-      + (_cnt > 0 ? '<div style="font-size:0.62rem;color:var(--text-dim);">You hold <strong style="color:var(--text);">' + _cnt + ' securities</strong>' + (_val > 0 ? ' &nbsp;&middot;&nbsp; Portfolio value <strong style="color:var(--gold);">\u20b9' + _val.toLocaleString('en-IN') + '</strong>' : '') + '</div>' : '')
+      + (cnt > 0 ? '<div style="font-size:0.62rem;color:var(--text-dim);">You hold <strong style="color:var(--text);">' + cnt + ' securities</strong>' + (val > 0 ? ' &nbsp;&middot;&nbsp; Portfolio value <strong style="color:var(--gold);">\u20b9' + val.toLocaleString('en-IN') + '</strong>' : '') + '</div>' : '')
       + '</div>';
-  }).catch(function() {
-    document.getElementById('stkHoldingsHeader').innerHTML =
-      '<div style="padding:1.2rem 0 1rem 0;border-bottom:1px solid var(--border);margin-bottom:1.2rem;">'
-      + '<div style="font-size:0.5rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);opacity:0.7;margin-bottom:0.5rem;">Your Holdings</div>'
-      + '<div style="font-family:\'Cormorant Garamond\',serif;font-size:1.6rem;font-weight:300;color:var(--text);">Welcome, <em style="color:var(--gold);">' + nick + '</em></div>'
-      + '</div>';
-  });
-
-  // Load holdings — merge hardcoded stock list with live prices from Sheets
-  const bodyEl = document.getElementById('stkHoldingsBody');
-  bodyEl.innerHTML = '<div style="padding:1rem;font-size:0.62rem;color:var(--text-muted);text-align:center;">◌ Loading prices…</div>';
+  }
 
   // Build stock list for this member from hardcoded array
   function getMemberStocks(memberId) {
@@ -5832,16 +5818,23 @@ function unlockHoldings() {
   }
 
   const stocks = getMemberStocks(m.id);
-  if (!stocks.length) { bodyEl.innerHTML = stkNoHoldings(); return; }
+  const bodyEl = document.getElementById('stkHoldingsBody');
 
-  // Show static list immediately
+  if (!stocks.length) {
+    setHoldingsHeader(0, 0);
+    bodyEl.innerHTML = stkNoHoldings();
+    return;
+  }
+
+  // Show static list + header immediately
+  setHoldingsHeader(stocks.length, 0);
   renderHoldingsTable(stocks, null, bodyEl);
 
-  // Fetch prices and update
+  // Single API call — update both header and table when prices arrive
   sheetCall('getStockHoldings', {}).then(function(data) {
     if (!data || !data.ok || !data.prices) return;
-    const priceMap  = data.prices;
-    const staleSet  = {};
+    const priceMap = data.prices;
+    const staleSet = {};
     (data.staleList || []).forEach(function(t) { staleSet[t.toUpperCase()] = true; });
     const enriched = stocks.map(function(s) {
       const key   = (s.ticker || '').toUpperCase();
@@ -5850,6 +5843,8 @@ function unlockHoldings() {
       return { ticker: s.ticker, name: s.name, qty: s.qty,
                price: price, stale: !!staleSet[key], value: value };
     });
+    const totalVal = enriched.reduce(function(a, s) { return a + (s.value || 0); }, 0);
+    setHoldingsHeader(enriched.length, totalVal);
     renderHoldingsTable(enriched, data.asOf, bodyEl);
   }).catch(function() { /* static list stays */ });
 }
@@ -6444,7 +6439,7 @@ const historicalLoans = [
 //           status: 'pending'|'locked'|'repaid', pledgedAt, lockedAt }
 let capitalCalls = [];
 let ccIdSeq = 1;
-const CC_API = 'https://script.google.com/macros/s/AKfycbwWq-aQe80ZrGZhdwf79aJ3fiNLzzHFcmzf3iAYaC3_0Mov2B_fcxnLq6GE22ISxxGMlA/exec';
+const CC_API = 'https://script.google.com/macros/s/AKfycbybpsB8trNGvnmfhE6aM8PXidFO5vTWmUIXkGR4pfBkT7a9xl5OFBM6lh4BQ3siszACKA/exec';
 
 // ── Market Ticker ──────────────────────────────────
 let _mktInterval = null;
