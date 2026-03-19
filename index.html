@@ -7,8 +7,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-  --gold: #c9a84c;
-  --gold-light: #e4c97a;
+  --gold: #e8c45a;
+  --gold-light: #f0d878;
   --gold-dim: #7a6230;
   --bg: #080809;
   --bg2: #0f0f11;
@@ -271,11 +271,20 @@ body {
 }
 .mkt-hero-card:hover::before { background: linear-gradient(90deg, var(--gold-dim), transparent); }
 .mkt-hero-instrument {
-  font-size: 0.56rem;
-  letter-spacing: 0.20em;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  color: #ffffff;
+  margin-bottom: 0.4rem;
+}
+.mkt-hero-instrument-sub {
+  font-size: 0.5rem;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--text-muted);
-  opacity: 0.65;
+  opacity: 0.55;
   margin-bottom: 0.6rem;
 }
 .mkt-hero-value {
@@ -839,10 +848,10 @@ body {
   padding: 1.2rem;
   margin-bottom: 1rem;
 }
-.stk-result-name { font-family:'Cormorant Garamond',serif; font-size:1.1rem; color:var(--text); margin-bottom:0.2rem; }
-.stk-result-ticker { font-size:0.52rem; letter-spacing:0.18em; color:var(--text-muted); text-transform:uppercase; margin-bottom:0.8rem; }
-.stk-result-price { font-size:1.8rem; color:#fff; font-weight:600; font-family:'IBM Plex Mono',monospace; }
-.stk-result-chg { font-size:0.72rem; font-family:'IBM Plex Mono',monospace; margin-left:0.6rem; }
+.stk-result-name { font-family:'Cormorant Garamond',serif; font-size:1.5rem; color:var(--text); margin-bottom:0.3rem; }
+.stk-result-ticker { font-size:0.65rem; letter-spacing:0.18em; color:var(--text-muted); text-transform:uppercase; margin-bottom:1rem; }
+.stk-result-price { font-size:2.2rem; color:#fff; font-weight:600; font-family:'IBM Plex Mono',monospace; }
+.stk-result-chg { font-size:0.9rem; font-family:'IBM Plex Mono',monospace; margin-left:0.8rem; }
 .stk-result-chg.up { color:var(--low); }
 .stk-result-chg.dn { color:#c97a7a; }
 .stk-chart-wrap { margin-top:1rem; height:80px; position:relative; }
@@ -1028,6 +1037,18 @@ body {
     <span class="ticker-chg" id="tk-usdinr-chg"></span>
   </div>
   <div class="ticker-dot"></div>
+  <div class="ticker-item">
+    <span class="ticker-label">Sensex</span>
+    <span class="ticker-value" id="tk-sensex">—</span>
+    <span class="ticker-chg" id="tk-sensex-chg"></span>
+  </div>
+  <div class="ticker-dot"></div>
+  <div class="ticker-item">
+    <span class="ticker-label">S&amp;P 500</span>
+    <span class="ticker-value" id="tk-spx">—</span>
+    <span class="ticker-chg" id="tk-spx-chg"></span>
+  </div>
+  <div class="ticker-dot"></div>
   <span class="ticker-date" id="tk-date">loading…</span>
 </div>
 
@@ -1062,35 +1083,26 @@ body {
             <div class="lm-card-value" id="lm-usdinr">—</div>
             <div class="lm-card-chg" id="lm-usdinr-chg"></div>
           </div>
+          <div class="lm-card">
+            <div class="lm-card-label">Sensex</div>
+            <div class="lm-card-value" id="lm-sensex">—</div>
+            <div class="lm-card-chg" id="lm-sensex-chg"></div>
+          </div>
+          <div class="lm-card">
+            <div class="lm-card-label">S&amp;P 500</div>
+            <div class="lm-card-value" id="lm-spx">—</div>
+            <div class="lm-card-chg" id="lm-spx-chg"></div>
+          </div>
         </div>
         <div class="lm-footer" id="lm-asof">loading…</div>
       </div>
     </div>
-    <div style="display:flex;gap:0.8rem;margin-top:1.2rem;">
-      <button onclick="openPublic('rates')" style="flex:1;background:none;border:1px solid var(--border-mid);color:var(--text-dim);font-family:'IBM Plex Mono',monospace;font-size:0.66rem;letter-spacing:0.14em;text-transform:uppercase;padding:0.75rem 1rem;cursor:pointer;transition:all 0.18s;text-align:center;" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border-mid)';this.style.color='var(--text-dim)'">
-        <div style="font-size:1rem;margin-bottom:0.3rem;font-family:'Cormorant Garamond',serif;color:var(--gold);opacity:0.6;">%</div>
-        View Rates
-      </button>
-      <button onclick="openPublic('calc')" style="flex:1;background:none;border:1px solid var(--border-mid);color:var(--text-dim);font-family:'IBM Plex Mono',monospace;font-size:0.66rem;letter-spacing:0.14em;text-transform:uppercase;padding:0.75rem 1rem;cursor:pointer;transition:all 0.18s;text-align:center;" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border-mid)';this.style.color='var(--text-dim)'">
-        <div style="font-size:1rem;margin-bottom:0.3rem;font-family:'Cormorant Garamond',serif;color:var(--gold);opacity:0.6;">◈</div>
-        Calculator
-      </button>
-      <button onclick="openPublic('market')" style="flex:1;background:none;border:1px solid var(--border-mid);color:var(--text-dim);font-family:'IBM Plex Mono',monospace;font-size:0.66rem;letter-spacing:0.14em;text-transform:uppercase;padding:0.75rem 1rem;cursor:pointer;transition:all 0.18s;text-align:center;" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border-mid)';this.style.color='var(--text-dim)'">
-        <div style="font-size:1rem;margin-bottom:0.3rem;font-family:'Cormorant Garamond',serif;color:var(--gold);opacity:0.6;">◷</div>
-        Markets
-      </button>
-      <button onclick="openPublic('stocks')" style="flex:1;background:none;border:1px solid var(--border-mid);color:var(--text-dim);font-family:'IBM Plex Mono',monospace;font-size:0.66rem;letter-spacing:0.14em;text-transform:uppercase;padding:0.75rem 1rem;cursor:pointer;transition:all 0.18s;text-align:center;" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border-mid)';this.style.color='var(--text-dim)'">
-        <div style="font-size:1rem;margin-bottom:0.3rem;font-family:'Cormorant Garamond',serif;color:var(--gold);opacity:0.6;">⌥</div>
-        My Stocks
-      </button>
-    </div>
-    <div style="display:flex;gap:0.6rem;margin-top:0.6rem;">
-      <button onclick="openPublic('know')" style="flex:1;background:none;border:1px solid var(--border-mid);color:var(--text-dim);font-family:'IBM Plex Mono',monospace;font-size:0.66rem;letter-spacing:0.14em;text-transform:uppercase;padding:0.65rem 1rem;cursor:pointer;transition:all 0.18s;text-align:center;display:flex;align-items:center;justify-content:center;gap:0.6rem;" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border-mid)';this.style.color='var(--text-dim)'">
-        <span style="font-family:'Cormorant Garamond',serif;color:var(--gold);opacity:0.6;font-size:1rem;">≋</span> Knowledge Hub
-      </button>
-      <button onclick="openPublic('hist')" style="flex:1;background:none;border:1px solid var(--border-mid);color:var(--text-dim);font-family:'IBM Plex Mono',monospace;font-size:0.66rem;letter-spacing:0.14em;text-transform:uppercase;padding:0.65rem 1rem;cursor:pointer;transition:all 0.18s;text-align:center;display:flex;align-items:center;justify-content:center;gap:0.6rem;" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border-mid)';this.style.color='var(--text-dim)'">
-        <span style="font-family:'Cormorant Garamond',serif;color:var(--gold);opacity:0.6;font-size:1rem;">◎</span> Our History
-      </button>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.5rem;margin-top:1.2rem;">
+      <button onclick="openPublic('rates')"  style="background:none;border:1px solid var(--border-mid);color:var(--text-dim);font-family:'IBM Plex Mono',monospace;font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;padding:0.45rem 0.4rem;cursor:pointer;transition:all 0.18s;" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border-mid)';this.style.color='var(--text-dim)'">% Rates</button>
+      <button onclick="openPublic('calc')"   style="background:none;border:1px solid var(--border-mid);color:var(--text-dim);font-family:'IBM Plex Mono',monospace;font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;padding:0.45rem 0.4rem;cursor:pointer;transition:all 0.18s;" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border-mid)';this.style.color='var(--text-dim)'">◈ Calc</button>
+      <button onclick="openPublic('market')" style="background:none;border:1px solid var(--border-mid);color:var(--text-dim);font-family:'IBM Plex Mono',monospace;font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;padding:0.45rem 0.4rem;cursor:pointer;transition:all 0.18s;" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border-mid)';this.style.color='var(--text-dim)'">◷ Markets</button>
+      <button onclick="openPublic('know')"   style="background:none;border:1px solid var(--border-mid);color:var(--text-dim);font-family:'IBM Plex Mono',monospace;font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;padding:0.45rem 0.4rem;cursor:pointer;transition:all 0.18s;" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border-mid)';this.style.color='var(--text-dim)'">≋ Knowledge</button>
+      <button onclick="openPublic('hist')"   style="background:none;border:1px solid var(--border-mid);color:var(--text-dim);font-family:'IBM Plex Mono',monospace;font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;padding:0.45rem 0.4rem;cursor:pointer;transition:all 0.18s;" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border-mid)';this.style.color='var(--text-dim)'">◎ History</button>
     </div>
     <div class="left-footer">Private · Confidential · Est. 2015</div>
   </div>
@@ -1113,6 +1125,9 @@ body {
       <div style="margin-bottom:1.5rem;">
         <button onclick="showDirectPin()" id="loginEntryBtn" style="width:100%;background:linear-gradient(135deg,rgba(74,124,89,0.07) 0%,rgba(74,124,89,0.02) 100%);border:1.5px solid rgba(74,124,89,0.55);border-top:2.5px solid #4a7c59;color:#7ab592;font-family:'IBM Plex Mono',monospace;font-size:0.65rem;letter-spacing:0.18em;font-weight:700;text-transform:uppercase;padding:0.85rem 1rem;cursor:pointer;transition:all 0.22s;display:flex;align-items:center;justify-content:center;gap:0.6rem;box-shadow:inset 0 1px 0 rgba(74,124,89,0.18),0 1px 6px rgba(0,0,0,0.18);position:relative;overflow:hidden;" onmouseover="this.style.borderColor='#4a7c59';this.style.background='linear-gradient(135deg,rgba(74,124,89,0.13) 0%,rgba(74,124,89,0.05) 100%)';this.style.color='#a0cca8';this.style.boxShadow='inset 0 1px 0 rgba(74,124,89,0.3),0 2px 12px rgba(74,124,89,0.12)'" onmouseout="this.style.borderColor='rgba(74,124,89,0.55)';this.style.background='linear-gradient(135deg,rgba(74,124,89,0.07) 0%,rgba(74,124,89,0.02) 100%)';this.style.color='#7ab592';this.style.boxShadow='inset 0 1px 0 rgba(74,124,89,0.18),0 1px 6px rgba(0,0,0,0.18)'">
           <span style="color:#7ab592;font-size:0.9rem;text-shadow:0 0 8px rgba(74,124,89,0.5);">⬟</span> Member Login
+        </button>
+        <button onclick="openPublic('stocks')" style="width:100%;background:none;border:1px solid var(--border-mid);color:var(--text-dim);font-family:'IBM Plex Mono',monospace;font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;padding:0.75rem 1rem;cursor:pointer;transition:all 0.18s;display:flex;align-items:center;justify-content:center;gap:0.6rem;" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border-mid)';this.style.color='var(--text-dim)'">
+          <span style="font-family:'Cormorant Garamond',serif;color:var(--gold);opacity:0.7;font-size:1rem;">⌥</span> My Stocks
         </button>
       </div>
 
@@ -2187,16 +2202,16 @@ body {
         <!-- HERO DATA STRIP -->
         <div class="mkt-hero-strip" id="mkt-hero-strip">
           <div class="mkt-hero-card">
-            <div class="mkt-hero-instrument">Nifty 50 · NSE</div>
-            <div class="mkt-hero-value" id="mkt-nifty">—</div>
-            <div class="mkt-hero-chg na" id="mkt-nifty-chg">loading…</div>
-            <div class="mkt-hero-desc">India's benchmark index of 50 large-cap stocks</div>
-          </div>
-          <div class="mkt-hero-card">
-            <div class="mkt-hero-instrument">USD / INR · Spot</div>
+            <div class="mkt-hero-instrument">USD / INR</div>
+            <div class="mkt-hero-instrument-sub">US Dollar · Indian Rupee · Spot Rate</div>
             <div class="mkt-hero-value" id="mkt-usdinr">—</div>
             <div class="mkt-hero-chg na" id="mkt-usdinr-chg">loading…</div>
-            <div class="mkt-hero-desc">US Dollar to Indian Rupee exchange rate</div>
+          </div>
+          <div class="mkt-hero-card">
+            <div class="mkt-hero-instrument">S&amp;P 500</div>
+            <div class="mkt-hero-instrument-sub">US Benchmark · 500 Large-Cap Stocks</div>
+            <div class="mkt-hero-value" id="mkt-spx">—</div>
+            <div class="mkt-hero-chg na" id="mkt-spx-chg">loading…</div>
           </div>
         </div>
 
@@ -2217,22 +2232,36 @@ body {
             <span class="mkt-watchlist-header-label" style="text-align:right;min-width:90px;">Change</span>
             <span class="mkt-watchlist-header-label" style="text-align:right;min-width:80px;">Type</span>
           </div>
-          <!-- Live rows populated by JS -->
           <div class="mkt-watchlist-row" id="mkt-row-nifty">
             <div><div class="mkt-wl-name">Nifty 50</div><div class="mkt-wl-sym">INDEXNSE:NIFTY_50</div></div>
             <div class="mkt-wl-val" id="mkt-row-nifty-val">—</div>
             <div class="mkt-wl-chg na" id="mkt-row-nifty-chg">—</div>
             <div class="mkt-wl-label">Index</div>
           </div>
-          <div class="mkt-watchlist-row" id="mkt-row-usdinr">
-            <div><div class="mkt-wl-name">USD / INR</div><div class="mkt-wl-sym">CURRENCY:USDINR</div></div>
-            <div class="mkt-wl-val" id="mkt-row-usdinr-val">—</div>
-            <div class="mkt-wl-chg na" id="mkt-row-usdinr-chg">—</div>
-            <div class="mkt-wl-label">FX Pair</div>
+          <div class="mkt-watchlist-row" id="mkt-row-sensex">
+            <div><div class="mkt-wl-name">Sensex</div><div class="mkt-wl-sym">INDEXBOM:SENSEX</div></div>
+            <div class="mkt-wl-val" id="mkt-row-sensex-val">—</div>
+            <div class="mkt-wl-chg na" id="mkt-row-sensex-chg">—</div>
+            <div class="mkt-wl-label">Index</div>
           </div>
-          <!-- Future rows — placeholders -->
-          <div class="mkt-placeholder-row">+ Add more instruments via Google Finance in Apps Script</div>
-          <div class="mkt-placeholder-row">e.g. Gold, Crude, Bank Nifty, Sensex, EUR/INR…</div>
+          <div class="mkt-watchlist-row" id="mkt-row-banknifty">
+            <div><div class="mkt-wl-name">Bank Nifty</div><div class="mkt-wl-sym">INDEXNSE:NIFTY_BANK</div></div>
+            <div class="mkt-wl-val" id="mkt-row-banknifty-val">—</div>
+            <div class="mkt-wl-chg na" id="mkt-row-banknifty-chg">—</div>
+            <div class="mkt-wl-label">Index</div>
+          </div>
+          <div class="mkt-watchlist-row" id="mkt-row-finnifty">
+            <div><div class="mkt-wl-name">Fin Nifty</div><div class="mkt-wl-sym">INDEXNSE:NIFTY_FIN_SERVICE</div></div>
+            <div class="mkt-wl-val" id="mkt-row-finnifty-val">—</div>
+            <div class="mkt-wl-chg na" id="mkt-row-finnifty-chg">—</div>
+            <div class="mkt-wl-label">Index</div>
+          </div>
+          <div class="mkt-watchlist-row" id="mkt-row-midcap">
+            <div><div class="mkt-wl-name">Nifty Midcap 50</div><div class="mkt-wl-sym">INDEXNSE:NIFTY_MIDCAP_50</div></div>
+            <div class="mkt-wl-val" id="mkt-row-midcap-val">—</div>
+            <div class="mkt-wl-chg na" id="mkt-row-midcap-chg">—</div>
+            <div class="mkt-wl-label">Index</div>
+          </div>
         </div>
 
         <!-- COMMENTARY + CONTEXT PANELS -->
@@ -2278,41 +2307,41 @@ body {
         </div>
 
         <!-- STOCK SEARCH (public) -->
-        <div style="margin-bottom:2rem;">
-          <div style="font-size:0.5rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);opacity:0.7;margin-bottom:0.8rem;">◈ Live Stock Lookup</div>
-          <div style="display:flex;gap:0.6rem;margin-bottom:0.8rem;">
+        <div style="margin-bottom:2.5rem;">
+          <div style="font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);opacity:0.85;margin-bottom:1.2rem;">◈ Live Stock Lookup</div>
+          <div style="display:flex;gap:0.6rem;margin-bottom:1rem;">
             <input id="stkSearchInput" type="text" placeholder="Type NSE ticker e.g. INFY, HDFCBANK…"
-              style="flex:1;background:var(--bg2);border:1px solid var(--border);color:var(--text);font-family:'IBM Plex Mono',monospace;font-size:0.68rem;padding:0.65rem 0.8rem;outline:none;letter-spacing:0.04em;"
+              style="flex:1;background:var(--bg2);border:1px solid var(--border);color:var(--text);font-family:'IBM Plex Mono',monospace;font-size:0.85rem;padding:0.8rem 1rem;outline:none;letter-spacing:0.04em;"
               onkeydown="if(event.key==='Enter') searchStock()" />
-            <button onclick="searchStock()" style="background:var(--gold);color:var(--bg);border:none;font-family:'IBM Plex Mono',monospace;font-size:0.6rem;letter-spacing:0.16em;text-transform:uppercase;padding:0.65rem 1.1rem;cursor:pointer;">Search</button>
+            <button onclick="searchStock()" style="background:var(--gold);color:var(--bg);border:none;font-family:'IBM Plex Mono',monospace;font-size:0.7rem;letter-spacing:0.16em;text-transform:uppercase;padding:0.8rem 1.4rem;cursor:pointer;font-weight:600;">Search</button>
           </div>
           <div id="stkSearchResult" style="min-height:2rem;"></div>
         </div>
 
         <!-- DIVIDER -->
-        <div style="border-top:1px solid var(--border);margin-bottom:2rem;"></div>
+        <div style="border-top:1px solid var(--border);margin-bottom:2.5rem;"></div>
 
         <!-- MY HOLDINGS (PIN gated) -->
-        <div style="font-size:0.5rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);opacity:0.7;margin-bottom:0.8rem;">⌥ My Holdings</div>
+        <div style="font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);opacity:0.85;margin-bottom:1.2rem;">⌥ My Holdings</div>
 
         <!-- PIN entry state -->
         <div id="stkPinState">
-          <div style="font-size:0.68rem;color:var(--text-dim);margin-bottom:1rem;line-height:1.7;">Enter your member PIN to view your personal stock holdings.</div>
-          <div style="display:flex;gap:0.6rem;max-width:320px;">
-            <input id="stkPinInput" type="password" placeholder="Enter PIN" maxlength="6"
-              style="flex:1;background:var(--bg2);border:1px solid var(--border);color:var(--text);font-family:'IBM Plex Mono',monospace;font-size:0.9rem;padding:0.65rem 0.8rem;outline:none;text-align:center;letter-spacing:0.3em;"
+          <div style="font-size:0.85rem;color:var(--text-dim);margin-bottom:1.5rem;line-height:1.8;">Enter your member PIN to view your personal stock holdings and portfolio value.</div>
+          <div style="display:flex;gap:0.8rem;max-width:380px;">
+            <input id="stkPinInput" type="password" placeholder="· · · · · ·" maxlength="6"
+              style="flex:1;background:var(--bg2);border:1px solid var(--border);color:var(--text);font-family:'IBM Plex Mono',monospace;font-size:1.5rem;padding:0.9rem 1rem;outline:none;text-align:center;letter-spacing:0.4em;"
               onkeydown="if(event.key==='Enter') unlockHoldings()" />
-            <button onclick="unlockHoldings()" style="background:var(--gold);color:var(--bg);border:none;font-family:'IBM Plex Mono',monospace;font-size:0.6rem;letter-spacing:0.16em;text-transform:uppercase;padding:0.65rem 1rem;cursor:pointer;">View</button>
+            <button onclick="unlockHoldings()" style="background:var(--gold);color:var(--bg);border:none;font-family:'IBM Plex Mono',monospace;font-size:0.72rem;letter-spacing:0.16em;text-transform:uppercase;padding:0.9rem 1.4rem;cursor:pointer;font-weight:600;">View</button>
           </div>
-          <div id="stkPinErr" style="font-size:0.58rem;color:#c97a7a;margin-top:0.5rem;min-height:1rem;"></div>
+          <div id="stkPinErr" style="font-size:0.72rem;color:#c97a7a;margin-top:0.7rem;min-height:1.4rem;"></div>
         </div>
 
         <!-- Holdings display state (hidden until PIN unlocked) -->
         <div id="stkHoldingsState" style="display:none;">
-          <div id="stkHoldingsHeader" style="margin-bottom:1rem;"></div>
+          <div id="stkHoldingsHeader" style="margin-bottom:1.2rem;"></div>
           <div id="stkHoldingsBody"></div>
-          <div style="margin-top:1rem;">
-            <button onclick="lockHoldings()" style="background:none;border:1px solid var(--border);color:var(--text-muted);font-family:'IBM Plex Mono',monospace;font-size:0.54rem;letter-spacing:0.14em;text-transform:uppercase;padding:0.4rem 0.8rem;cursor:pointer;">⊠ Lock / Sign Out</button>
+          <div style="margin-top:1.5rem;">
+            <button onclick="lockHoldings()" style="background:none;border:1px solid var(--border);color:var(--text-muted);font-family:'IBM Plex Mono',monospace;font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;padding:0.65rem 1.2rem;cursor:pointer;">⊠ Lock / Sign Out</button>
           </div>
         </div>
 
@@ -3335,7 +3364,7 @@ function renderDetails(m) {
     // Helper: render stock rows from a stocks array (price optional)
     function renderStkRows(stocks, asOf) {
       let totalValue = 0, valuedCount = 0;
-      const colHead = '<div style="display:grid;grid-template-columns:1fr auto auto auto;gap:0.5rem;padding:0.35rem 0.8rem;border-bottom:1px solid var(--border);background:rgba(0,0,0,0.1);">'
+      const colHead = '<div style="display:grid;grid-template-columns:1fr 44px 78px 88px;gap:0.5rem;padding:0.35rem 0.8rem;border-bottom:1px solid var(--border);background:rgba(0,0,0,0.1);">'
         + '<div style="font-size:0.46rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);">Security</div>'
         + '<div style="font-size:0.46rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);text-align:right;min-width:40px;">Qty</div>'
         + '<div style="font-size:0.46rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);text-align:right;min-width:70px;">Price</div>'
@@ -3350,12 +3379,15 @@ function renderDetails(m) {
         const tickerStr = s.ticker || '<span style="color:var(--text-muted);font-size:0.48rem;">BSE only</span>';
         const dimName   = s.qty === 0 ? 'var(--text-muted)' : 'var(--text)';
         const dimQty    = s.qty === 0 ? 'var(--text-muted)' : 'var(--text-dim)';
+        const staleTag  = s.stale ? '<span style="font-size:0.38rem;color:#c9a84c;opacity:0.6;margin-left:0.3rem;letter-spacing:0.1em;vertical-align:middle;">\u00b7S</span>' : '';
+        const priceColor = s.stale ? '#c9a84c' : 'var(--text-dim)';
+        const valueColor = s.stale ? '#c9a84c' : (value ? 'var(--gold)' : 'var(--text-muted)');
         return '<div style="display:grid;grid-template-columns:1fr auto auto auto;gap:0.5rem;align-items:center;padding:0.45rem 0.8rem;border-bottom:1px solid var(--border);">'
-          + '<div><div style="font-size:0.62rem;color:' + dimName + ';">' + s.name + '</div>'
+          + '<div><div style="font-size:0.62rem;color:' + dimName + ';">' + s.name + staleTag + '</div>'
           + '<div style="font-size:0.48rem;color:var(--text-muted);letter-spacing:0.08em;margin-top:0.1rem;">' + tickerStr + '</div></div>'
           + '<div style="font-size:0.6rem;color:' + dimQty + ';text-align:right;min-width:40px;">' + s.qty + '<span style="font-size:0.45rem;color:var(--text-muted);margin-left:0.2rem;">sh</span></div>'
-          + '<div style="font-size:0.6rem;color:var(--text-dim);text-align:right;min-width:70px;font-family:\'IBM Plex Mono\',monospace;">' + priceStr + '</div>'
-          + '<div style="font-size:0.62rem;color:' + (value?'var(--gold)':'var(--text-muted)') + ';text-align:right;min-width:80px;font-family:\'IBM Plex Mono\',monospace;">' + valueStr + '</div>'
+          + '<div style="font-size:0.6rem;color:' + priceColor + ';text-align:right;min-width:70px;font-family:\'IBM Plex Mono\',monospace;">' + priceStr + '</div>'
+          + '<div style="font-size:0.62rem;color:' + valueColor + ';text-align:right;min-width:80px;font-family:\'IBM Plex Mono\',monospace;font-weight:600;">' + valueStr + '</div>'
           + '</div>';
       }).join('');
       const pricedLabel = valuedCount > 0 ? '(' + valuedCount + '/' + stocks.length + ' priced)' : '(prices loading\u2026)';
@@ -5772,8 +5804,24 @@ function unlockHoldings() {
 
   // Header
   const nick = nicknames[m.pin] || m.name;
-  document.getElementById('stkHoldingsHeader').innerHTML =
-    '<div style="font-size:0.62rem;color:var(--text-dim);margin-bottom:0.3rem;">Welcome, <strong style="color:var(--gold);">' + nick + '</strong></div>';
+  // Count holdings for summary line
+  sheetCall('getStockHoldings', {}).then(function(_d) {
+    const _h = _d && _d.ok && _d.holdings && _d.holdings[String(_stkMember.id)];
+    const _cnt = _h ? _h.length : 0;
+    const _val = _h ? _h.reduce(function(a,s){ return a + (s.value||0); }, 0) : 0;
+    document.getElementById('stkHoldingsHeader').innerHTML =
+      '<div style="padding:1.2rem 0 1rem 0;border-bottom:1px solid var(--border);margin-bottom:1.2rem;">'
+      + '<div style="font-size:0.5rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);opacity:0.7;margin-bottom:0.5rem;">Your Holdings</div>'
+      + '<div style="font-family:\'Cormorant Garamond\',serif;font-size:1.6rem;font-weight:300;color:var(--text);margin-bottom:0.3rem;">Welcome, <em style="color:var(--gold);">' + nick + '</em></div>'
+      + (_cnt > 0 ? '<div style="font-size:0.62rem;color:var(--text-dim);">You hold <strong style="color:var(--text);">' + _cnt + ' securities</strong>' + (_val > 0 ? ' &nbsp;&middot;&nbsp; Portfolio value <strong style="color:var(--gold);">\u20b9' + _val.toLocaleString('en-IN') + '</strong>' : '') + '</div>' : '')
+      + '</div>';
+  }).catch(function() {
+    document.getElementById('stkHoldingsHeader').innerHTML =
+      '<div style="padding:1.2rem 0 1rem 0;border-bottom:1px solid var(--border);margin-bottom:1.2rem;">'
+      + '<div style="font-size:0.5rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);opacity:0.7;margin-bottom:0.5rem;">Your Holdings</div>'
+      + '<div style="font-family:\'Cormorant Garamond\',serif;font-size:1.6rem;font-weight:300;color:var(--text);">Welcome, <em style="color:var(--gold);">' + nick + '</em></div>'
+      + '</div>';
+  });
 
   // Load holdings
   const bodyEl = document.getElementById('stkHoldingsBody');
@@ -5794,43 +5842,150 @@ function stkNoHoldings() {
     + '</div>';
 }
 
+// ─── HOLDINGS TABLE STATE ────────────────────────────────────────
+let _holdingsData = [];
+let _holdingsAsOf = '';
+let _holdingsSort = { col: 'name', dir: 1 };
+let _holdingsFilter = { priced: false, active: false };
+
 function renderHoldingsTable(holdings, asOf, container) {
+  _holdingsData = holdings;
+  _holdingsAsOf = asOf || '';
+  _holdingsSort = { col: 'name', dir: 1 };
+  _holdingsFilter = { priced: false, active: false };
+  _drawHoldingsTable(container);
+}
+
+function _drawHoldingsTable(container) {
+  const cont = container || document.getElementById('stkHoldingsBody');
+  if (!cont) return;
+
+  // Apply filters
+  let data = _holdingsData.slice();
+  if (_holdingsFilter.priced) data = data.filter(function(s) { return s.price !== null; });
+  if (_holdingsFilter.active) data = data.filter(function(s) { return s.qty > 0; });
+
+  // Apply sort
+  const col = _holdingsSort.col, dir = _holdingsSort.dir;
+  data.sort(function(a, b) {
+    let va, vb;
+    if (col === 'name')  { va = a.name.toLowerCase(); vb = b.name.toLowerCase(); return dir * va.localeCompare(vb); }
+    if (col === 'qty')   { return dir * ((a.qty||0) - (b.qty||0)); }
+    if (col === 'price') { return dir * ((a.price||0) - (b.price||0)); }
+    if (col === 'value') {
+      const av = (a.price && a.qty) ? a.price * a.qty : 0;
+      const bv = (b.price && b.qty) ? b.price * b.qty : 0;
+      return dir * (av - bv);
+    }
+    return 0;
+  });
+
+  // Totals
   let totalValue = 0, valuedCount = 0;
-  const colHead = '<div style="display:grid;grid-template-columns:1fr auto auto auto auto;gap:0.5rem;padding:0.35rem 0.8rem;background:rgba(0,0,0,0.15);border-bottom:1px solid var(--border);">'
-    + '<div style="font-size:0.44rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);">Security</div>'
-    + '<div style="font-size:0.44rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);text-align:right;">Qty</div>'
-    + '<div style="font-size:0.44rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);text-align:right;">Price</div>'
-    + '<div style="font-size:0.44rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);text-align:right;">Value</div>'
-    + '<div style="font-size:0.44rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);text-align:center;">Sell</div>'
+  data.forEach(function(s) {
+    const v = (s.price && s.qty > 0) ? Math.round(s.price * s.qty) : null;
+    if (v) { totalValue += v; valuedCount++; }
+  });
+
+  // Sort indicator helper
+  function sortArrow(c) {
+    if (_holdingsSort.col !== c) return '<span style="opacity:0.25;margin-left:0.2rem;">⇅</span>';
+    return _holdingsSort.dir === 1 ? '<span style="margin-left:0.2rem;color:var(--gold);">↑</span>' : '<span style="margin-left:0.2rem;color:var(--gold);">↓</span>';
+  }
+  function sortStyle(c) {
+    return 'cursor:pointer;user-select:none;' + (_holdingsSort.col === c ? 'color:var(--gold);' : '');
+  }
+
+  // Toolbar
+  const toolbar = '<div style="display:flex;align-items:center;gap:0.6rem;padding:0.65rem 1rem;border-bottom:1px solid var(--border);flex-wrap:wrap;">'
+    + '<div style="font-size:0.5rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-muted);margin-right:0.4rem;">Filter:</div>'
+    + '<button onclick="_toggleHoldingsFilter(\'priced\')" style="font-size:0.52rem;padding:0.25rem 0.7rem;background:' + (_holdingsFilter.priced ? 'var(--gold)' : 'transparent') + ';color:' + (_holdingsFilter.priced ? 'var(--bg)' : 'var(--text-muted)') + ';border:1px solid ' + (_holdingsFilter.priced ? 'var(--gold)' : 'var(--border)') + ';cursor:pointer;letter-spacing:0.08em;text-transform:uppercase;font-family:\'IBM Plex Mono\',monospace;">Priced only</button>'
+    + '<button onclick="_toggleHoldingsFilter(\'active\')" style="font-size:0.52rem;padding:0.25rem 0.7rem;background:' + (_holdingsFilter.active ? 'var(--gold)' : 'transparent') + ';color:' + (_holdingsFilter.active ? 'var(--bg)' : 'var(--text-muted)') + ';border:1px solid ' + (_holdingsFilter.active ? 'var(--gold)' : 'var(--border)') + ';cursor:pointer;letter-spacing:0.08em;text-transform:uppercase;font-family:\'IBM Plex Mono\',monospace;">Active (qty>0)</button>'
+    + '<div style="flex:1;"></div>'
+    + '<button onclick="_exportHoldingsCSV()" style="font-size:0.52rem;padding:0.25rem 0.7rem;background:transparent;color:var(--text-muted);border:1px solid var(--border);cursor:pointer;letter-spacing:0.08em;text-transform:uppercase;font-family:\'IBM Plex Mono\',monospace;">⬇ Export CSV</button>'
+    + '<div style="font-size:0.5rem;color:var(--text-muted);opacity:0.6;">' + data.length + ' of ' + _holdingsData.length + '</div>'
     + '</div>';
 
-  const rows = holdings.map(function(s, idx) {
+  // Column header with sort
+  const GRID = '1fr 54px 100px 106px 54px';
+  const colHead = '<div style="display:grid;grid-template-columns:' + GRID + ';gap:0.5rem;padding:0.5rem 1rem;background:rgba(0,0,0,0.15);border-bottom:1px solid var(--border);">'
+    + '<div onclick="_sortHoldings(\'name\')" style="font-size:0.52rem;letter-spacing:0.14em;text-transform:uppercase;' + sortStyle('name') + '">' + 'Security' + sortArrow('name') + '</div>'
+    + '<div onclick="_sortHoldings(\'qty\')"  style="font-size:0.52rem;letter-spacing:0.14em;text-transform:uppercase;text-align:right;' + sortStyle('qty')  + '">Qty'   + sortArrow('qty')   + '</div>'
+    + '<div onclick="_sortHoldings(\'price\')" style="font-size:0.52rem;letter-spacing:0.14em;text-transform:uppercase;text-align:right;' + sortStyle('price') + '">Price' + sortArrow('price') + '</div>'
+    + '<div onclick="_sortHoldings(\'value\')" style="font-size:0.52rem;letter-spacing:0.14em;text-transform:uppercase;text-align:right;' + sortStyle('value') + '">Value' + sortArrow('value') + '</div>'
+    + '<div style="font-size:0.52rem;letter-spacing:0.14em;text-transform:uppercase;text-align:center;color:var(--text-muted);">Sell</div>'
+    + '</div>';
+
+  // Rows
+  const rows = data.map(function(s) {
     const price = s.price || null;
     const value = (price && s.qty > 0) ? Math.round(price * s.qty) : null;
-    if (value) { totalValue += value; valuedCount++; }
-    const priceStr = price ? '₹' + price.toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2}) : '—';
-    const valueStr = value ? '₹' + value.toLocaleString('en-IN') : '—';
+    const priceStr = price ? '\u20b9' + price.toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2}) : '\u2014';
+    const valueStr = value ? '\u20b9' + value.toLocaleString('en-IN') : '\u2014';
     const dimName  = s.qty === 0 ? 'var(--text-muted)' : 'var(--text)';
+    const staleTag = s.stale ? '<span style="font-size:0.38rem;color:#c9a84c;opacity:0.55;margin-left:0.3rem;vertical-align:middle;">\u00b7S</span>' : '';
+    const priceCol = s.stale ? '#c9a84c' : 'var(--text-dim)';
+    const valueCol = s.stale ? '#c9a84c' : (value ? 'var(--gold)' : 'var(--text-muted)');
     const sellBtn  = s.qty > 0
       ? '<button class="stk-sell-btn" onclick="showSellDialog(\'' + (s.ticker||'') + '\',\'' + s.name.replace(/'/g,"\\'") + '\',' + s.qty + ')">Sell</button>'
-      : '<span style="font-size:0.44rem;color:var(--text-muted);">nil</span>';
-    return '<div style="display:grid;grid-template-columns:1fr auto auto auto auto;gap:0.5rem;align-items:center;padding:0.45rem 0.8rem;border-bottom:1px solid var(--border);">'
-      + '<div><div style="font-size:0.6rem;color:' + dimName + ';">' + s.name + '</div>'
-      + '<div style="font-size:0.46rem;color:var(--text-muted);margin-top:0.1rem;letter-spacing:0.08em;">' + (s.ticker || 'BSE only') + '</div></div>'
-      + '<div style="font-size:0.58rem;color:var(--text-dim);text-align:right;min-width:36px;">' + s.qty + '</div>'
-      + '<div style="font-size:0.58rem;color:var(--text-dim);text-align:right;min-width:70px;font-family:\'IBM Plex Mono\',monospace;">' + priceStr + '</div>'
-      + '<div style="font-size:0.6rem;color:' + (value?'var(--gold)':'var(--text-muted)') + ';text-align:right;min-width:75px;font-family:\'IBM Plex Mono\',monospace;">' + valueStr + '</div>'
+      : '<span style="font-size:0.44rem;color:var(--text-muted);">\u2014</span>';
+    return '<div style="display:grid;grid-template-columns:' + GRID + ';gap:0.5rem;align-items:center;padding:0.55rem 1rem;border-bottom:1px solid var(--border);">'
+      + '<div><div style="font-size:0.74rem;color:' + dimName + ';">' + s.name + staleTag + '</div>'
+      + '<div style="font-size:0.56rem;color:var(--text-muted);margin-top:0.1rem;letter-spacing:0.08em;">' + (s.ticker || 'BSE only') + '</div></div>'
+      + '<div style="font-size:0.72rem;color:var(--text-dim);text-align:right;">' + s.qty + '</div>'
+      + '<div style="font-size:0.72rem;color:' + priceCol + ';text-align:right;font-family:\'IBM Plex Mono\',monospace;">' + priceStr + '</div>'
+      + '<div style="font-size:0.74rem;color:' + valueCol + ';text-align:right;font-family:\'IBM Plex Mono\',monospace;font-weight:600;">' + valueStr + '</div>'
       + '<div style="text-align:center;">' + sellBtn + '</div>'
       + '</div>';
   }).join('');
 
-  const footer = '<div style="display:flex;justify-content:space-between;align-items:center;padding:0.7rem 0.8rem;background:rgba(201,168,76,0.05);border-top:1px solid rgba(201,168,76,0.2);">'
-    + '<div style="font-size:0.48rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);">Portfolio Value <span style="opacity:0.6;">(' + valuedCount + '/' + holdings.length + ' priced)</span></div>'
-    + '<div style="font-size:0.82rem;color:var(--gold);font-family:\'IBM Plex Mono\',monospace;font-weight:600;">' + (totalValue > 0 ? '₹' + totalValue.toLocaleString('en-IN') : '—') + '</div>'
+  // Footer
+  const footer = '<div style="display:flex;justify-content:space-between;align-items:center;padding:0.8rem 1rem;background:rgba(201,168,76,0.05);border-top:1px solid rgba(201,168,76,0.2);">'
+    + '<div style="font-size:0.5rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-muted);">Portfolio Value <span style="opacity:0.6;">(' + valuedCount + '/' + _holdingsData.length + ' priced)</span></div>'
+    + '<div style="font-size:0.9rem;color:var(--gold);font-family:\'IBM Plex Mono\',monospace;font-weight:600;">' + (totalValue > 0 ? '\u20b9' + totalValue.toLocaleString('en-IN') : '\u2014') + '</div>'
     + '</div>'
-    + (asOf ? '<div style="padding:0.3rem 0.8rem;font-size:0.44rem;color:var(--text-muted);opacity:0.5;text-align:right;">EOD prices via Google Finance · ' + asOf + '</div>' : '');
+    + (_holdingsAsOf ? '<div style="padding:0.35rem 1rem;font-size:0.5rem;color:var(--text-muted);opacity:0.45;text-align:right;">EOD prices via Google Finance \u00b7 ' + _holdingsAsOf + '</div>' : '');
 
-  container.innerHTML = '<div style="border:1px solid var(--border);background:var(--bg2);">' + colHead + rows + footer + '</div>';
+  cont.innerHTML = '<div style="border:1px solid var(--border);background:var(--bg2);">' + toolbar + colHead + rows + footer + '</div>';
+}
+
+function _sortHoldings(col) {
+  if (_holdingsSort.col === col) {
+    _holdingsSort.dir *= -1;
+  } else {
+    _holdingsSort.col = col;
+    _holdingsSort.dir = col === 'value' || col === 'qty' ? -1 : 1; // numeric default desc, name asc
+  }
+  _drawHoldingsTable();
+}
+
+function _toggleHoldingsFilter(key) {
+  _holdingsFilter[key] = !_holdingsFilter[key];
+  _drawHoldingsTable();
+}
+
+function _exportHoldingsCSV() {
+  const headers = ['Name','Ticker','Qty','Price (INR)','Value (INR)','Stale'];
+  const rows = _holdingsData.map(function(s) {
+    const price = s.price || '';
+    const value = (s.price && s.qty > 0) ? Math.round(s.price * s.qty) : '';
+    return [
+      '"' + s.name.replace(/"/g,'""') + '"',
+      s.ticker || '',
+      s.qty,
+      price,
+      value,
+      s.stale ? 'Yes' : 'No'
+    ].join(',');
+  });
+  const csv = [headers.join(','), ...rows].join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url;
+  a.download = 'holdings_' + new Date().toISOString().slice(0,10) + '.csv';
+  a.click();
+  URL.revokeObjectURL(url);
 }
 
 // ─── SELL REQUEST DIALOG ──────────────────
@@ -6270,7 +6425,7 @@ const historicalLoans = [
 //           status: 'pending'|'locked'|'repaid', pledgedAt, lockedAt }
 let capitalCalls = [];
 let ccIdSeq = 1;
-const CC_API = 'https://script.google.com/macros/s/AKfycbzdnUTTW8RywjPIXReeiwhDzVzfgYfh9UYtbeHfJO_2tY-et0xWlaeqOK_lhGwhJrTFfQ/exec';
+const CC_API = 'https://script.google.com/macros/s/AKfycbxxTwgMXmLXSp1-U5t6sN4WGRYxrwpEY54WSib3ee2JnF0S9DqNkSZisD1rrVe_GMSwMg/exec';
 
 // ── Market Ticker ──────────────────────────────────
 let _mktInterval = null;
@@ -6352,6 +6507,53 @@ function loadMarketData() {
       // market page — table row
       const mru = document.getElementById('mkt-row-usdinr-val'); if (mru) mru.textContent = usdinrFmt;
       fmtChg('mkt-row-usdinr-chg', chgRaw, 'mkt-wl-chg');
+    }
+    // Sensex
+    if (data && data.sensex !== null && data.sensex !== undefined) {
+      const val = safeNum(data.sensex);
+      const sensexFmt = val !== null ? val.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2}) : '—';
+      const ts = document.getElementById('tk-sensex'); if (ts) ts.textContent = sensexFmt;
+      fmtChgSimple('tk-sensex-chg', data.sensexChg);
+      const ls = document.getElementById('lm-sensex'); if (ls) ls.textContent = sensexFmt;
+      fmtChgSimple('lm-sensex-chg', data.sensexChg);
+      const ms = document.getElementById('mkt-sensex'); if (ms) ms.textContent = sensexFmt;
+      fmtChg('mkt-sensex-chg', data.sensexChg, 'mkt-hero-chg');
+      const mrs = document.getElementById('mkt-row-sensex-val'); if (mrs) mrs.textContent = sensexFmt;
+      fmtChg('mkt-row-sensex-chg', data.sensexChg, 'mkt-wl-chg');
+    }
+    // S&P 500
+    if (data && data.spx !== null && data.spx !== undefined) {
+      const val = safeNum(data.spx);
+      const spxFmt = val !== null ? val.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2}) : '—';
+      const tsp = document.getElementById('tk-spx'); if (tsp) tsp.textContent = spxFmt;
+      fmtChgSimple('tk-spx-chg', data.spxChg);
+      const lsp = document.getElementById('lm-spx'); if (lsp) lsp.textContent = spxFmt;
+      fmtChgSimple('lm-spx-chg', data.spxChg);
+      const msp = document.getElementById('mkt-spx'); if (msp) msp.textContent = spxFmt;
+      fmtChg('mkt-spx-chg', data.spxChg, 'mkt-hero-chg');
+      const mrsp = document.getElementById('mkt-row-spx-val'); if (mrsp) mrsp.textContent = spxFmt;
+      fmtChg('mkt-row-spx-chg', data.spxChg, 'mkt-wl-chg');
+    }
+    // Bank Nifty
+    if (data && data.banknifty !== null && data.banknifty !== undefined) {
+      const fmt = safeNum(data.banknifty);
+      const s = fmt !== null ? fmt.toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2}) : '—';
+      const el = document.getElementById('mkt-row-banknifty-val'); if (el) el.textContent = s;
+      fmtChg('mkt-row-banknifty-chg', data.bankniftyChg, 'mkt-wl-chg');
+    }
+    // Fin Nifty
+    if (data && data.finnifty !== null && data.finnifty !== undefined) {
+      const fmt = safeNum(data.finnifty);
+      const s = fmt !== null ? fmt.toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2}) : '—';
+      const el = document.getElementById('mkt-row-finnifty-val'); if (el) el.textContent = s;
+      fmtChg('mkt-row-finnifty-chg', data.finniftyChg, 'mkt-wl-chg');
+    }
+    // Midcap 50
+    if (data && data.midcap !== null && data.midcap !== undefined) {
+      const fmt = safeNum(data.midcap);
+      const s = fmt !== null ? fmt.toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2}) : '—';
+      const el = document.getElementById('mkt-row-midcap-val'); if (el) el.textContent = s;
+      fmtChg('mkt-row-midcap-chg', data.midcapChg, 'mkt-wl-chg');
     }
     const asOfStr = (data && data.asOf) ? data.asOf : new Date().toLocaleString('en-IN',{timeZone:'Asia/Kolkata'});
     const td = document.getElementById('tk-date'); if (td) td.textContent = 'as of ' + asOfStr;
