@@ -2397,7 +2397,98 @@ body {
           <div style="margin-bottom:2rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border);">
             <div style="font-family:'IBM Plex Mono',monospace;font-size:0.5rem;letter-spacing:0.26em;text-transform:uppercase;color:var(--gold);opacity:0.65;margin-bottom:0.8rem;">&#9672; Ask Jacey</div>
             <div style="font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:300;color:var(--text);line-height:1.15;margin-bottom:0.8rem;">The questions people <em style="color:var(--gold);font-style:italic;">actually</em> ask.</div>
-            <div style="font-size:0.7rem;color:var(--text-muted);line-height:1.7;">Plain answers to money questions. No jargon, no agenda.</div>
+            <div style="font-size:0.82rem;color:var(--text-dim);line-height:1.8;margin-bottom:1rem;">Plain answers to money questions. No jargon, no agenda.</div>
+            <div style="border:1px solid rgba(255,255,255,0.07);padding:0.9rem 1.1rem;background:rgba(255,255,255,0.02);">
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:0.44rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.6rem;">Note on this section</div>
+              <div style="font-size:0.7rem;color:var(--text-dim);line-height:1.85;margin-bottom:0.7rem;">This section is scoped specifically to <strong style="color:var(--text);">JaceyTrayd</strong> &mdash; the private credit arrangement. It exists to answer member questions without overwhelming the core function of the portal. For broader personal finance questions, visit <strong style="color:var(--text);">Ask Jacey</strong> directly.</div>
+              <div style="border-top:1px solid rgba(255,255,255,0.06);padding-top:0.7rem;">
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:0.42rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.5rem;">John Christopher operates under three brands</div>
+                <div style="display:flex;flex-direction:column;gap:0.3rem;">
+                  <div style="font-size:0.68rem;color:var(--text-dim);"><span style="color:var(--gold);font-family:'Cormorant Garamond',serif;font-size:0.82rem;">JaceyTrayd</span> &nbsp;&mdash;&nbsp; Private credit &middot; No fees</div>
+                  <div style="font-size:0.68rem;color:var(--text-dim);"><span style="color:var(--text);font-family:'Cormorant Garamond',serif;font-size:0.82rem;">JaceyLang</span> &nbsp;&mdash;&nbsp; English &middot; Reports &middot; Poetry &middot; Fees apply</div>
+                  <div style="font-size:0.68rem;color:var(--text-dim);"><span style="color:var(--text);font-family:'Cormorant Garamond',serif;font-size:0.82rem;">Ask Jacey</span> &nbsp;&mdash;&nbsp; Personal finance Q&amp;A &middot; IB training &middot; No fees &middot; <a href="mailto:askjaceynow@gmail.com" style="color:var(--text-muted);text-decoration:none;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">askjaceynow@gmail.com</a></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- QUESTION DROPDOWN -->
+          <div style="margin-bottom:1.5rem;padding-bottom:1.2rem;border-bottom:1px solid var(--border);">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:0.44rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.5rem;">Jump to a question</div>
+            <select id="askQuestionDropdown" onchange="askJumpToQuestion(this.value)" onclick="event.stopPropagation()" 
+              style="width:100%;background:var(--bg3);border:1px solid var(--border-mid);color:var(--text);font-family:'IBM Plex Mono',monospace;font-size:0.62rem;padding:0.5rem 0.7rem;cursor:pointer;"
+              onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border-mid)'">
+              <option value="">Jump to a question...</option>
+              <optgroup label="Trust & Safety">
+                <option value="post-T01">Why lower rate for more money?</option>
+                <option value="post-T02">Why ask for more capital?</option>
+                <option value="post-T03">What if trader loses everything?</option>
+                <option value="post-T04">Is private lending legal?</option>
+                <option value="post-T05">Interest ploughed back without asking</option>
+                <option value="post-T06">Introduced capital — how it works</option>
+                <option value="post-T07">Bad run — do I lose money?</option>
+                <option value="post-T08">Safe without a contract?</option>
+                <option value="post-T09">Compulsory ploughback — red flag?</option>
+                <option value="post-T10">Multiple accounts — who can?</option>
+                <option value="post-T11">Why bridge stays bridge</option>
+              </optgroup>
+              <optgroup label="Jargon">
+                <option value="post-J01">Four types of creditors</option>
+                <option value="post-J02">What is ploughback?</option>
+                <option value="post-J03">Zero-Coupon vs Senior Creditor</option>
+                <option value="post-J04">What is leverage?</option>
+                <option value="post-J05">What is bridge capital?</option>
+                <option value="post-J06">What is Sharpe Ratio?</option>
+                <option value="post-J07">Excess return & risk premium</option>
+                <option value="post-J08">Credit risk & default risk</option>
+                <option value="post-J09">Liquidity risk</option>
+                <option value="post-J10">Loan tenor</option>
+                <option value="post-J11">Promissory note / IOU</option>
+                <option value="post-J12">Private lending alpha</option>
+                <option value="post-J13">What is a slab?</option>
+                <option value="post-J14">Trader vs fund manager</option>
+                <option value="post-J15">Why not a SEBI fund?</option>
+                <option value="post-J16">What is a capital call?</option>
+              </optgroup>
+              <optgroup label="Edge & Probability">
+                <option value="post-E01">Is this a lottery?</option>
+                <option value="post-E02">Casino math & trading</option>
+                <option value="post-E03">What is expected value?</option>
+                <option value="post-E04">Why traders borrow money</option>
+                <option value="post-E05">What is a losing streak?</option>
+              </optgroup>
+              <optgroup label="Basics">
+                <option value="post-B01">Saving vs investing</option>
+                <option value="post-B02">Is 2% per month good?</option>
+                <option value="post-B03">What is Nifty 50?</option>
+                <option value="post-B04">Why markets go up on bad news</option>
+                <option value="post-B05">Loan vs investment</option>
+                <option value="post-B06">What is corpus?</option>
+                <option value="post-B07">Minimum to participate</option>
+                <option value="post-B08">Dashboard numbers explained</option>
+              </optgroup>
+              <optgroup label="The Human Side">
+                <option value="post-H01">Said yes without understanding</option>
+                <option value="post-H02">Is it okay to check in?</option>
+                <option value="post-H03">Family thinks it is dodgy</option>
+                <option value="post-H04">Need money back urgently</option>
+                <option value="post-H05">2 years in, still confused</option>
+                <option value="post-H06">Interest came late</option>
+                <option value="post-H07">Can I add more money?</option>
+                <option value="post-H08">What happens at the end?</option>
+                <option value="post-H09">I recommended someone</option>
+                <option value="post-H10">Is Jacey only into trading?</option>
+                <option value="post-H11">Guilt of passive income</option>
+                <option value="post-H12">Long-term trust with money</option>
+                <option value="post-H13">What if Jacey stops trading?</option>
+                <option value="post-H14">Bad run — do I lose money?</option>
+              </optgroup>
+              <optgroup label="Grey Aliens">
+                <option value="post-G01">Managing stock portfolio — ever?</option>
+                <option value="post-G02">Telegram scam — is it real?</option>
+                <option value="post-G03">Will there be a payment gateway?</option>
+              </optgroup>
+            </select>
           </div>
           <div class="posts" id="askPostList">
 
@@ -3150,8 +3241,8 @@ body {
         <p>But here is what most people do not know: you do not need Rs 33,000 in hand on day one. The smallest amount JaceyTrayd can accept is <strong>Rs 2,750 per month</strong> &mdash; a systematic investment, month after month, until your corpus reaches Rs 33,000. Once you are there, the SIP stops and the arrangement runs on the accumulated corpus.</p>
         <blockquote>"Rs 2,750 a month is not a small commitment. It is a patient one. And patience is exactly the quality that makes a good long-term creditor."</blockquote>
         <p>This means participation is not reserved for people who already have a lump sum sitting idle. It is open to anyone who can set aside a modest amount consistently &mdash; and who understands that the reward for that consistency is a corpus that earns meaningfully once it crosses the threshold.</p>
-        <p>On the other end: the maximum corpus in a single arrangement is <strong>Rs 21 lakhs</strong>. But nobody arrives there on day one either. That level is built over years, through consistent participation and a deepening relationship. The cap exists not as a ceiling on ambition &mdash; but as a deliberate protection against any single creditor holding disproportionate weight in the capital pool.</p>
-        <div class="highlight">To summarise: minimum corpus Rs 33,000. Minimum monthly SIP to build toward it: Rs 2,750. Maximum single arrangement: Rs 21 lakhs, built over time. Everything in between is a function of trust, time, and how the relationship grows.</div>
+        <p>On the other end: the maximum <strong>base corpus</strong> in a single arrangement is <strong>Rs 21 lakhs</strong>. Base corpus means bank-verified cash transfers only &mdash; not interest that has been capitalised and ploughed back over time. A long-standing member may have a total corpus above 21L if returns have compounded over years, but fresh capital inflows cannot take the base beyond this cap. Nobody reaches it on day one. It is built gradually, through consistent participation and a deepening relationship. The cap exists as a deliberate protection against any single creditor holding disproportionate weight in the capital pool &mdash; protecting the arrangement for everyone, including themselves.</p>
+        <div class="highlight">To summarise: minimum corpus Rs 33,000. Minimum monthly SIP to build toward it: Rs 2,750. Maximum base corpus per arrangement: Rs 21 lakhs, built over time through bank-verified transfers. Everything in between is a function of trust, time, and how the relationship grows.</div>
         <button class="post-collapse" onclick="event.stopPropagation();askCollapsePost(this)">&uarr; Collapse</button>
       </div>
     </article>
@@ -3248,6 +3339,155 @@ body {
         <p>But there is a deeper reason. A payment gateway implies a transactional relationship &mdash; click, fill, pay, done. JaceyTrayd is not that. Every corpus placement happens through a direct bank transfer between known individuals, with a conversation before and a confirmation after. The friction is intentional. It slows things down enough that nobody sends money impulsively, without fully understanding what they are doing and where it is going.</p>
         <p>A gateway would also introduce a third party &mdash; Razorpay, PayU, Stripe &mdash; into a private arrangement between known people. That processor now has visibility into the transaction. For a private credit arrangement, that is unnecessary exposure for everyone involved.</p>
         <p>The portal exists to give members visibility into their arrangement &mdash; balances, statements, market data, information. It is not a payment interface. It never will be. If you need to place capital or make a transfer, that conversation happens directly &mdash; the way it always has.</p>
+        <button class="post-collapse" onclick="event.stopPropagation();askCollapsePost(this)">&uarr; Collapse</button>
+      </div>
+    </article>
+
+    <article class="post" id="post-J13" data-tag="jargon" onclick="askTogglePost(this)">
+      <div class="post-meta"><span class="post-tag jargon">Jargon</span><span class="post-date">Mar 2026</span></div>
+      <h2 class="post-title">What is a slab and how is my rate calculated?</h2>
+      <p class="post-excerpt">I know my rate. I do not fully understand how it was arrived at or what changes it.</p>
+      <span class="post-read">Read answer &rarr;</span>
+      <div class="post-body">
+        <span class="answer-label">The plain answer</span>
+        <p>A slab is simply a range of corpus amounts that attracts a specific rate. The more capital you have placed, the higher the slab &mdash; and counterintuitively, the slightly lower the rate. This is not a penalty for placing more. It reflects the reduced urgency of that capital to the trader, and the lower risk that comes with a larger, more established position.</p>
+        <div class="highlight">
+          The principle: smaller corpus, higher rate &mdash; because that capital is relatively more valuable to deploy. Larger corpus, slightly lower rate &mdash; because the arrangement is established, the relationship is deeper, and the risk profile is lower for both sides.
+        </div>
+        <p>Your rate is determined by where your corpus sits within the slab structure at the time of your arrangement. As your corpus grows &mdash; through additional placements or ploughback &mdash; it may cross into a higher slab, which adjusts the rate accordingly. This is agreed upfront, not applied retroactively as a surprise.</p>
+        <p>The simplest way to understand your rate: it is the price JaceyTrayd pays for your capital, calibrated to how much you have placed and how long the relationship has run.</p>
+        <button class="post-collapse" onclick="event.stopPropagation();askCollapsePost(this)">&uarr; Collapse</button>
+      </div>
+    </article>
+
+    <article class="post" id="post-J14" data-tag="jargon" onclick="askTogglePost(this)">
+      <div class="post-meta"><span class="post-tag jargon">Jargon</span><span class="post-date">Mar 2026</span></div>
+      <h2 class="post-title">What is the difference between a trader and a fund manager?</h2>
+      <p class="post-excerpt">People use these terms interchangeably. They are not the same thing at all.</p>
+      <span class="post-read">Read answer &rarr;</span>
+      <div class="post-body">
+        <span class="answer-label">The plain answer</span>
+        <p>A <strong>fund manager</strong> pools capital from multiple investors, manages it on their behalf, and is regulated to do so. In India, this means SEBI registration, minimum corpus requirements (a Portfolio Management Service requires at least Rs 50 lakhs per client), mandatory disclosures, audited accounts, and a formal legal relationship with each investor. The investor participates in the fund's performance &mdash; good or bad.</p>
+        <p>A <strong>trader</strong> trades their own capital &mdash; or borrowed capital &mdash; for their own account. They are not managing money on behalf of investors. They are borrowing it, deploying it, and repaying it with interest. The lender's return is fixed. The trader's profit or loss is entirely their own.</p>
+        <blockquote>"A fund manager is accountable to regulators and investors for how capital is deployed. A trader is accountable to lenders only for repayment &mdash; not for how the capital was used to generate the return."</blockquote>
+        <p>JaceyTrayd is a trading operation that borrows private capital at fixed rates. It is not a fund. It is not regulated as one. And it deliberately stays out of that structure &mdash; because the private lending model, within a known circle, is cleaner, more honest, and more appropriate for what it actually is.</p>
+        <button class="post-collapse" onclick="event.stopPropagation();askCollapsePost(this)">&uarr; Collapse</button>
+      </div>
+    </article>
+
+    <article class="post" id="post-J15" data-tag="jargon" onclick="askTogglePost(this)">
+      <div class="post-meta"><span class="post-tag jargon">Jargon</span><span class="post-date">Mar 2026</span></div>
+      <h2 class="post-title">Why not just open a SEBI-registered fund?</h2>
+      <p class="post-excerpt">If the arrangement works, why not formalise it? Wouldn't that give lenders more protection?</p>
+      <span class="post-read">Read answer &rarr;</span>
+      <div class="post-body">
+        <span class="answer-label">The plain answer</span>
+        <p>It is a fair question. The short answer: because what JaceyTrayd is, and what a SEBI-registered fund is, are fundamentally different things &mdash; and pretending otherwise would make it worse, not better.</p>
+        <p>A Portfolio Management Service requires each client to place a minimum of Rs 50 lakhs. Most JaceyTrayd participants place far less. A SEBI-registered fund must disclose its strategy, holdings, and performance publicly. JaceyTrayd is a private arrangement between known individuals &mdash; that privacy is part of what makes it work. And regulation adds compliance overhead, legal costs, and structural complexity that would need to be funded &mdash; either by charging fees or by taking a larger spread, both of which reduce what participants actually earn.</p>
+        <blockquote>"Regulation exists to protect strangers from each other. In a circle of known people who have chosen to participate, the protection comes from the relationship &mdash; not from a regulator."</blockquote>
+        <p>The deliberate choice to stay as private lending is not a workaround. It is a recognition that the structure fits the reality. Small, known, personal, and clean. Adding a SEBI wrapper would not make it safer &mdash; it would just make it different.</p>
+        <button class="post-collapse" onclick="event.stopPropagation();askCollapsePost(this)">&uarr; Collapse</button>
+      </div>
+    </article>
+
+    <article class="post" id="post-B08" data-tag="basics" onclick="askTogglePost(this)">
+      <div class="post-meta"><span class="post-tag">Basics</span><span class="post-date">Mar 2026</span></div>
+      <h2 class="post-title">What do all the numbers on my dashboard actually mean?</h2>
+      <p class="post-excerpt">I see corpus, ploughback, pending interest, funds receivable. I understand some of them. Not all.</p>
+      <span class="post-read">Read answer &rarr;</span>
+      <div class="post-body">
+        <span class="answer-label">The plain answer</span>
+        <p><strong>Corpus</strong> — the total capital you have placed with JaceyTrayd. This is the base on which your monthly return is calculated. It includes your original placement plus any amounts ploughed back over time.</p>
+        <p><strong>Base corpus</strong> — the original amount you placed before any ploughback. Useful to see how much of your corpus is original capital versus accumulated returns that stayed in.</p>
+        <p><strong>Ploughback</strong> — interest that was earned but not paid out, added back to your corpus instead. This increases your base for future calculations and compounds your returns over time.</p>
+        <p><strong>Monthly return</strong> — what you are entitled to receive this month based on your corpus and slab rate. This may occasionally be ploughed back rather than paid out during volatile market periods.</p>
+        <p><strong>Pending interest</strong> — interest that has accrued but not yet been settled. If this number is non-zero, it means there is an outstanding amount owed to you that has not been paid or ploughed back yet.</p>
+        <p><strong>Funds receivable</strong> — an amount that Jacey expects to <em>receive</em> from you. Money owed to JaceyTrayd, not to you. This might arise from a top-up commitment, a capital transfer that has not yet arrived, or a reconciliation adjustment.</p><p><strong>Funds payable</strong> — an amount that Jacey is expected to <em>pay</em> to you, outside the regular monthly return cycle. This might be from a partial redemption, a one-time settlement, or an outstanding balance being returned.</p>
+        <div class="highlight">If any of these numbers look wrong or unexpected, reach out directly. The portal reflects what is in the records &mdash; and records can be corrected if something has been missed.</div>
+        <button class="post-collapse" onclick="event.stopPropagation();askCollapsePost(this)">&uarr; Collapse</button>
+      </div>
+    </article>
+
+    <article class="post" id="post-T10" data-tag="trust" onclick="askTogglePost(this)">
+      <div class="post-meta"><span class="post-tag trust">Trust</span><span class="post-date">Mar 2026</span></div>
+      <h2 class="post-title">Can I have more than one account with JaceyTrayd?</h2>
+      <p class="post-excerpt">I already have a Senior Creditor account. Can I open another one, or a different type?</p>
+      <span class="post-read">Read answer &rarr;</span>
+      <div class="post-body">
+        <span class="answer-label">The plain answer</span>
+        <p>Only <strong>Zero-Coupon Note</strong> holders can open more than one account &mdash; and only downward. A ZCN member can hold an additional ZCN account, a Senior Creditor account, a Bridge account, or an Introduced Capital sub-account under them. They cannot open a second account of a type above what they already hold.</p>
+        <p>Senior Creditors, Bridge members, and Introduced Capital participants hold one account only.</p>
+        <blockquote>"Multiple accounts are a privilege that comes with the deepest level of trust. ZCN holders have demonstrated that trust over time. The structure recognises it."</blockquote>
+        <p>There is also a family concentration rule. Even a ZCN holder cannot open an additional account if it would result in too much capital from the same household in the pool. The 20% concentration cap &mdash; applied per family, not per individual &mdash; protects the stability of the arrangement for everyone. If one family faces a liquidity event and redeems, the impact on the pool should be manageable. Concentration makes that impossible.</p>
+        <button class="post-collapse" onclick="event.stopPropagation();askCollapsePost(this)">&uarr; Collapse</button>
+      </div>
+    </article>
+
+    <article class="post" id="post-T11" data-tag="trust" onclick="askTogglePost(this)">
+      <div class="post-meta"><span class="post-tag trust">Trust</span><span class="post-date">Feb 2026</span></div>
+      <h2 class="post-title">Why does a Bridge account never become a Senior Creditor account?</h2>
+      <p class="post-excerpt">I thought Bridge was the starting point and Senior Creditor was where you eventually get to. Is that not how it works?</p>
+      <span class="post-read">Read answer &rarr;</span>
+      <div class="post-body">
+        <span class="answer-label">The plain answer</span>
+        <p>Bridge is not a waiting room. It is its own valid category &mdash; and for many people, it is exactly where they belong and where they are most comfortable.</p>
+        <p>The distinction matters: Bridge members typically want defined, limited exposure. A clear entry, a clear exit, no long-term commitment. That is a legitimate and sensible approach to private capital arrangements. There is nothing inferior about it.</p>
+        <blockquote>"Bridge members are not waiting to become Senior Creditors. They are Bridge members by choice &mdash; or by design."</blockquote>
+        <p>The movement from Bridge to Senior Creditor is not a promotion that Jacey offers after a waiting period. It is something that happens only when a member's behaviour over time demonstrates that they are comfortable with a deeper, more open-ended commitment. Someone who redeems at the first sign of a difficult month is telling you something important about what they actually want. Bridge is the right place for them &mdash; and that is fine.</p>
+        <p>There is also a structural reason. A ZCN holder who has a Bridge account &mdash; perhaps a family member placed under a separate sub-account &mdash; keeps that Bridge account as Bridge permanently. This is not about trust levels. It is about preventing too much capital from the same family unit accumulating in the pool. The structure protects everyone, including the family themselves.</p>
+        <button class="post-collapse" onclick="event.stopPropagation();askCollapsePost(this)">&uarr; Collapse</button>
+      </div>
+    </article>
+
+    <article class="post" id="post-H13" data-tag="human" onclick="askTogglePost(this)">
+      <div class="post-meta"><span class="post-tag" style="color:#a0cca8;background:rgba(74,124,89,0.1);border-color:rgba(74,124,89,0.2);">Human</span><span class="post-date">Feb 2026</span></div>
+      <h2 class="post-title">What happens to JaceyTrayd if Jacey stops trading?</h2>
+      <p class="post-excerpt">This is the question nobody wants to ask directly. But it matters.</p>
+      <span class="post-read">Read answer &rarr;</span>
+      <div class="post-body">
+        <span class="answer-label">The plain answer</span>
+        <p>It is not something being planned for imminently. But it has been thought about &mdash; and you deserve a straight answer.</p>
+        <p>At worst: JaceyTrayd winds down. Every arrangement is honoured &mdash; principal returned, outstanding interest settled, the circle closed cleanly. Nobody loses capital. The operation stops but the obligation does not. A bad ending, if it comes, is still an honest one.</p>
+        <p>At best: Jacey steps back from execution but stays involved as the decision-maker, risk manager, and supervisor. Traders execute the strategy. The edge &mdash; the systematic approach, the risk discipline, the understanding of how capital moves &mdash; continues to operate through structure rather than through one person sitting at a screen. The brand continues. The relationships continue. The trust continues.</p>
+        <blockquote>"What you are really relying on is not Jacey being at a screen forever. It is the obligation to return your capital surviving any circumstance. That obligation does not have an off switch."</blockquote>
+        <p>The honest answer to the question behind this question &mdash; <em>what if something happens to you?</em> &mdash; is: the obligation survives. Principal comes back. That is the commitment, and it does not depend on any single person's health, stamina, or continued enthusiasm for markets.</p>
+        <button class="post-collapse" onclick="event.stopPropagation();askCollapsePost(this)">&uarr; Collapse</button>
+      </div>
+    </article>
+
+    <article class="post" id="post-J16" data-tag="jargon" onclick="askTogglePost(this)">
+      <div class="post-meta"><span class="post-tag jargon">Jargon</span><span class="post-date">Mar 2026</span></div>
+      <h2 class="post-title">What is a capital call and why does it happen?</h2>
+      <p class="post-excerpt">I received a capital call. I am not sure if I should be concerned or not.</p>
+      <span class="post-read">Read answer &rarr;</span>
+      <div class="post-body">
+        <span class="answer-label">The plain answer</span>
+        <p>A capital call is an invitation to existing creditors to increase their position in the arrangement. It is standard practice in private equity, venture capital, hedge funds, and private credit globally. When a fund makes a capital call, it means the manager has found something worth deploying into &mdash; and the existing circle gets first access because they are the trusted ones.</p>
+        <p>At JaceyTrayd, a capital call happens for one of two reasons. Both are legitimate. Neither signals crisis.</p>
+        <p><strong>Reason one: opportunity.</strong> A position has been identified that requires more capital than is currently deployed. The strategy has room to scale. Rather than going to strangers, Jacey goes back to the people who already understand the arrangement and invites them to increase their stake. This is proactive. It comes from a position of seeing something worth taking.</p>
+        <p><strong>Reason two: margin requirement spike.</strong> Stock exchanges periodically increase margin requirements during volatile market periods &mdash; sometimes overnight, sometimes within hours. This is a regulatory demand from the exchange itself, not a reflection of the trader's performance. If the required capital is not in place within the stipulated timeframe, the exchange charges penalties. The capital call in this case is urgent and time-sensitive, not because anything has gone wrong, but because the exchange moved the goalposts and the capital must follow immediately.</p>
+        <blockquote>"A capital call is not a distress signal. It is either an opportunity being offered or a regulatory demand being met. Both require capital. Neither means the arrangement is in trouble."</blockquote>
+        <div class="highlight">The word &ldquo;call&rdquo; sounds like a distress call. &ldquo;Capital&rdquo; sounds like there is none left. Together, people hear: something went wrong and he needs a bailout. The reality is the opposite &mdash; a capital call is a structured, anticipated part of how active trading operations manage their capital base.</div>
+        <p>You are never obligated to respond to a capital call. It is always an invitation, never a demand. Declining has no bearing on your existing arrangement.</p>
+        <button class="post-collapse" onclick="event.stopPropagation();askCollapsePost(this)">&uarr; Collapse</button>
+      </div>
+    </article>
+
+    <article class="post" id="post-H14" data-tag="human" onclick="askTogglePost(this)">
+      <div class="post-meta"><span class="post-tag" style="color:#a0cca8;background:rgba(74,124,89,0.1);border-color:rgba(74,124,89,0.2);">Human</span><span class="post-date">Mar 2026</span></div>
+      <h2 class="post-title">I thought the capital call meant Jacey had lost all his money and was asking for a loan.</h2>
+      <p class="post-excerpt">When the message came through asking for capital, my first thought was that something had gone very wrong. Was I reading it right?</p>
+      <span class="post-read">Read answer &rarr;</span>
+      <div class="post-body">
+        <span class="answer-label">The plain answer</span>
+        <p>You were not alone in reading it that way. And the misreading is understandable &mdash; because urgency around money, in everyday life, usually does mean something has gone wrong.</p>
+        <p>But a capital call in trading is structurally different from a personal request for help. Here is what is actually happening when one arrives, especially the urgent kind.</p>
+        <p>Stock exchanges can and do increase margin requirements at short notice &mdash; sometimes overnight, sometimes within the same trading session. This happens during volatile markets when the exchange wants more collateral sitting behind open positions. It is not optional. It is not negotiable. And the timeframe is often hours, not days.</p>
+        <blockquote>"When the exchange moves, the capital has to follow. Not because the trader has lost money &mdash; but because the rules of the game changed, and the game does not wait for explanations."</blockquote>
+        <p>This is the hardest part of running an active trading operation on private capital: the moment you try to explain the urgency &mdash; <em>the exchange raised requirements, I need this by end of day or there are penalties</em> &mdash; it sounds exactly like someone who has over-extended and is scrambling to cover a hole. The more you explain, the more it sounds like justification. The less you explain, the more it sounds like desperation.</p>
+        <p>Neither reading is accurate. But both are natural reactions from people who have never sat inside a margin management operation and watched what happens when volatility spikes.</p>
+        <div class="highlight">The capital call is not a 3-day personal loan request. It is not a sign that the arrangement is failing. It is the cost of operating at the intersection of private capital and live markets &mdash; where external forces occasionally demand instant liquidity, and the structure has to be fluid enough to respond. The people who extend that liquidity are not rescuing the arrangement. They are participating in how it works.</div>
+        <p>If a capital call ever feels unclear or uncomfortable, the right response is always to ask directly &mdash; not to interpret in silence. Jacey would rather explain the context than have a creditor carry an unnecessary worry.</p>
         <button class="post-collapse" onclick="event.stopPropagation();askCollapsePost(this)">&uarr; Collapse</button>
       </div>
     </article>
@@ -3518,6 +3758,7 @@ window.ccUpdateBorrow=function(){
       <div class="sidebar-label">Who writes this</div>
       <p class="sidebar-about">JaceyTrayd is a private trader based in Bengaluru. This blog exists because too many good people had questions they never knew how to ask.</p>
       <a onclick="openPublic('aboutj')" class="about-link-btn" style="cursor:pointer;">Read the full story &rarr;</a>
+      <a href="mailto:askjaceynow@gmail.com" style="display:block;margin-top:0.5rem;font-family:'IBM Plex Mono',monospace;font-size:0.48rem;letter-spacing:0.12em;color:var(--text-muted);text-decoration:none;text-align:center;opacity:0.6;" onmouseover="this.style.opacity='1';this.style.color='var(--gold)'" onmouseout="this.style.opacity='0.6';this.style.color='var(--text-muted)'">askjaceynow@gmail.com</a>
     </div>
     <div class="sidebar-card">
       <div class="sidebar-label">Disclaimer</div>
@@ -3536,9 +3777,43 @@ window.ccUpdateBorrow=function(){
           <div class="sec-sub">The origin story &mdash; why sleeping partners became smarter ones</div>
         </div>
 
+        <div style="border:1px solid rgba(255,255,255,0.07);padding:0.9rem 1.1rem;background:rgba(255,255,255,0.02);margin-bottom:1.5rem;">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:0.44rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.6rem;">Before you read on</div>
+          <div style="font-size:0.7rem;color:var(--text-dim);line-height:1.85;margin-bottom:0.6rem;"><strong style="color:var(--text);">Jacey</strong> is the moniker of John Christopher &mdash; or simply JC. The name runs across everything he does.</div>
+          <div style="font-size:0.7rem;color:var(--text-dim);line-height:1.85;margin-bottom:0.7rem;">He operates under three separate brands &mdash; <strong style="color:var(--gold);">JaceyTrayd</strong>, <strong style="color:var(--text);">JaceyLang</strong>, and <strong style="color:var(--text);">Ask Jacey</strong> &mdash; each with a distinct purpose and entirely separate from the others. <strong style="color:var(--text);">This portal is JaceyTrayd only.</strong> What you see here &mdash; the balances, the capital arrangement, the market data &mdash; has nothing to do with the other two brands.</div>
+          <div style="display:flex;flex-direction:column;gap:0.3rem;">
+            <div style="font-size:0.66rem;color:var(--text-dim);"><span style="color:var(--gold);font-family:'Cormorant Garamond',serif;font-size:0.82rem;">JaceyTrayd</span> &nbsp;&mdash;&nbsp; Private credit &middot; This portal &middot; No fees</div>
+            <div style="font-size:0.66rem;color:var(--text-dim);"><span style="color:var(--text);font-family:'Cormorant Garamond',serif;font-size:0.82rem;">JaceyLang</span> &nbsp;&mdash;&nbsp; English &middot; Reports &middot; Poetry &middot; Fees apply &middot; Separate entirely</div>
+            <div style="font-size:0.66rem;color:var(--text-dim);"><span style="color:var(--text);font-family:'Cormorant Garamond',serif;font-size:0.82rem;">Ask Jacey</span> &nbsp;&mdash;&nbsp; Personal finance Q&amp;A &middot; IB training &middot; No fees &middot; Separate entirely</div>
+          </div>
+        </div>
+
         <div class="about-lead">Most of the people who place capital with JaceyTrayd did not come looking for a trading partner. They came because they had already tried trading themselves &mdash; and discovered, the hard way, that knowing what to do and being able to do it are two completely different things.</div>
 
         <div style="border-top:1px solid var(--border);margin:1.8rem 0;"></div>
+
+        <hr style="border:none;border-top:1px solid var(--border);margin:2rem 0;">
+        <div style="font-size:0.48rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);opacity:0.7;margin-bottom:0.5rem;">Before all of this</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:300;color:var(--text);margin-bottom:1rem;">The years inside the machine</div>
+
+        <div style="font-size:0.72rem;color:var(--text-dim);line-height:1.9;margin-bottom:0.9rem;">Before JaceyTrayd existed &mdash; before any of this &mdash; I spent nearly ten years working in investment banking operations. From <strong>2005 to 2014</strong>, across <strong>five different firms</strong>. Not on the trading floor, not in front of a Bloomberg terminal making calls. In the back office and middle office, where the actual plumbing of finance lives.</div>
+
+        <div style="font-size:0.72rem;color:var(--text-dim);line-height:1.9;margin-bottom:0.9rem;">I worked across <strong>treasury services</strong>, <strong>foreign exchange prime brokerage</strong>, <strong>collateral management</strong>, <strong>stock borrows &amp; lends (SBL)</strong>, and <strong>reference data management</strong>. But the work I was closest to &mdash; and that shaped how I think about capital, risk, and obligation &mdash; was <span style="color:var(--gold);">margin management</span> and <span style="color:var(--gold);">collateral disputes</span>.</div>
+
+        <div style="border-left:2px solid var(--gold);padding:0.7rem 1rem;margin:1.4rem 0;font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-style:italic;color:var(--text);line-height:1.65;background:rgba(201,168,76,0.03);">"Margin management is where you learn that capital is not abstract. It is a specific number, owed by a specific counterparty, at a specific time. When it does not arrive, things break quickly."</div>
+
+        <div style="font-size:0.72rem;color:var(--text-dim);line-height:1.9;margin-bottom:0.9rem;">I say this not to impress, but to give context. When I talk about margin calls, collateral, credit risk, or what happens when a position goes wrong &mdash; I am not reading from a textbook. I have been in the rooms where those conversations happen, at scale, on behalf of institutions. The concepts that sound technical in a blog post were, for several years, simply my job.</div>
+
+        <div style="font-size:0.72rem;color:var(--text-dim);line-height:1.9;margin-bottom:0.9rem;">I worked both as part of <span style="color:var(--gold);">third-party service providers</span> and within <span style="color:var(--gold);">centres of excellence</span> &mdash; the internal teams that set standards and resolve the hard problems across a large organisation. Neither was glamorous. Both were educational in ways that no course could replicate.</div>
+
+        <div style="font-size:0.72rem;color:var(--text-dim);line-height:1.9;margin-bottom:1.4rem;">Alongside the operations roles, I also did a brief internship at a <span style="color:var(--gold);">proprietary trading firm</span> &mdash; as a trader who earns a share of whatever profits they generate for the firm. No salary, no base. Just a cut of what you make. It was short, intentional, and specifically to understand what a prop desk actually feels like from the inside rather than from the operations side of the same building.
+
+        That background is what eventually led me here &mdash; away from institutions and toward something smaller, more personal, and entirely my own. JaceyTrayd is, in many ways, a private application of everything I spent those years learning about how capital moves, what protects it, and what erodes it.</div>
+
+        <div style="border:1px solid rgba(255,255,255,0.08);padding:0.9rem 1.1rem;background:rgba(255,255,255,0.02);margin-bottom:1.4rem;">
+          <div style="font-size:0.48rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.5rem;">Also worth knowing</div>
+          <div style="font-size:0.72rem;color:var(--text-dim);line-height:1.85;">From time to time I conduct investment banking related training sessions &mdash; on topics like margin, collateral, and financial market operations. This is freelance work, entirely outside my control in terms of scheduling and availability, and operates under the <strong style="color:var(--text);">Ask Jacey</strong> brand. It is not offered through JaceyTrayd, and no fees from training flow into the private credit arrangement.</div>
+        </div>
 
         <div style="font-size:0.48rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);opacity:0.7;margin-bottom:0.5rem;">The pattern</div>
         <div style="font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:300;color:var(--text);margin-bottom:1rem;">The pattern I kept seeing</div>
@@ -4068,12 +4343,18 @@ let lenders = [
 
 ];
 let friendly = [
-  { id:101, name:'Daniel',  legalName:'Daniel Christopher', amount:840000,  status:'active', pin:'2497', note:'Interest consolidated into repayment amount.', hasLoanStatement:true },
-  { id:102, name:'Herbert', legalName:'Herbert Manoah', amount:100000,  status:'active', pin:'6408', note:'Interest consolidated into repayment amount.', hasLoanStatement:true },
-  { id:103, name:'Hannah',  legalName:'Hannah Christopher', amount:1600000, status:'active', pin:'3901', note:'Interest consolidated into repayment amount.', hasLoanStatement:true },
-  { id:104, name:'Glory',   legalName:'Glory Florence', amount:125000,  status:'active', pin:'2604', note:'Final consolidated amount. Interest included in repayment.', hasLoanStatement:true },
-  { id:105, name:'Deborah', legalName:'Deborah Christopher', amount:50000,   status:'active', pin:'2824', note:'Interest consolidated into repayment.', hasLoanStatement:true },
-  { id:106, name:'Shruthi', legalName:'Shruthi Daniel', amount:10000,   status:'active', pin:'1409', note:'Interest consolidated into repayment.', hasLoanStatement:true },
+  { id:101, name:'Daniel',  legalName:'Daniel Christopher', amount:840000,  status:'active', pin:'2497', note:'Interest consolidated into repayment amount.', hasLoanStatement:true,
+    mobile1:'9113672728' },
+  { id:102, name:'Herbert', legalName:'Herbert Manoah', amount:100000,  status:'active', pin:'6408', note:'Interest consolidated into repayment amount.', hasLoanStatement:true,
+    mobile1:'9886678700' },
+  { id:103, name:'Hannah',  legalName:'Hannah Christopher', amount:1600000, status:'active', pin:'3901', note:'Interest consolidated into repayment amount.', hasLoanStatement:true,
+    mobile1:'+13178630578' },
+  { id:104, name:'Glory',   legalName:'Glory Florence', amount:125000,  status:'active', pin:'2604', note:'Final consolidated amount. Interest included in repayment.', hasLoanStatement:true,
+    email:'gloryflorence@gmail.com' },
+  { id:105, name:'Deborah', legalName:'Deborah Christopher', amount:50000,   status:'active', pin:'2824', note:'Interest consolidated into repayment.', hasLoanStatement:true,
+    mobile1:'9620956787' },
+  { id:106, name:'Shruthi', legalName:'Shruthi Daniel', amount:10000,   status:'active', pin:'1409', note:'Interest consolidated into repayment.', hasLoanStatement:true,
+    mobile1:'7411421653' },
 ];
 let shortTerm = [
   { id:201, name:'Ronald',    amount:0,      days:150, status:'inactive', pin:'3470', note:'Closed.' },
@@ -7461,6 +7742,23 @@ function drawSparkline(canvasId, values) {
   ctx.arc(last.x, last.y, 3, 0, Math.PI * 2);
   ctx.fillStyle = isUp ? '#4ecdc4' : '#c97a7a';
   ctx.fill();
+}
+
+function askJumpToQuestion(id) {
+  if (!id) return;
+  var ctx = document.getElementById('pub-ask');
+  var el = ctx ? ctx.querySelector('#' + id) : document.getElementById(id);
+  if (!el) return;
+  ctx.querySelectorAll('.post-body.open').forEach(function(b) { b.classList.remove('open'); });
+  ctx.querySelectorAll('.topic-pill').forEach(function(p) { p.classList.remove('active'); });
+  var allPill = ctx.querySelector('.topic-pill');
+  if (allPill) allPill.classList.add('active');
+  ctx.querySelectorAll('.post').forEach(function(p) { p.style.display = ''; });
+  ctx.querySelectorAll('.series-label').forEach(function(l) { l.style.display = ''; });
+  var body = el.querySelector('.post-body');
+  if (body) body.classList.add('open');
+  setTimeout(function() { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 50);
+  document.getElementById('askQuestionDropdown').value = '';
 }
 
 function loadAskJacey() {
