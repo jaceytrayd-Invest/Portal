@@ -1171,6 +1171,9 @@ body {
         <button onclick="openPublic('stocks')" style="width:100%;background:none;border:1px solid var(--border-mid);color:var(--text-dim);font-family:'IBM Plex Mono',monospace;font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;padding:0.75rem 1rem;cursor:pointer;transition:all 0.18s;display:flex;align-items:center;justify-content:center;gap:0.6rem;" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border-mid)';this.style.color='var(--text-dim)'">
           <span style="font-family:'Cormorant Garamond',serif;color:var(--gold);opacity:0.7;font-size:1rem;">⌥</span> My Stocks
         </button>
+        <button onclick="openPublic('reassess')" style="width:100%;background:none;border:1px solid var(--border-mid);color:var(--text-dim);font-family:'IBM Plex Mono',monospace;font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;padding:0.75rem 1rem;cursor:pointer;transition:all 0.18s;display:flex;align-items:center;justify-content:center;gap:0.6rem;" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border-mid)';this.style.color='var(--text-dim)'">
+          <span style="color:var(--gold);opacity:0.7;">⟳</span> Reassess my position
+        </button>
       </div>
 
       <div id="directPinStep" style="display:none;">
@@ -2231,8 +2234,229 @@ body {
       This page is for informational purposes only. Nothing here constitutes financial advice. JaceyTrayd does not solicit investment from the public. If you are here, you were personally referred or invited.
     </div>
 
+  
+
+
+        <!-- ─── SECTION: BETA ALPHA RANDOM WALK LOSS AVERSION ─── -->
+        <div style="margin-bottom:0.4rem;margin-top:1.8rem;">
+          <div style="font-size:0.48rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);opacity:0.7;margin-bottom:0.5rem;">02 &middot; The Return Framework</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:300;color:var(--text);margin-bottom:1rem;">Beta, Alpha &amp; why most traders fail</div>
+        </div>
+
+        <div class="about-block">
+          <strong>Beta — the return the market gave you</strong>
+          <div style="display:flex;flex-direction:column;gap:0.7rem;">
+            <div style="display:flex;gap:0.85rem;align-items:flex-start;">
+              <div style="min-width:120px;font-size:0.52rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);font-weight:600;padding-top:0.1rem;">What it is</div>
+              <div style="font-size:0.7rem;color:var(--text-dim);line-height:1.7;">Beta measures how much an investment moves with the overall market. A beta of 1.0 means your portfolio moves exactly with the Nifty or S&amp;P 500. A beta of 1.5 means you gain 50% more when markets rise — and lose 50% more when they fall.</div>
+            </div>
+            <div style="display:flex;gap:0.85rem;align-items:flex-start;">
+              <div style="min-width:120px;font-size:0.52rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);font-weight:600;padding-top:0.1rem;">Why it matters</div>
+              <div style="font-size:0.7rem;color:var(--text-dim);line-height:1.7;">Most mutual funds have beta close to 1. They are essentially the market, with a fee attached. Beating the market means generating returns that beta alone cannot explain. That extra return has a name.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="about-block">
+          <strong>Alpha &amp; Jensen's Alpha — the return nobody gave you</strong>
+          <div style="display:flex;flex-direction:column;gap:0.7rem;">
+            <div style="display:flex;gap:0.85rem;align-items:flex-start;">
+              <div style="min-width:120px;font-size:0.52rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);font-weight:600;padding-top:0.1rem;">Alpha</div>
+              <div style="font-size:0.7rem;color:var(--text-dim);line-height:1.7;">Return above and beyond what the market handed you for simply being invested. If the market returns 12% and your portfolio returns 18%, your alpha is 6% — from skill, strategy, or edge, not from luck or extra risk.</div>
+            </div>
+            <div style="display:flex;gap:0.85rem;align-items:flex-start;">
+              <div style="min-width:120px;font-size:0.52rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);font-weight:600;padding-top:0.1rem;">Jensen's Alpha</div>
+              <div style="font-size:0.7rem;color:var(--text-dim);line-height:1.7;">Alpha adjusted for the risk taken to generate it. A high Jensen's Alpha means you got more return per unit of risk than the market offered. It is the cleanest measure of whether a strategy is genuinely adding value — or simply taking more risk and being rewarded for it. When JaceyTrayd participants earn 24–36% against a 12% benchmark, that gap is alpha.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="about-block">
+          <strong>Random Walk — and why it is not the whole story</strong>
+          <div style="display:flex;flex-direction:column;gap:0.7rem;">
+            <div style="display:flex;gap:0.85rem;align-items:flex-start;">
+              <div style="min-width:120px;font-size:0.52rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);font-weight:600;padding-top:0.1rem;">The theory</div>
+              <div style="font-size:0.7rem;color:var(--text-dim);line-height:1.7;">Burton Malkiel argued in 1973 that stock prices move randomly, past prices predict nothing, and no strategy can consistently beat the market. He was mostly right. Most active fund managers do not beat the market consistently, especially after fees.</div>
+            </div>
+            <div style="display:flex;gap:0.85rem;align-items:flex-start;">
+              <div style="min-width:120px;font-size:0.52rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);font-weight:600;padding-top:0.1rem;">The opening</div>
+              <div style="font-size:0.7rem;color:var(--text-dim);line-height:1.7;">"Mostly right" leaves room. Markets have persistent anomalies — patterns in volatility, liquidity, and human behaviour — that a disciplined trader can exploit repeatedly. Not because the market is stupid, but because human participants are predictably irrational in specific, exploitable ways. Edge lives in those corners.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="about-block">
+          <strong>Loss Aversion — why knowing is not enough</strong>
+          <div style="display:flex;flex-direction:column;gap:0.7rem;">
+            <div style="display:flex;gap:0.85rem;align-items:flex-start;">
+              <div style="min-width:120px;font-size:0.52rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);font-weight:600;padding-top:0.1rem;">The finding</div>
+              <div style="font-size:0.7rem;color:var(--text-dim);line-height:1.7;">Kahneman's Nobel-winning work: losses feel roughly twice as painful as equivalent gains feel good. Losing ₹10,000 hurts about twice as much as winning ₹10,000 feels good.</div>
+            </div>
+            <div style="display:flex;gap:0.85rem;align-items:flex-start;">
+              <div style="min-width:120px;font-size:0.52rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);font-weight:600;padding-top:0.1rem;">In trading</div>
+              <div style="font-size:0.7rem;color:var(--text-dim);line-height:1.7;">Most people cut winning positions too early and hold losing positions too long. Small wins, large losses — mathematically guaranteed to destroy capital over time, regardless of how good the strategy is. This is why systematic trading matters. And why the sleeping partner model exists — to remove this variable entirely.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─── SECTION: OPTIONS GREEKS ─── -->
+        <div style="margin-bottom:0.4rem;margin-top:1.8rem;">
+          <div style="font-size:0.48rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);opacity:0.7;margin-bottom:0.5rem;">03 &middot; Options Greeks</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:300;color:var(--text);margin-bottom:1rem;">The risk dimensions of an options position</div>
+        </div>
+
+        <div class="about-block">
+          <div style="font-size:0.7rem;color:var(--text-dim);line-height:1.8;margin-bottom:0.8rem;">Options are contracts that give the buyer the right — not the obligation — to buy or sell an asset at a specific price before a specific date. Their price and risk are measured through a set of values called the Greeks. Each tells you something different about how the position will behave.</div>
+          <div style="display:flex;flex-direction:column;gap:0.7rem;">
+            <div style="display:flex;gap:0.85rem;align-items:flex-start;">
+              <div style="min-width:120px;font-size:0.52rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);font-weight:600;padding-top:0.1rem;">Delta (Δ)</div>
+              <div style="font-size:0.7rem;color:var(--text-dim);line-height:1.7;">How much the option's price moves for every ₹1 move in the underlying asset. A delta of 0.5 means the option gains ₹0.50 for every ₹1 rise in the stock. Delta ranges from 0 to 1 for calls, 0 to -1 for puts. It also approximates the probability that the option expires in the money.</div>
+            </div>
+            <div style="display:flex;gap:0.85rem;align-items:flex-start;">
+              <div style="min-width:120px;font-size:0.52rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);font-weight:600;padding-top:0.1rem;">Gamma (Γ)</div>
+              <div style="font-size:0.7rem;color:var(--text-dim);line-height:1.7;">The rate at which delta itself changes. High gamma means delta is moving fast — the position is sensitive and needs more active management. Options close to expiry and near the strike price have the highest gamma. It is the acceleration of the position.</div>
+            </div>
+            <div style="display:flex;gap:0.85rem;align-items:flex-start;">
+              <div style="min-width:120px;font-size:0.52rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);font-weight:600;padding-top:0.1rem;">Theta (Θ)</div>
+              <div style="font-size:0.7rem;color:var(--text-dim);line-height:1.7;">Time decay. How much value the option loses each day simply by the passage of time, all else being equal. Options are wasting assets — theta works against the buyer and in favour of the seller. A theta of -5 means the option loses ₹5 in value per day.</div>
+            </div>
+            <div style="display:flex;gap:0.85rem;align-items:flex-start;">
+              <div style="min-width:120px;font-size:0.52rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);font-weight:600;padding-top:0.1rem;">Vega (ν)</div>
+              <div style="font-size:0.7rem;color:var(--text-dim);line-height:1.7;">Sensitivity to changes in implied volatility. A vega of 0.10 means the option gains ₹0.10 for every 1% increase in implied volatility. When markets become uncertain and volatility spikes, vega determines how much that benefits or hurts a position. It is the volatility risk of the trade.</div>
+            </div>
+            <div style="display:flex;gap:0.85rem;align-items:flex-start;">
+              <div style="min-width:120px;font-size:0.52rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);font-weight:600;padding-top:0.1rem;">Rho (ρ)</div>
+              <div style="font-size:0.7rem;color:var(--text-dim);line-height:1.7;">Sensitivity to changes in interest rates. Less critical in short-dated options, more relevant in longer-dated positions. As interest rates rise, call options gain value slightly and put options lose value — because the cost of carrying a position changes.</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:rgba(201,168,76,0.04);border:1px solid var(--border);padding:1rem 1.2rem;margin-bottom:0.75rem;">
+          <div style="font-size:0.48rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:0.6rem;">Why this matters for JaceyTrayd members</div>
+          <div style="font-size:0.62rem;color:var(--text-dim);line-height:1.7;">When Jacey uses options as part of the trading strategy — for hedging, for income, or for positioning — these Greeks determine how the position behaves in real time. Understanding them is not required to be a member. But knowing they exist, and that they are being monitored, is part of understanding why this is not a simple buy-and-hold operation.</div>
+        </div>
+
+        <!-- SUBPRIME SECTION -->
+    <div style="margin-bottom:0.4rem;margin-top:1.8rem;">
+      <div style="font-size:0.48rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);opacity:0.7;margin-bottom:0.5rem;">05 &middot; The Lesson</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:300;color:var(--text);margin-bottom:1rem;">Subprime. And why JaceyTrayd is the opposite.</div>
+    </div>
+
+    <div class="about-block">
+      <div style="font-size:0.7rem;color:var(--text-dim);line-height:1.8;margin-bottom:0.9rem;">In 2008, the global financial system came within days of total collapse. The cause was not a single bad trade. It was a system so complex and so distant from its own reality that nobody &mdash; not the banks, not the regulators, not the investors &mdash; fully understood what they owned.</div>
+      <div style="border-left:2px solid var(--gold);padding:0.5rem 0.9rem;font-family:'Cormorant Garamond',serif;font-size:1.0rem;font-style:italic;color:var(--text);line-height:1.6;margin-bottom:1.2rem;">"The subprime crisis was not caused by greed alone. It was caused by distance &mdash; between the person whose money was at risk and the person using it."</div>
+      <strong>What broke the system</strong>
+      <div style="display:flex;flex-direction:column;gap:0.7rem;margin-bottom:1.2rem;">
+        <div style="display:flex;gap:0.85rem;align-items:flex-start;">
+          <div style="min-width:120px;font-size:0.52rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);font-weight:600;padding-top:0.1rem;">No relationship</div>
+          <div style="font-size:0.7rem;color:var(--text-dim);line-height:1.7;">Banks lent to strangers, packaged those loans, and sold them to investors who also did not know the borrowers. The chain of accountability was so long it vanished.</div>
+        </div>
+        <div style="display:flex;gap:0.85rem;align-items:flex-start;">
+          <div style="min-width:120px;font-size:0.52rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);font-weight:600;padding-top:0.1rem;">No transparency</div>
+          <div style="font-size:0.7rem;color:var(--text-dim);line-height:1.7;">Instruments were so complex that even the people selling them could not explain what was inside. Risk was hidden in layers until it was invisible.</div>
+        </div>
+        <div style="display:flex;gap:0.85rem;align-items:flex-start;">
+          <div style="min-width:120px;font-size:0.52rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);font-weight:600;padding-top:0.1rem;">No skin in game</div>
+          <div style="font-size:0.7rem;color:var(--text-dim);line-height:1.7;">Originators had already sold the risk on. Nobody who mattered was holding the bag when things went wrong.</div>
+        </div>
+        <div style="display:flex;gap:0.85rem;align-items:flex-start;">
+          <div style="min-width:120px;font-size:0.52rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);font-weight:600;padding-top:0.1rem;">No understanding</div>
+          <div style="font-size:0.7rem;color:var(--text-dim);line-height:1.7;">Borrowers signed what they did not understand. Investors bought what they did not understand. The system ran on assumed trust rather than actual knowledge.</div>
+        </div>
+      </div>
+      <strong>What JaceyTrayd does instead</strong>
+      <div style="display:flex;flex-direction:column;gap:0.7rem;margin-bottom:1.2rem;">
+        <div style="display:flex;gap:0.85rem;align-items:flex-start;">
+          <div style="min-width:120px;font-size:0.52rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);font-weight:600;padding-top:0.1rem;">Relationship</div>
+          <div style="font-size:0.7rem;color:var(--text-dim);line-height:1.7;">Every participant is known personally. No strangers. No cold transactions. The circle is closed and stays closed.</div>
+        </div>
+        <div style="display:flex;gap:0.85rem;align-items:flex-start;">
+          <div style="min-width:120px;font-size:0.52rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);font-weight:600;padding-top:0.1rem;">Transparency</div>
+          <div style="font-size:0.7rem;color:var(--text-dim);line-height:1.7;">Every member sees corpus, returns, and statements in real time. The portal exists precisely so nothing is hidden.</div>
+        </div>
+        <div style="display:flex;gap:0.85rem;align-items:flex-start;">
+          <div style="min-width:120px;font-size:0.52rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);font-weight:600;padding-top:0.1rem;">Skin in game</div>
+          <div style="font-size:0.7rem;color:var(--text-dim);line-height:1.7;">Jacey's own reputation and standing are on the line. No third party to pass risk to. The obligation stays where it started.</div>
+        </div>
+        <div style="display:flex;gap:0.85rem;align-items:flex-start;">
+          <div style="min-width:120px;font-size:0.52rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);font-weight:600;padding-top:0.1rem;">Understanding</div>
+          <div style="font-size:0.7rem;color:var(--text-dim);line-height:1.7;">Ask Jacey exists so no member ever nods along to something they do not understand. The knowledge is available. Using it is a choice.</div>
+        </div>
+      </div>
+      <div style="border-left:2px solid var(--gold);padding:0.5rem 0.9rem;font-family:'Cormorant Garamond',serif;font-size:1.0rem;font-style:italic;color:var(--text);line-height:1.6;">"Goats will be goats, and sheep will be sheep. But for those who choose to understand what they are part of, this offers something the system that collapsed in 2008 never could &mdash; complete clarity about exactly where your money is and who is responsible for it."</div>
+    </div>
+
   </div>
 </div>
+    <!-- REASSESS PAGE -->
+    <div id="pub-reassess" style="display:none;">
+      <div style="padding:2.5rem 3rem 4rem;max-width:680px;margin:0 auto;">
+        <style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+#pub-reassess .re-unused { background:#0d0d0d; color:#e8e2d4; font-family:'IBM Plex Mono',monospace; min-height:100vh; display:flex; align-items:flex-start; justify-content:center; padding:2.5rem 1.2rem 4rem; }
+#pub-reassess .wrap { width:100%; max-width:580px; }
+#pub-reassess .hdr { margin-bottom:2.2rem; }
+#pub-reassess .eyebrow { font-size:0.44rem; letter-spacing:0.3em; text-transform:uppercase; color:#c9a84c; opacity:0.7; margin-bottom:0.5rem; }
+#pub-reassess .big-title { font-family:'Cormorant Garamond',serif; font-size:2.1rem; font-weight:300; line-height:1.2; margin-bottom:0.5rem; }
+#pub-reassess .hdr-sub { font-size:1rem; color:rgba(232,226,212,0.6); line-height:1.8; font-family:'Cormorant Garamond',serif; font-style:italic; }
+#pub-reassess .prog-label { font-size:0.44rem; letter-spacing:0.15em; color:rgba(232,226,212,0.3); margin-bottom:0.35rem; }
+#pub-reassess .prog-bar { width:100%; height:1px; background:rgba(255,255,255,0.07); margin-bottom:2rem; }
+#pub-reassess .prog-fill { height:1px; background:#c9a84c; transition:width 0.6s ease; }
+#pub-reassess .q-block { animation:re-rise 0.4s ease both; }
+@keyframes re-rise { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+#pub-reassess .ack { background:rgba(201,168,76,0.06); border-left:2px solid #c9a84c; padding:0.65rem 0.9rem; font-family:'Cormorant Garamond',serif; font-size:0.95rem; font-style:italic; color:rgba(232,226,212,0.75); line-height:1.6; margin-bottom:1.4rem; animation:re-rise 0.35s ease both; }
+#pub-reassess .q-num { font-size:0.44rem; letter-spacing:0.2em; color:#c9a84c; opacity:0.6; margin-bottom:0.45rem; }
+#pub-reassess .q-text { font-family:'Cormorant Garamond',serif; font-size:1.3rem; font-weight:300; color:#e8e2d4; line-height:1.55; margin-bottom:0.4rem; }
+#pub-reassess .q-sub { font-size:0.56rem; color:rgba(232,226,212,0.38); line-height:1.75; margin-bottom:1.3rem; }
+#pub-reassess .opts { display:flex; flex-direction:column; gap:0.45rem; margin-bottom:0.9rem; }
+#pub-reassess .opt { border:1px solid rgba(255,255,255,0.07); padding:0.8rem 1rem; cursor:pointer; font-size:0.78rem; color:rgba(232,226,212,0.6); line-height:1.55; text-align:left; background:none; width:100%; transition:all 0.18s; font-family:'IBM Plex Mono',monospace; }
+#pub-reassess .opt:hover { border-color:#c9a84c; color:#e8e2d4; background:rgba(201,168,76,0.05); }
+#pub-reassess .opt.sel { border-color:#c9a84c; color:#c9a84c; background:rgba(201,168,76,0.08); }
+#pub-reassess .row-btns { display:flex; align-items:center; gap:1rem; margin-top:1rem; flex-wrap:wrap; }
+#pub-reassess .back-btn { background:none; border:none; font-family:'IBM Plex Mono',monospace; font-size:0.46rem; letter-spacing:0.15em; text-transform:uppercase; color:rgba(232,226,212,0.3); cursor:pointer; padding:0.5rem 0; transition:color 0.18s; }
+#pub-reassess .back-btn:hover { color:rgba(232,226,212,0.6); }
+#pub-reassess .next-btn { background:none; border:1px solid rgba(255,255,255,0.15); font-family:'IBM Plex Mono',monospace; font-size:0.5rem; letter-spacing:0.2em; text-transform:uppercase; color:rgba(232,226,212,0.5); padding:0.55rem 1.3rem; cursor:pointer; transition:all 0.18s; display:none; }
+#pub-reassess .next-btn.show { display:inline-block; }
+#pub-reassess .next-btn:hover { border-color:#c9a84c; color:#c9a84c; }
+#pub-reassess .skip-btn { background:none; border:none; font-family:'IBM Plex Mono',monospace; font-size:0.44rem; letter-spacing:0.14em; text-transform:uppercase; color:rgba(232,226,212,0.25); cursor:pointer; padding:0; transition:color 0.18s; }
+#pub-reassess .skip-btn:hover { color:rgba(232,226,212,0.5); }
+#pub-reassess .skipped-tag { font-size:0.44rem; color:rgba(232,226,212,0.25); font-style:italic; margin-top:0.3rem; }
+#pub-reassess .result { animation:re-rise 0.5s ease both; }
+#pub-reassess .r-badge { display:inline-block; font-size:0.44rem; letter-spacing:0.2em; text-transform:uppercase; padding:0.3rem 0.9rem; margin-bottom:1rem; border:1px solid; }
+#pub-reassess .r-title { font-family:'Cormorant Garamond',serif; font-size:1.7rem; font-weight:300; line-height:1.3; margin-bottom:1rem; }
+.r-#pub-reassess .re-unused { font-size:0.66rem; color:rgba(232,226,212,0.65); line-height:1.9; margin-bottom:0.7rem; }
+#pub-reassess .r-mirror { border:1px solid rgba(255,255,255,0.07); padding:1.1rem 1.3rem; margin:1.3rem 0; }
+#pub-reassess .r-mirror-label { font-size:0.44rem; letter-spacing:0.2em; text-transform:uppercase; color:rgba(232,226,212,0.3); margin-bottom:0.8rem; }
+#pub-reassess .mirror-row { display:flex; gap:0.7rem; align-items:flex-start; margin-bottom:0.55rem; }
+#pub-reassess .m-dot { width:5px; height:5px; border-radius:50%; margin-top:0.38rem; flex-shrink:0; }
+#pub-reassess .m-text { font-size:0.63rem; color:rgba(232,226,212,0.6); line-height:1.65; }
+#pub-reassess .score-section { border:1px solid rgba(255,255,255,0.07); padding:1.1rem 1.3rem; margin:1.2rem 0; }
+#pub-reassess .score-label { font-size:0.44rem; letter-spacing:0.2em; text-transform:uppercase; color:rgba(232,226,212,0.3); margin-bottom:1rem; }
+#pub-reassess .score-row { margin-bottom:0.9rem; }
+#pub-reassess .score-row-top { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:0.3rem; }
+#pub-reassess .score-name { font-size:0.56rem; color:rgba(232,226,212,0.7); }
+#pub-reassess .score-val { font-family:'Cormorant Garamond',serif; font-size:0.9rem; color:#c9a84c; }
+#pub-reassess .score-bar-wrap { height:2px; background:rgba(255,255,255,0.06); width:100%; }
+#pub-reassess .score-bar-fill { height:2px; }
+#pub-reassess .score-why { font-size:0.54rem; color:rgba(232,226,212,0.35); line-height:1.65; margin-top:0.3rem; }
+#pub-reassess .r-note { border-left:2px solid rgba(201,168,76,0.4); padding:0.6rem 0.9rem; font-family:'Cormorant Garamond',serif; font-size:1.0rem; font-style:italic; color:rgba(232,226,212,0.65); line-height:1.6; margin:1.3rem 0; }
+#pub-reassess .r-closing { font-family:'Cormorant Garamond',serif; font-size:1.15rem; font-style:italic; color:#c9a84c; line-height:1.5; margin:1.4rem 0 1.2rem; text-align:center; }
+#pub-reassess .r-disclaimer { font-size:0.54rem; color:rgba(232,226,212,0.25); line-height:1.8; margin-bottom:1.4rem; }
+#pub-reassess .restart-btn { background:none; border:1px solid rgba(255,255,255,0.1); font-family:'IBM Plex Mono',monospace; font-size:0.46rem; letter-spacing:0.15em; text-transform:uppercase; color:rgba(232,226,212,0.3); padding:0.5rem 1rem; cursor:pointer; transition:all 0.18s; }
+#pub-reassess .restart-btn:hover { border-color:rgba(255,255,255,0.2); color:rgba(232,226,212,0.6); }
+#pub-reassess .skips-note { background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); padding:0.8rem 1rem; margin-bottom:1rem; font-size:0.58rem; color:rgba(232,226,212,0.4); line-height:1.75; }
+</style>
+        <div class="wrap">
+          <div class="hdr">
+            <div class="eyebrow">JaceyTrayd &middot; Reassess</div>
+            <div class="big-title">Where do you<br><em>actually</em> stand?</div>
+            <div class="hdr-sub">Not a quiz. A conversation — with yourself, about your money.<br>No PIN. No judgement. Some questions can be skipped. All of it matters.</div>
+          </div>
+          <div id="area-reassess"></div>
+        </div>
+      </div>
+    </div>
+
     <!-- MARKET PAGE -->
     <div id="pub-market" style="display:none;">
       <div id="mkt-page-root" style="padding:2.5rem 3rem 4rem;max-width:1100px;margin:0 auto;">
@@ -2389,6 +2613,7 @@ body {
 
       </div>
     </div>
+
 
     <!-- ASK JACEY INLINE -->
     <div id="pub-ask" style="display:none;">
@@ -3492,6 +3717,74 @@ body {
       </div>
     </article>
 
+    <article class="post" id="post-H15" data-tag="human" onclick="askTogglePost(this)">
+      <div class="post-meta"><span class="post-tag" style="color:#a0cca8;background:rgba(74,124,89,0.1);border-color:rgba(74,124,89,0.2);">Human</span><span class="post-date">Mar 2026</span></div>
+      <h2 class="post-title">What happens if Jacey dies or becomes insolvent? Can we claim from his family?</h2>
+      <p class="post-excerpt">This is the question nobody wants to ask out loud. But it deserves a straight, honest answer.</p>
+      <span class="post-read">Read answer &rarr;</span>
+      <div class="post-body">
+        <span class="answer-label">The plain answer — with nothing softened away</span>
+
+        <p>Let us start with the family question, because it is the most natural instinct and the most important to address clearly.</p>
+
+        <p>Jacey's siblings, parents, and relatives are not part of this arrangement. They never signed anything. They never agreed to anything. They never received your capital or benefited from it. Holding them responsible for an arrangement they had no part in would be like asking your neighbour to pay your friend's debt because they share a surname. The emotional logic is understandable. The legal and moral reality is that it does not work that way.</p>
+
+        <blockquote>"Family proximity is not financial liability. The people who stand next to someone in a photograph are not responsible for what that person borrowed."</blockquote>
+
+        <p>Now for the harder part.</p>
+
+        <p><strong>If Jacey were to die:</strong> the arrangement does not automatically transfer to anyone. What matters is what was documented, what estate exists, and what instructions — if any — were left. Think of it like a shopkeeper who ran a small business entirely on trust and personal relationships. When the shopkeeper is gone, the shop does not simply continue. The debts owed to suppliers sit in a queue alongside every other claim on the estate. Informal private lenders — people like you — are unsecured creditors. In legal terms, that puts you behind taxes, formal loans, and any secured claims. What remains after those is what informal creditors share. That remainder may be small. It may be nothing.</p>
+
+        <p><strong>If Jacey were to become insolvent:</strong> the same logic applies. Personal insolvency means the courts oversee what is left and who gets what. Without a formal promissory note or documented claim, you may not even be officially recognised as a creditor. And even if you are, recovery is not guaranteed.</p>
+
+        <div class="highlight">An illustration: imagine you lend a close friend Rs 5 lakhs over the years, entirely on trust — no contract, no note, no witness. Your friend passes away unexpectedly. His family is grieving. They are not wealthy. There is a small flat, a car, and some savings. The bank has a home loan claim. The government has tax dues. Your Rs 5 lakhs exists only in memory and in whatever messages you exchanged. This is not a hypothetical designed to frighten you. It is simply what private lending looks like when the worst happens.</div>
+
+        <p>The reason this arrangement pays the returns it does — well above any FD or regulated investment — is precisely because it carries this risk. The <strong>private lending alpha</strong> is compensation for the absence of institutional protection. You are not earning more than a bank deposit because someone is being generous. You are earning more because you are bearing a risk that a bank deposit does not carry.</p>
+
+        <p>What reduces that risk is not a legal document, though documentation helps. It is the track record of the person. It is the consistency of repayment over months and years. It is the transparency of the portal, the conversations, the circle of trust that has been built deliberately and carefully. None of that eliminates the risk. But it is the best form of protection that private lending can offer — and for the people who have been here long enough, it has proven to be real.</p>
+
+        <blockquote>"You are not betting on a contract. You are betting on a person. That is a different kind of security — harder to quantify, but no less real when it holds. And it has held, consistently, for years."</blockquote>
+
+        <p>If this answer makes you uncomfortable, that discomfort is appropriate and worth sitting with. It means you are understanding the arrangement clearly — perhaps for the first time. That clarity is more valuable than false reassurance.</p>
+
+        <button class="post-collapse" onclick="event.stopPropagation();askCollapsePost(this)">&uarr; Collapse</button>
+      </div>
+    </article>
+
+    <article class="post" id="post-H16" data-tag="human" onclick="askTogglePost(this)">
+      <div class="post-meta"><span class="post-tag" style="color:#a0cca8;background:rgba(74,124,89,0.1);border-color:rgba(74,124,89,0.2);">Human</span><span class="post-date">Mar 2026</span></div>
+      <h2 class="post-title">I am worried after reading all of this. Can Jacey reassure me that nothing will go wrong?</h2>
+      <p class="post-excerpt">The more I understand, the more uncertain I feel. I need some reassurance.</p>
+      <span class="post-read">Read answer &rarr;</span>
+      <div class="post-body">
+        <span class="answer-label">The plain answer</span>
+
+        <p>No. And it would be dishonest to try.</p>
+
+        <p>Anyone who tells you that nothing will go wrong in a private financial arrangement is either not being truthful or does not understand what they are part of. The risks are real. They have been explained here as clearly as possible precisely so that you can make an informed decision &mdash; not so that you can be talked back into comfort.</p>
+
+        <blockquote>"Reassurance that costs nothing and means nothing is not reassurance. It is just noise."</blockquote>
+
+        <p>What Jacey can tell you honestly is this: the arrangement has run consistently, repayments have been honoured, and the people in this circle have been treated with care and transparency. That track record is real. But a track record is a description of the past. It is not a guarantee of the future.</p>
+
+        <p>If you are worried, here is what actually helps:</p>
+
+        <p><strong>Talk to the people you trust.</strong> Your spouse, a parent, a sibling &mdash; someone who knows your financial situation and can help you think clearly. Not to get permission, but to get perspective. Decisions about where your capital sits are rarely decisions you should make alone.</p>
+
+        <p><strong>Talk to a financial advisor.</strong> A qualified, independent one &mdash; not someone with a product to sell. Describe the arrangement honestly and ask them to help you assess it against your overall financial picture. You may be over-exposed. You may be perfectly positioned. Only someone who understands the full picture can tell you.</p>
+
+        <p><strong>Talk to Jacey.</strong> Directly. Not through this page, not through inference &mdash; an actual conversation about your specific concerns. Jacey would rather have that conversation than have you carry an unspoken worry for months.</p>
+
+        <div class="highlight">And finally &mdash; you are always at liberty to reduce your skin in the game. Partially redeeming, choosing not to top up, or stepping back from the arrangement entirely are all valid choices. Nobody in this circle is holding your capital hostage. The arrangement exists because both sides find value in it. If you no longer do, that is a conversation worth having &mdash; not a failure, not a betrayal. Just an honest reassessment of where you stand.</div>
+
+        <p>The goal of Ask Jacey was never to make you more comfortable. It was to make you more informed. If that information has raised questions &mdash; good. Questions are better than silent assumptions. Ask them.</p>
+
+        <button class="post-collapse" onclick="event.stopPropagation();askCollapsePost(this)">&uarr; Collapse</button>
+      </div>
+    </article>
+
+
+
     <!-- PARKING LOT SECTION -->
     <div class="series-label" style="opacity:0.35;">Parking Lot &middot; Ideas being thought through</div>
 
@@ -3768,149 +4061,129 @@ window.ccUpdateBorrow=function(){
       </div>
     </div>
 
-    <!-- ABOUT JACEY INLINE -->
+
+
+        <!-- ABOUT JACEY INLINE -->
     <div id="pub-aboutj" style="display:none;">
       <div class="inner-page" style="max-width:680px;">
 
         <div class="sec-header">
           <div class="sec-title">About Jacey</div>
-          <div class="sec-sub">The origin story &mdash; why sleeping partners became smarter ones</div>
+          <div class="sec-sub">John Christopher &middot; JC &middot; Bengaluru</div>
         </div>
 
-        <div style="border:1px solid rgba(255,255,255,0.07);padding:0.9rem 1.1rem;background:rgba(255,255,255,0.02);margin-bottom:1.5rem;">
-          <div style="font-family:'IBM Plex Mono',monospace;font-size:0.44rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.6rem;">Before you read on</div>
-          <div style="font-size:0.7rem;color:var(--text-dim);line-height:1.85;margin-bottom:0.6rem;"><strong style="color:var(--text);">Jacey</strong> is the moniker of John Christopher &mdash; or simply JC. The name runs across everything he does.</div>
-          <div style="font-size:0.7rem;color:var(--text-dim);line-height:1.85;margin-bottom:0.7rem;">He operates under three separate brands &mdash; <strong style="color:var(--gold);">JaceyTrayd</strong>, <strong style="color:var(--text);">JaceyLang</strong>, and <strong style="color:var(--text);">Ask Jacey</strong> &mdash; each with a distinct purpose and entirely separate from the others. <strong style="color:var(--text);">This portal is JaceyTrayd only.</strong> What you see here &mdash; the balances, the capital arrangement, the market data &mdash; has nothing to do with the other two brands.</div>
-          <div style="display:flex;flex-direction:column;gap:0.3rem;">
-            <div style="font-size:0.66rem;color:var(--text-dim);"><span style="color:var(--gold);font-family:'Cormorant Garamond',serif;font-size:0.82rem;">JaceyTrayd</span> &nbsp;&mdash;&nbsp; Private credit &middot; This portal &middot; No fees</div>
-            <div style="font-size:0.66rem;color:var(--text-dim);"><span style="color:var(--text);font-family:'Cormorant Garamond',serif;font-size:0.82rem;">JaceyLang</span> &nbsp;&mdash;&nbsp; English &middot; Reports &middot; Poetry &middot; Fees apply &middot; Separate entirely</div>
-            <div style="font-size:0.66rem;color:var(--text-dim);"><span style="color:var(--text);font-family:'Cormorant Garamond',serif;font-size:0.82rem;">Ask Jacey</span> &nbsp;&mdash;&nbsp; Personal finance Q&amp;A &middot; IB training &middot; No fees &middot; Separate entirely</div>
+        <!-- STATS -->
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:2rem;">
+          <div style="background:var(--bg2);padding:0.9rem 1rem;text-align:center;">
+            <div style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:300;color:var(--gold);line-height:1;">~10</div>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:0.4rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);margin-top:0.3rem;">Years in IB &middot; 2005–2014</div>
+          </div>
+          <div style="background:var(--bg2);padding:0.9rem 1rem;text-align:center;">
+            <div style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:300;color:var(--gold);line-height:1;">2015</div>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:0.4rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);margin-top:0.3rem;">JaceyTrayd founded</div>
+          </div>
+          <div style="background:var(--bg2);padding:0.9rem 1rem;text-align:center;">
+            <div style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:300;color:var(--gold);line-height:1;">3</div>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:0.4rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);margin-top:0.3rem;">Brands &middot; All separate</div>
           </div>
         </div>
 
-        <div class="about-lead">Most of the people who place capital with JaceyTrayd did not come looking for a trading partner. They came because they had already tried trading themselves &mdash; and discovered, the hard way, that knowing what to do and being able to do it are two completely different things.</div>
+        <!-- WHERE IT STARTED -->
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:0.42rem;letter-spacing:0.26em;text-transform:uppercase;color:var(--gold);opacity:0.5;margin-bottom:0.5rem;">Where it all started</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:300;color:var(--text);margin-bottom:1rem;line-height:1.3;">Ten years inside the machine that moves money</div>
 
-        <div style="border-top:1px solid var(--border);margin:1.8rem 0;"></div>
+        <div class="about-lead">Before any of this existed, Jacey spent nearly a decade working inside investment banking — not on the floor, not making calls on screens, but in the operational core where the consequences of bad capital management are immediate and unambiguous.</div>
 
-        <hr style="border:none;border-top:1px solid var(--border);margin:2rem 0;">
-        <div style="font-size:0.48rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);opacity:0.7;margin-bottom:0.5rem;">Before all of this</div>
-        <div style="font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:300;color:var(--text);margin-bottom:1rem;">The years inside the machine</div>
-
-        <div style="font-size:0.72rem;color:var(--text-dim);line-height:1.9;margin-bottom:0.9rem;">Before JaceyTrayd existed &mdash; before any of this &mdash; I spent nearly ten years working in investment banking operations. From <strong>2005 to 2014</strong>, across <strong>five different firms</strong>. Not on the trading floor, not in front of a Bloomberg terminal making calls. In the back office and middle office, where the actual plumbing of finance lives.</div>
-
-        <div style="font-size:0.72rem;color:var(--text-dim);line-height:1.9;margin-bottom:0.9rem;">I worked across <strong>treasury services</strong>, <strong>foreign exchange prime brokerage</strong>, <strong>collateral management</strong>, <strong>stock borrows &amp; lends (SBL)</strong>, and <strong>reference data management</strong>. But the work I was closest to &mdash; and that shaped how I think about capital, risk, and obligation &mdash; was <span style="color:var(--gold);">margin management</span> and <span style="color:var(--gold);">collateral disputes</span>.</div>
-
-        <div style="border-left:2px solid var(--gold);padding:0.7rem 1rem;margin:1.4rem 0;font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-style:italic;color:var(--text);line-height:1.65;background:rgba(201,168,76,0.03);">"Margin management is where you learn that capital is not abstract. It is a specific number, owed by a specific counterparty, at a specific time. When it does not arrive, things break quickly."</div>
-
-        <div style="font-size:0.72rem;color:var(--text-dim);line-height:1.9;margin-bottom:0.9rem;">I say this not to impress, but to give context. When I talk about margin calls, collateral, credit risk, or what happens when a position goes wrong &mdash; I am not reading from a textbook. I have been in the rooms where those conversations happen, at scale, on behalf of institutions. The concepts that sound technical in a blog post were, for several years, simply my job.</div>
-
-        <div style="font-size:0.72rem;color:var(--text-dim);line-height:1.9;margin-bottom:0.9rem;">I worked both as part of <span style="color:var(--gold);">third-party service providers</span> and within <span style="color:var(--gold);">centres of excellence</span> &mdash; the internal teams that set standards and resolve the hard problems across a large organisation. Neither was glamorous. Both were educational in ways that no course could replicate.</div>
-
-        <div style="font-size:0.72rem;color:var(--text-dim);line-height:1.9;margin-bottom:1.4rem;">Alongside the operations roles, I also did a brief internship at a <span style="color:var(--gold);">proprietary trading firm</span> &mdash; as a trader who earns a share of whatever profits they generate for the firm. No salary, no base. Just a cut of what you make. It was short, intentional, and specifically to understand what a prop desk actually feels like from the inside rather than from the operations side of the same building.
-
-        That background is what eventually led me here &mdash; away from institutions and toward something smaller, more personal, and entirely my own. JaceyTrayd is, in many ways, a private application of everything I spent those years learning about how capital moves, what protects it, and what erodes it.</div>
-
-        <div style="border:1px solid rgba(255,255,255,0.08);padding:0.9rem 1.1rem;background:rgba(255,255,255,0.02);margin-bottom:1.4rem;">
-          <div style="font-size:0.48rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.5rem;">Also worth knowing</div>
-          <div style="font-size:0.72rem;color:var(--text-dim);line-height:1.85;">From time to time I conduct investment banking related training sessions &mdash; on topics like margin, collateral, and financial market operations. This is freelance work, entirely outside my control in terms of scheduling and availability, and operates under the <strong style="color:var(--text);">Ask Jacey</strong> brand. It is not offered through JaceyTrayd, and no fees from training flow into the private credit arrangement.</div>
+        <div style="display:flex;flex-wrap:wrap;gap:0.35rem;margin:0.9rem 0 1rem;">
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:0.44rem;letter-spacing:0.08em;text-transform:uppercase;border:1px solid rgba(232,196,90,0.3);padding:0.25rem 0.6rem;color:var(--gold);">Margin management</span>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:0.44rem;letter-spacing:0.08em;text-transform:uppercase;border:1px solid rgba(232,196,90,0.3);padding:0.25rem 0.6rem;color:var(--gold);">Collateral disputes</span>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:0.44rem;letter-spacing:0.08em;text-transform:uppercase;border:1px solid var(--border);padding:0.25rem 0.6rem;color:var(--text-muted);">Treasury services</span>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:0.44rem;letter-spacing:0.08em;text-transform:uppercase;border:1px solid var(--border);padding:0.25rem 0.6rem;color:var(--text-muted);">FX Prime Brokerage</span>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:0.44rem;letter-spacing:0.08em;text-transform:uppercase;border:1px solid var(--border);padding:0.25rem 0.6rem;color:var(--text-muted);">Stock Borrows &amp; Lends</span>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:0.44rem;letter-spacing:0.08em;text-transform:uppercase;border:1px solid var(--border);padding:0.25rem 0.6rem;color:var(--text-muted);">Reference data</span>
         </div>
 
-        <div style="font-size:0.48rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);opacity:0.7;margin-bottom:0.5rem;">The pattern</div>
-        <div style="font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:300;color:var(--text);margin-bottom:1rem;">The pattern I kept seeing</div>
+        <div class="about-lead">He worked across five firms — as part of third-party service providers and within centres of excellence. He also did a brief internship at a <strong>proprietary trading firm</strong>, profit-share model, no salary — to understand what a prop desk feels like from the inside, not just from operations.</div>
 
-        <div style="font-size:0.72rem;color:var(--text-dim);line-height:1.85;margin-bottom:0.9rem;">Over the years, I noticed something curious among people who approached me. They were not financially naive. Many had read the books, watched the videos, opened the accounts. Some had stretches of genuine success &mdash; weeks or months where everything clicked.</div>
-        <div style="font-size:0.72rem;color:var(--text-dim);line-height:1.85;margin-bottom:0.9rem;">But then came the other months. And in those months, what broke them was not a lack of knowledge. It was something far more familiar &mdash; something every one of us has felt in a different corner of life. <strong style="color:var(--text);">They pocketed their wins quickly, afraid the moment would pass. And they held their losses for too long, hoping the tide would turn.</strong> Small gains, taken early. Large losses, carried silently. The maths of that only goes one direction.</div>
-        <div style="font-size:0.72rem;color:var(--text-dim);line-height:1.85;margin-bottom:0.9rem;">Some went looking for shortcuts. Telegram channels promising hot tips. Paid software claiming to generate signals. Systems that looked like edges but were really just noise dressed up in dashboards. Not because these people were foolish &mdash; but because the market is very good at selling the illusion that someone else has the answer, and that all you need is access to it.</div>
-        <div style="font-size:0.72rem;color:var(--text-dim);line-height:1.85;margin-bottom:0.9rem;">Eventually, one by one, they arrived at a quieter conclusion. Not the excitement of a winning trade or the promise of a system that would finally work &mdash; but something more grounded. A known person. A transparent arrangement. Returns that were real, even if they were not spectacular. And above all, a sense of partnership &mdash; that their capital was being looked after by someone who had skin in the game and a reputation worth protecting.</div>
-        <div style="font-size:0.72rem;color:var(--text-dim);line-height:1.85;margin-bottom:1.4rem;">That is how most people find their way here. Not through a pitch or an advertisement. Through the slow, honest process of eliminating everything that did not work &mdash; and recognising something that does.</div>
+        <div style="border-left:2px solid var(--gold);padding:0.65rem 1rem;margin:1.5rem 0;font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-style:italic;color:var(--text);line-height:1.6;">"Margin management is where you learn that capital is not abstract. It is a specific number, owed by a specific counterparty, at a specific time. When it does not arrive, things break quickly."</div>
 
-        <div style="border-left:2px solid var(--gold);padding:0.7rem 1rem;margin:1.4rem 0;font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-style:italic;color:var(--text);line-height:1.6;background:rgba(201,168,76,0.03);">"When it was going well, they took small profits quickly &mdash; afraid to lose what they had. When it was going badly, they held on too long &mdash; afraid to admit they were wrong. The maths of that pattern only goes one direction."</div>
+        <div class="about-lead">What those years gave him was not a credential. It was a lens — the ability to see the difference between knowing risk and actually managing it. That distinction became the foundation of everything that came next.</div>
 
-        <div style="font-size:0.72rem;color:var(--text-dim);line-height:1.85;margin-bottom:0.9rem;">This is not a character flaw. It is how human beings are wired. The brain that kept our ancestors alive &mdash; take the certain small gain, avoid the uncertain large loss &mdash; is precisely the wrong brain for financial markets. Markets reward patience and punish panic.</div>
-        <div style="font-size:0.72rem;color:var(--text-dim);line-height:1.85;margin-bottom:1.4rem;">So they came to me with a proposition: <em>let me participate in your results without having to make the decisions myself.</em> A sleeping partner. Capital without the emotional exposure.</div>
+        <div style="border-top:1px solid var(--border);margin:2rem 0;"></div>
 
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.6rem;margin:1.6rem 0;">
-          <div style="border:1px solid rgba(201,168,76,0.3);padding:0.9rem 1rem;text-align:center;">
-            <div style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--gold);font-weight:300;line-height:1;">Est.<br>2015</div>
-            <div style="font-size:0.46rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-muted);margin-top:0.4rem;">Founded</div>
+        <!-- THE TRANSITION -->
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:0.42rem;letter-spacing:0.26em;text-transform:uppercase;color:var(--gold);opacity:0.5;margin-bottom:0.5rem;">From institution to arrangement</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:300;color:var(--text);margin-bottom:1rem;line-height:1.3;">Why he left — and what he built instead</div>
+
+        <div class="about-lead">Institutional finance is not designed for intimacy. It is designed for scale. The further he went inside it, the more he saw how the distance between the person whose money was at risk and the person responsible for it created its own kind of damage.</div>
+
+        <div class="about-lead">JaceyTrayd was built on the opposite principle. <strong>A closed circle of known individuals. Fixed returns, not fund performance. No intermediaries. No distance.</strong> The person responsible for the capital is personally accountable to the people who placed it — not through a compliance framework, but through a relationship.</div>
+
+        <div style="border-left:2px solid var(--gold);padding:0.65rem 1rem;margin:1.5rem 0;font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-style:italic;color:var(--text);line-height:1.6;">"I did not want to manage a fund. I wanted to build something where the accountability was personal — where the people who trusted me with their capital could also look me in the eye."</div>
+
+        <div class="about-lead">It started in October 2015. It has stayed small, deliberately. Every person in the arrangement is there because of a direct, personal relationship — not because of a brochure or a return projection.</div>
+
+        <div style="border-top:1px solid var(--border);margin:2rem 0;"></div>
+
+        <!-- HOW MEMBERS ARRIVED -->
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:0.42rem;letter-spacing:0.26em;text-transform:uppercase;color:var(--gold);opacity:0.5;margin-bottom:0.5rem;">The people in the arrangement</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:300;color:var(--text);margin-bottom:1rem;line-height:1.3;">How most of them found their way here</div>
+
+        <div style="display:flex;flex-direction:column;">
+          <div style="display:grid;grid-template-columns:70px 1fr;gap:0.8rem;padding:0.8rem 0;border-bottom:1px solid var(--border);">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:0.44rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);opacity:0.55;padding-top:0.2rem;">First</div>
+            <div style="font-size:0.78rem;color:var(--text-dim);line-height:1.75;">They tried trading themselves. Read the books, understood the theory. The early months of small wins felt like proof.</div>
           </div>
-          <div style="border:1px solid var(--border);padding:0.9rem 1rem;text-align:center;">
-            <div style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--text);font-weight:300;line-height:1;">10+</div>
-            <div style="font-size:0.46rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-muted);margin-top:0.4rem;">Years trading</div>
+          <div style="display:grid;grid-template-columns:70px 1fr;gap:0.8rem;padding:0.8rem 0;border-bottom:1px solid var(--border);">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:0.44rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);opacity:0.55;padding-top:0.2rem;">Then</div>
+            <div style="font-size:0.78rem;color:var(--text-dim);line-height:1.75;">The other months arrived. <strong style="color:var(--text);">They took profits quickly, afraid the moment would pass. They held losses too long, convinced the tide would turn.</strong> Small wins, large losses. The mathematics only moves one way.</div>
           </div>
-          <div style="border:1px solid var(--border);padding:0.9rem 1rem;text-align:center;">
-            <div style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--text);font-weight:300;line-height:1;">BLR</div>
-            <div style="font-size:0.46rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-muted);margin-top:0.4rem;">Bengaluru</div>
+          <div style="display:grid;grid-template-columns:70px 1fr;gap:0.8rem;padding:0.8rem 0;border-bottom:1px solid var(--border);">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:0.44rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);opacity:0.55;padding-top:0.2rem;">After</div>
+            <div style="font-size:0.78rem;color:var(--text-dim);line-height:1.75;">Some looked for shortcuts — Telegram channels, paid signal software. Not foolish people. Just people the market is very skilled at misleading.</div>
           </div>
-        </div>
-
-        <div style="border-top:1px solid var(--border);margin:1.8rem 0;"></div>
-        <div style="font-size:0.48rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);opacity:0.7;margin-bottom:0.5rem;">Concepts</div>
-        <div style="font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:300;color:var(--text);margin-bottom:1.2rem;">The ideas, without the jargon</div>
-
-        <!-- Beta -->
-        <div style="border:1px solid rgba(201,168,76,0.18);background:rgba(201,168,76,0.03);padding:1.2rem 1.4rem;margin-bottom:1rem;position:relative;">
-          <div style="font-size:0.44rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);opacity:0.7;margin-bottom:0.4rem;">Concept 01</div>
-          <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--text);margin-bottom:0.6rem;">Beta &mdash; riding the market</div>
-          <div style="font-size:0.7rem;color:var(--text-dim);line-height:1.85;">Beta measures how much an investment moves with the overall market. A beta of 1.0 means your portfolio tracks the Nifty exactly. A beta of 1.5 means you gain 50% more when markets rise &mdash; and lose 50% more when they fall. Most mutual funds have a beta close to 1. They are essentially the market, with a fee attached. <strong style="color:var(--text);">Beating the market means generating returns that cannot be explained by beta alone.</strong> That extra return has a name.</div>
-        </div>
-
-        <!-- Alpha -->
-        <div style="border:1px solid rgba(201,168,76,0.18);background:rgba(201,168,76,0.03);padding:1.2rem 1.4rem;margin-bottom:1rem;">
-          <div style="font-size:0.44rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);opacity:0.7;margin-bottom:0.4rem;">Concept 02</div>
-          <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--text);margin-bottom:0.6rem;">Alpha &amp; Jensen&rsquo;s Alpha &mdash; the return nobody gave you</div>
-          <div style="font-size:0.7rem;color:var(--text-dim);line-height:1.85;">Alpha is the return above and beyond what the market handed you for simply being invested. If the market returns 12% and your portfolio returns 18%, your alpha is 6% &mdash; from skill and edge, not luck.<br><br><strong style="color:var(--text);">Jensen&rsquo;s Alpha</strong> measures this after adjusting for the risk taken. A high Jensen&rsquo;s Alpha means more return per unit of risk than the market offered. When JaceyTrayd participants earn 24&ndash;36% per year while the benchmark delivers 12%, that gap is alpha.</div>
-        </div>
-
-        <!-- Random Walk -->
-        <div style="border:1px solid rgba(201,168,76,0.18);background:rgba(201,168,76,0.03);padding:1.2rem 1.4rem;margin-bottom:1rem;">
-          <div style="font-size:0.44rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);opacity:0.7;margin-bottom:0.4rem;">Concept 03</div>
-          <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--text);margin-bottom:0.6rem;">Random Walk Theory &mdash; and why it is not the whole story</div>
-          <div style="font-size:0.7rem;color:var(--text-dim);line-height:1.85;">Burton Malkiel argued that stock prices move randomly and no strategy can consistently beat the market. He was mostly right &mdash; most active funds do not beat the benchmark after fees.<br><br>But &ldquo;mostly right&rdquo; leaves room for something important. <strong style="color:var(--text);">Markets are not perfectly efficient. There are persistent anomalies in volatility, liquidity, and human behaviour that a disciplined trader can exploit repeatedly.</strong> Edge lives in those corners &mdash; small, temporary, but real.</div>
-        </div>
-
-        <!-- Loss Aversion -->
-        <div style="border:1px solid rgba(201,168,76,0.18);background:rgba(201,168,76,0.03);padding:1.2rem 1.4rem;margin-bottom:1.6rem;">
-          <div style="font-size:0.44rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);opacity:0.7;margin-bottom:0.4rem;">Concept 04</div>
-          <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--text);margin-bottom:0.6rem;">Loss aversion &mdash; why knowing is not enough</div>
-          <div style="font-size:0.7rem;color:var(--text-dim);line-height:1.85;">Kahneman&rsquo;s Nobel-winning research found that losses feel roughly twice as painful as equivalent gains feel good. In trading this means most people cut winners too early and hold losers too long. Small wins, large losses &mdash; a pattern mathematically guaranteed to destroy capital over time.<br><br><strong style="color:var(--text);">This is why people who understand markets perfectly can still fail at trading them.</strong> The sleeping partner model exists precisely to remove this variable.</div>
-        </div>
-
-        <div style="border-left:2px solid var(--gold);padding:0.7rem 1rem;margin:1.4rem 0;font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-style:italic;color:var(--text);line-height:1.6;background:rgba(201,168,76,0.03);">"A sleeping partner is not a passive partner. They are a wise one &mdash; wise enough to know that their own involvement in the decisions would make the outcomes worse, not better."</div>
-
-
-        <hr style="border:none;border-top:1px solid var(--border);margin:2rem 0;">
-        <div style="font-size:0.48rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);opacity:0.7;margin-bottom:0.5rem;">Important</div>
-        <div style="font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:400;color:var(--text);margin-bottom:0.8rem;">What JaceyTrayd does not do</div>
-
-        <p style="font-size:0.68rem;color:var(--text-muted);line-height:1.8;">JaceyTrayd does not offer paid services of any kind. No account handling fees, no stock market education courses, no trading software for sale, no signal subscriptions. If you have been approached by anyone claiming to represent JaceyTrayd and asking for money in exchange for any of these &mdash; that is not us.</p>
-        <p style="font-size:0.68rem;color:var(--text-muted);line-height:1.8;">The arrangement is simple: capital is placed, returns are paid, and no fees are ever charged to participants. That is the entirety of it.</p>
-
-        <hr style="border:none;border-top:1px solid var(--border);margin:2rem 0;">
-        <div style="font-size:0.48rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);opacity:0.7;margin-bottom:0.5rem;">Other work</div>
-        <div style="font-family:'IBM Plex Mono',monospace;font-size:0.48rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.8rem;">Other work by John Christopher</div>
-
-        <div style="font-size:0.68rem;color:var(--text-muted);margin-bottom:0.7rem;">Three distinct identities, each with a separate purpose:</div>
-        <div style="display:flex;flex-direction:column;gap:0.5rem;margin:0.6rem 0 1.2rem;">
-          <div style="border-left:2px solid var(--gold);padding:0.7rem 1.1rem;background:rgba(201,168,76,0.03);">
-            <div style="font-family:'Cormorant Garamond',serif;font-size:0.9rem;font-weight:500;color:var(--text);margin-bottom:0.15rem;">JaceyTrayd</div>
-            <div style="font-size:0.72rem;color:var(--text-dim);line-height:1.7;">Private credit arrangement. Capital placed by known individuals, returns paid monthly or at maturity. <strong style="color:var(--text);">No fees of any kind.</strong></div>
-          </div>
-          <div style="border-left:2px solid rgba(255,255,255,0.15);padding:0.7rem 1.1rem;background:rgba(255,255,255,0.02);">
-            <div style="font-family:'Cormorant Garamond',serif;font-size:0.9rem;font-weight:500;color:var(--text);margin-bottom:0.15rem;">JaceyLang</div>
-            <div style="font-size:0.72rem;color:var(--text-dim);line-height:1.7;">English language instruction, report writing, and poetry services. Professional fees apply. Entirely separate from JaceyTrayd.</div>
-          </div>
-          <div style="border-left:2px solid rgba(255,255,255,0.15);padding:0.7rem 1.1rem;background:rgba(255,255,255,0.02);">
-            <div style="font-family:'Cormorant Garamond',serif;font-size:0.9rem;font-weight:500;color:var(--text);margin-bottom:0.15rem;">Ask Jacey</div>
-            <div style="font-size:0.72rem;color:var(--text-dim);line-height:1.7;">Personal advice on matters of personal finance &mdash; the questions people have but rarely ask. <strong style="color:var(--text);">No fees. No agenda.</strong> Just plain, honest answers.</div>
+          <div style="display:grid;grid-template-columns:70px 1fr;gap:0.8rem;padding:0.8rem 0;">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:0.44rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);opacity:0.55;padding-top:0.2rem;">Finally</div>
+            <div style="font-size:0.78rem;color:var(--text-dim);line-height:1.75;">One by one, they arrived at something quieter. A known person. Transparent terms. Returns that were real, if not extraordinary. <strong style="color:var(--text);">Capital looked after by someone with their own reputation on the line.</strong></div>
           </div>
         </div>
 
-        <div style="font-size:0.68rem;color:var(--text-muted);line-height:1.8;font-style:italic;margin-top:1.4rem;">This page exists because too many good people had questions they never felt comfortable asking. If something here raised a new question &mdash; use the Ask Jacey button to explore further.</div>
+        <div style="border-top:1px solid var(--border);margin:2rem 0;"></div>
+
+        <!-- THREE BRANDS -->
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:0.42rem;letter-spacing:0.26em;text-transform:uppercase;color:var(--gold);opacity:0.5;margin-bottom:0.5rem;">One person, three brands</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:300;color:var(--text);margin-bottom:0.9rem;line-height:1.3;">Separate purposes. Clearly separated.</div>
+
+        <div class="about-lead">Jacey operates under three distinct brands. They share a name and a person. Nothing else crosses between them.</div>
+
+        <table style="width:100%;border-collapse:collapse;border:1px solid var(--border);margin:1rem 0;">
+          <tr>
+            <td style="padding:0.7rem 0.9rem;border-bottom:1px solid var(--border);font-family:'Cormorant Garamond',serif;font-size:0.98rem;color:var(--gold);white-space:nowrap;">JaceyTrayd</td>
+            <td style="padding:0.7rem 0.9rem;border-bottom:1px solid var(--border);font-size:0.72rem;color:var(--text-dim);line-height:1.65;">Private credit. Capital placed by known individuals, returns paid monthly or at maturity. This portal.</td>
+            <td style="padding:0.7rem 0.9rem;border-bottom:1px solid var(--border);font-family:'IBM Plex Mono',monospace;font-size:0.42rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);white-space:nowrap;">No fees</td>
+          </tr>
+          <tr>
+            <td style="padding:0.7rem 0.9rem;border-bottom:1px solid var(--border);font-family:'Cormorant Garamond',serif;font-size:0.98rem;color:var(--text);white-space:nowrap;">JaceyLang</td>
+            <td style="padding:0.7rem 0.9rem;border-bottom:1px solid var(--border);font-size:0.72rem;color:var(--text-dim);line-height:1.65;">English instruction, report writing, and poetry. Entirely separate from JaceyTrayd.</td>
+            <td style="padding:0.7rem 0.9rem;border-bottom:1px solid var(--border);font-family:'IBM Plex Mono',monospace;font-size:0.42rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);white-space:nowrap;">Fees apply</td>
+          </tr>
+          <tr>
+            <td style="padding:0.7rem 0.9rem;font-family:'Cormorant Garamond',serif;font-size:0.98rem;color:var(--text);white-space:nowrap;">Ask Jacey</td>
+            <td style="padding:0.7rem 0.9rem;font-size:0.72rem;color:var(--text-dim);line-height:1.65;">Personal finance Q&amp;A and IB training. Honest answers to questions people carry quietly.</td>
+            <td style="padding:0.7rem 0.9rem;font-family:'IBM Plex Mono',monospace;font-size:0.42rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);white-space:nowrap;">No fees</td>
+          </tr>
+        </table>
+
+        <!-- WARN -->
+        <div style="border:1px solid rgba(201,122,122,0.18);background:rgba(201,122,122,0.03);padding:0.9rem 1.1rem;margin:1.8rem 0;">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:0.4rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(201,122,122,0.65);margin-bottom:0.4rem;">&#9651; One thing to be clear about</div>
+          <div class="about-lead" style="font-size:0.72rem;margin-bottom:0;">JaceyTrayd does not offer paid services of any kind — no courses, no software, no signals, no fees. If anyone has approached you claiming to represent JaceyTrayd and asking for money, <strong>that is not us.</strong></div>
+        </div>
+
+        <div style="font-size:0.7rem;color:var(--text-muted);line-height:1.85;font-style:italic;margin-top:1.5rem;">This page exists because too many good people had questions they never felt comfortable asking. If something here raised a new one — use the Ask Jacey button to explore further.</div>
 
       </div>
     </div>
-
     <div id="pub-hist" style="display:none;">
   <div class="inner-page" style="max-width:680px;">
 
@@ -7808,13 +8081,14 @@ function askCollapsePost(btn) { btn.closest('.post-body').classList.remove('open
 function loadAboutJacey() { /* static content, nothing to load */ }
 
 function openPublic(page) {
-  ['pub-rates','pub-about','pub-calc','pub-know','pub-hist','pub-market','pub-stocks','pub-ask','pub-aboutj'].forEach(function(id){
+  ['pub-rates','pub-about','pub-calc','pub-know','pub-hist','pub-market','pub-stocks','pub-ask','pub-aboutj','pub-reassess'].forEach(function(id){
     var el = document.getElementById(id);
     if (el) el.style.display = 'none';
   });
   var target = document.getElementById('pub-' + page);
   if (target) target.style.display = 'block';
   if (page === 'rates') renderPubRates();
+  if (page === 'reassess') { reState={cur:0,ans:{},scores:{S:0,D:0,T:0,U:0,O:0,R:0,A:0}}; reRender(); }
   if (page === 'hist') renderHistStats();
   if (page === 'market') loadMarketPage();
   if (page === 'stocks') initStocksPage();
@@ -8783,6 +9057,309 @@ function ccPrintSummary(callId) {
 }
 
 
+
+
+
+
+
+var SECTION_ENDS={'life':true,'sayno':true,'worstcase':true,'future':true,'emergency':true};
+var QS=[
+{id:'age',skippable:true,skipW:{A:2},ack:null,
+text:'How old are you?',sub:'Age changes how we read everything else you tell us.',
+opts:[{l:'Under 30',w:{A:0}},{l:'30s',w:{A:1}},{l:'40s',w:{A:2}},{l:'50s',w:{A:3,D:1}},{l:'60 or above',w:{A:4,D:2}}]},
+
+{id:'life',skippable:true,skipW:{A:1,D:1},
+ack:{'Under 30':'Early in the financial journey. That shapes what risk actually means for you.','30s':'The decade when financial decisions tend to compound — for better or worse.','40s':'Often when responsibilities peak and capital decisions carry the most weight.','50s':'Capital protection starts to matter more than capital growth at this stage.','60 or above':'Every placement at this stage deserves more scrutiny, not less.'},
+text:'What is your current life situation?',sub:'Dependants change the meaning of every financial decision.',
+opts:[{l:'Single, no dependants',w:{D:0}},{l:'Married, no children',w:{D:1}},{l:'Married with children',w:{D:2,A:1}},{l:'Retired or semi-retired',w:{D:3,A:3}},{l:'Supporting elderly parents',w:{D:2,S:1}}]},
+
+{id:'income',skippable:true,skipW:{D:2},
+ack:{'Single, no dependants':'A simpler financial picture — which is an advantage.','Married, no children':'Shared financial life, some buffer. But shared decisions too.','Married with children':'More people depend on the decisions you make.','Retired or semi-retired':'Capital you cannot afford to lose deserves extra protection.','Supporting elderly parents':'Two generations depending on you changes the risk calculation.'},
+text:'Where does most of your income come from?',sub:'This tells us how exposed you really are if this arrangement runs into trouble.',
+opts:[{l:'Regular salary',w:{D:0}},{l:'Business income',w:{D:1,S:1}},{l:'Multiple sources including investments',w:{D:0}},{l:'Primarily from investments and returns',w:{D:3,S:2}},{l:'Retired — living off savings',w:{D:4,A:2}}]},
+
+{id:'whose',skippable:true,skipW:{S:2,O:-1},
+ack:{'Regular salary':'A salary gives you a cushion. That matters.','Business income':'Business income can be variable. That adds a layer of exposure.','Multiple sources including investments':'Diversified income is a real strength here.','Primarily from investments and returns':'If this arrangement is part of that income base — the dependency runs deep.','Retired — living off savings':'Savings-based income means every placement carries higher stakes.'},
+text:'Whose money is placed here?',sub:'Family money carries different weight than personal idle savings.',
+opts:[{l:'Entirely mine — my own savings',w:{O:2,S:0}},{l:'Mine, but my spouse is aware',w:{O:2,S:0}},{l:'Shared family money — jointly decided',w:{O:1,S:1}},{l:'Family money — not everyone knows',w:{O:0,S:3}},{l:'Partly borrowed or funds others rely on',w:{D:4,S:4,O:-1}}]},
+
+{id:'howcame',skippable:false,
+ack:{'Entirely mine — my own savings':'That clarity of ownership matters. The decision was yours.','Mine, but my spouse is aware':'Being on the same page at home reduces a hidden layer of stress.','Shared family money — jointly decided':'Shared decisions hold up better under pressure.','Family money — not everyone knows':'That gap — between what you know and what others know — is worth closing.','Partly borrowed or funds others rely on':'This is the most important flag yet. We will come back to this.'},
+text:'How did you come to be part of this arrangement?',sub:'Not judging the path — just understanding how the decision was made.',
+opts:[{l:'I sought it out after knowing Jacey well',w:{O:3,T:2}},{l:'Someone I trust introduced me and I felt confident',w:{O:2,T:2}},{l:'I was approached and it seemed like a good deal',w:{O:1,T:1}},{l:'I joined because someone close to me was in it',w:{O:0,T:1,S:1}},{l:"I am not sure how clearly I decided",w:{O:-1,U:-1,S:2}}]},
+
+{id:'knowjacey',skippable:false,
+ack:{'I sought it out after knowing Jacey well':'Self-directed and relationship-grounded. That is the strongest foundation.','Someone I trust introduced me and I felt confident':'An introduction from someone trusted is a meaningful starting point.','I was approached and it seemed like a good deal':'Worth asking: did you join because of the person or because of the return?','I joined because someone close to me was in it':'Following someone else in means your due diligence may have been lighter.','I am not sure how clearly I decided':'That honesty is valuable. Unclear entry decisions tend to surface later.'},
+text:'How well do you personally know Jacey — outside this arrangement?',sub:'"Known for years" and "known through someone" are fundamentally different things.',
+opts:[{l:'Known for many years, personally and directly',w:{T:4,R:3}},{l:'Known reasonably well for a few years',w:{T:3,R:2}},{l:'Know through someone else — not deeply',w:{T:2,R:1}},{l:'Mostly through this arrangement only',w:{T:1,R:0}},{l:'Barely know personally',w:{T:0,R:0,S:2}}]},
+
+{id:'sayno',skippable:true,skipW:{R:-2,S:2},
+ack:{'Known for many years, personally and directly':'A long, direct relationship is the closest thing to real security in a private arrangement.','Known reasonably well for a few years':'Enough history to have a baseline. Good.','Know through someone else — not deeply':'That intermediary layer means indirect trust. It works — but the foundation is thinner.','Mostly through this arrangement only':'The arrangement is the relationship. That is a narrower foundation than ideal.','Barely know personally':'This is significant. We will weigh it carefully.'},
+text:'If Jacey asked you to increase your capital — how easy would it be to say no?',sub:'This is about the relationship dynamic, not the money itself.',
+opts:[{l:'Very easy — I decide based on my own situation',w:{O:3,R:3}},{l:'Easy enough, though I would feel slightly awkward',w:{O:2,R:2}},{l:'I would probably say yes even if I had doubts',w:{O:0,R:0,S:2}},{l:'I genuinely find it hard to say no to Jacey',w:{O:-1,R:-1,S:3}},{l:'I have never thought about this',w:{O:1,U:-1}}]},
+
+{id:'vanish',skippable:false,
+ack:{'Very easy — I decide based on my own situation':'That autonomy is healthy. The best creditor is one who can say no.','Easy enough, though I would feel slightly awkward':'A little friction is normal. What matters is that you could still say no.','I would probably say yes even if I had doubts':'Agreeing despite doubt — where else does that pattern show up?','I genuinely find it hard to say no to Jacey':'This is one of the most important things you have said. Sit with it.','I have never thought about this':"The fact that you haven't thought about it is itself an answer."},
+text:'If this entire corpus disappeared tomorrow — what changes in your life in the next six months?',sub:'Not catastrophising. Honest assessment of real dependency.',
+opts:[{l:'Nothing immediate — genuinely surplus capital',w:{D:0,S:0}},{l:'It would hurt but I would manage',w:{D:2,S:1}},{l:'Real financial disruption to my household',w:{D:4,S:3}},{l:'I would be in serious difficulty',w:{D:5,S:5}},{l:'It is not my money to lose alone',w:{D:3,S:4,O:-1}}]},
+
+{id:'emergency',skippable:true,skipW:{D:3},
+ack:{'Nothing immediate — genuinely surplus capital':'Surplus capital in a private arrangement is exactly what this is designed for.','It would hurt but I would manage':'Some dependency — manageable but real.','Real financial disruption to my household':'That level of dependency means this capital carries more weight than an investment should.','I would be in serious difficulty':'The most significant signal so far. The arrangement may be carrying more than it should.','It is not my money to lose alone':"Other people's dependency on this decision is a meaningful pressure."},
+text:'Outside of what is placed here — do you have six months of living expenses available?',sub:'Not about wealth. About the buffer between you and a crisis.',
+opts:[{l:'Yes, comfortably',w:{D:0}},{l:'Yes, just about',w:{D:1}},{l:'Not really',w:{D:3,S:2}},{l:'No — this is most of what I have',w:{D:5,S:4}}]},
+
+{id:'returnday',skippable:false,
+ack:{'Yes, comfortably':'A genuine cushion. That is real financial resilience.','Yes, just about':'A thin buffer. Not alarming, but worth building.','Not really':'Without a buffer outside this arrangement, you are more exposed than the returns suggest.','No — this is most of what I have':'The clearest signal of over-concentration we have seen so far.'},
+text:'On the day returns are expected — describe your honest emotional reState.',sub:'This question reveals more than any financial metric.',
+opts:[{l:'I barely think about it until I see the credit',w:{S:0,T:3}},{l:'I notice but I am not anxious',w:{S:1,T:2}},{l:'I find myself checking more than once',w:{S:2,T:1}},{l:'There is real tension until it arrives',w:{S:4,T:0}},{l:'I have stopped expecting it on a specific date',w:{S:3,T:1,U:1}}]},
+
+{id:'delay',skippable:true,skipW:{},
+ack:{'I barely think about it until I see the credit':'That ease is earned. It reflects consistent delivery over time.','I notice but I am not anxious':'Healthy awareness without anxiety. That is a good place to be.','I find myself checking more than once':'The checking itself is data. Something is not fully settled.','There is real tension until it arrives':'That level of tension may reflect the size of the stake, or something less tangible.','I have stopped expecting it on a specific date':'Letting go of the date suggests working acceptance — or perhaps resignation.'},
+text:'Has a return ever come late or been ploughed back without full notice?',sub:'And if so — what happened inside you when it did?',
+opts:[{l:'No — always on time',w:{T:2,S:0}},{l:'Yes — I understood why, no lasting concern',w:{T:3,U:2}},{l:'Yes — questions were asked and resolved',w:{T:2,U:1}},{l:'Yes — I am still a little unsettled by it',w:{S:3,T:-1}},{l:'Yes — something in the relationship shifted after',w:{S:4,T:-2,R:-2}}]},
+
+{id:'worstcase',skippable:true,skipW:{U:-2,S:2},
+ack:{'No — always on time':'Consistent delivery over time is the most honest form of trust.','Yes — I understood why, no lasting concern':'Understanding why something happened, and moving past it — that is maturity.','Yes — questions were asked and resolved':'Questions asked and answered leave less residue than questions avoided.','Yes — I am still a little unsettled by it':'Unresolved feelings about a past event tend to surface when the next one happens.','Yes — something in the relationship shifted after':'That shift is real and it matters.'},
+text:'What is the worst realistic thing that could happen here?',sub:'Not catastrophically hypothetical. What genuinely sits at the back of your mind.',
+opts:[{l:'A bad run that reduces returns temporarily',w:{U:3,S:1}},{l:'Returns pausing for several months',w:{U:2,S:2}},{l:'Jacey becoming unable to continue for personal reasons',w:{U:2,S:3}},{l:'Losing part or all of my principal',w:{U:1,S:4,D:1}},{l:'I genuinely do not know what could go wrong',w:{U:-3,S:3}}]},
+
+{id:'told',skippable:true,skipW:{O:-1,S:2},
+ack:{'A bad run that reduces returns temporarily':'That is the most realistic worst case — and one the arrangement is built to handle.','Returns pausing for several months':'Liquidity stress is real. It is good that you are thinking about it.','Jacey becoming unable to continue for personal reasons':'This is a question many carry but rarely voice. It is a real risk.','Losing part or all of my principal':'That fear — of losing the core — is the deepest one. We will weigh it.','I genuinely do not know what could go wrong':'That gap is one of the most significant signals in this entire assessment.'},
+text:'Have you told your spouse or close family about this arrangement — fully?',sub:'Not looking for the right answer. Looking for the real one.',
+opts:[{l:'Yes — they know everything and are comfortable',w:{O:3,S:0}},{l:'Yes — they know but have some concerns',w:{O:2,S:1}},{l:'Partially — they know some of it',w:{O:1,S:2}},{l:'No — they do not know',w:{O:-1,S:3}},{l:'Not applicable',w:{O:2}}]},
+
+{id:'regret',skippable:false,
+ack:{'Yes — they know everything and are comfortable':'Shared knowledge reduces hidden pressure. That matters more than people think.','Yes — they know but have some concerns':"Their concerns are worth taking seriously. They may be seeing something you can't.","Partially — they know some of it":"The gap between what you know and what they know creates quiet stress.",'No — they do not know':'A financial arrangement that cannot be mentioned at home often carries more weight than it should.','Not applicable':'Understood.'},
+text:'Knowing everything you know now — would you make the same decision to join?',sub:'As honest as you can be.',
+opts:[{l:'Yes, without hesitation',w:{O:3,T:2,S:-1}},{l:'Yes, but I would ask more questions first',w:{O:2,U:1}},{l:'I am not sure',w:{O:0,S:2,U:-1}},{l:'Probably not — I was not ready',w:{O:-1,S:3,U:1}},{l:'No — I was not in the right position',w:{O:-2,S:4,D:2}}]},
+
+{id:'concentration',skippable:true,skipW:{D:2},
+ack:{'Yes, without hesitation':'That conviction — grounded in experience — is the most stable place to be.','Yes, but I would ask more questions first':'The questions you would ask now are worth asking now. It is not too late.','I am not sure':'Sitting with uncertainty about a decision already made is uncomfortable. That discomfort is data.','Probably not — I was not ready':'Not to punish yourself — but to understand what to do from here.','No — I was not in the right position':'That is a significant statement. We will carry it forward carefully.'},
+text:'Is this your only financial investment — or one of several?',sub:'Concentration of exposure matters independently of the size of the stake.',
+opts:[{l:'One of many — diversified',w:{D:0}},{l:'One of a few — reasonably spread',w:{D:1}},{l:'My primary investment outside savings',w:{D:3}},{l:'Essentially my only investment',w:{D:4,S:2}}]},
+
+{id:'projective',skippable:true,skipW:{U:-1,O:-1},
+ack:{'One of many — diversified':'Diversification is a genuine buffer. This placement carries less weight in a spread portfolio.','One of a few — reasonably spread':'Some diversification. Manageable.','My primary investment outside savings':'Primary exposure to a single private arrangement is a meaningful concentration.','Essentially my only investment':'The clearest concentration risk in the assessment.'},
+text:'If a close friend described your relationship with this money — what would they say?',sub:'A different lens. Sometimes other people see what we cannot.',
+opts:[{l:'"You are calm and informed — it is working for you"',w:{O:2,S:-1,U:2}},{l:'"You seem fine but you do not really talk about it"',w:{O:1,S:1}},{l:'"You check it more than you admit"',w:{S:2,T:0}},{l:'"I think you are anxious about it but you hide it"',w:{S:3,O:0}},{l:'"I did not know you had money placed anywhere"',w:{S:2,O:-1}}]},
+
+{id:'future',skippable:true,skipW:{},
+ack:{'"You are calm and informed — it is working for you"':'If that is genuinely true — and your answers support it — that is a good place to be.','"You seem fine but you do not really talk about it"':'Silence about financial arrangements is not always peace. Sometimes it is avoidance.','"You check it more than you admit"':'The gap between what we show and what we feel is where the real data lives.','"I think you are anxious about it but you hide it"':'Hidden anxiety about a financial arrangement tends to surface at the worst moments.','"I did not know you had money placed anywhere"':'Complete invisibility of a financial arrangement is itself a signal.'},
+text:'What were you hoping to find by using this engine today?',sub:'The answer to this often tells us more than all the others combined.',
+opts:[{l:'Reassurance that I am doing the right thing',w:{S:1}},{l:'A clear signal on whether to reduce exposure',w:{S:2,D:1}},{l:'Something neutral that gives me permission to exit',w:{S:3,O:-1}},{l:'Just clarity — I will decide for myself',w:{O:3}},{l:'I am not entirely sure why I started this',w:{U:-1,S:1}}]}
+];
+
+var reState={cur:0,ans:{},scores:{S:0,D:0,T:0,U:0,O:0,R:0,A:0}};
+function addW(w){for(var k in w){if(reState.scores[k]!==undefined)reState.scores[k]+=w[k];}}
+function subW(w){for(var k in w){if(reState.scores[k]!==undefined)reState.scores[k]-=w[k];}}
+
+function reRender(){
+  var area=document.getElementById('area-reassess');
+  if(reState.cur>=QS.length){area.innerHTML=reBuildResult();return;}
+  var q=QS[reState.cur];
+  var pct=Math.round((reState.cur/QS.length)*100);
+  var prev=reState.ans[q.id];
+  var ackHtml='';
+  if(reState.cur>0){
+    var pq=QS[reState.cur-1];
+    var pa=reState.ans[pq.id];
+    if(pa&&!pa.skipped&&pq.ack){
+      var at=pq.ack[pq.opts[pa.idx].l];
+      if(at)ackHtml='<div class="ack">'+at+'</div>';
+    }
+  }
+  var html='<div class="prog-label">Question '+(reState.cur+1)+' of '+QS.length+'</div>';
+  html+='<div class="prog-bar"><div class="prog-fill" style="width:'+pct+'%"></div></div>';
+  html+='<div class="q-block">'+ackHtml;
+  html+='<div class="q-num">Q'+(reState.cur+1)+'</div>';
+  html+='<div class="q-text">'+q.text+'</div>';
+  if(q.sub)html+='<div class="q-sub">'+q.sub+'</div>';
+  html+='<div class="opts">';
+  q.opts.forEach(function(opt,i){
+    var sel=(prev&&!prev.skipped&&prev.idx===i)?' sel':'';
+    html+='<button class="opt'+sel+'" onclick="rePick(\''+q.id+'\','+i+')">'+opt.l+'</button>';
+  });
+  html+='</div>';
+  html+='<div class="row-btns">';
+  if(reState.cur>0)html+='<button class="back-btn" onclick="reGoBack()">&larr; Back</button>';
+  if(q.skippable)html+='<button class="skip-btn" onclick="reDoSkip(\''+q.id+'\')">Skip &rarr;</button>';
+  var isEnd=SECTION_ENDS[q.id];html+='<button class="next-btn'+(prev&&isEnd?' show':'')+'" onclick="reGoNext()">Next section &rarr;</button>';
+  html+='</div>';
+  if(prev&&prev.skipped)html+='<div class="skipped-tag">Skipped — noted.</div>';
+  html+='</div>';
+  area.innerHTML=html;
+}
+
+function rePick(qid,idx){
+  var q=QS.find(function(x){return x.id===qid;});
+  var prev=reState.ans[qid];
+  if(prev){if(prev.skipped)subW(q.skipW||{});else subW(q.opts[prev.idx].w);}
+  reState.ans[qid]={idx:idx,skipped:false};
+  addW(q.opts[idx].w);
+  if(SECTION_ENDS[qid]){
+    reRender();
+  }else{
+    setTimeout(function(){ reState.cur++; reRender(); },180);
+  }
+}
+function reDoSkip(qid){
+  var q=QS.find(function(x){return x.id===qid;});
+  var prev=reState.ans[qid];
+  if(prev){if(prev.skipped)subW(q.skipW||{});else subW(q.opts[prev.idx].w);}
+  reState.ans[qid]={skipped:true};
+  addW(q.skipW||{});
+  reRender();
+}
+function reGoNext(){
+  var q=QS[reState.cur];
+  if(!reState.ans[q.id]){if(q.skippable)doSkip(q.id);else return;}
+  else{reState.cur++;reRender();}
+}
+function reGoBack(){if(reState.cur>0){reState.cur--;reRender();}}
+
+function reBuildResult(){
+  var s=reState.scores;
+  var skipped=Object.values(reState.ans).filter(function(a){return a.skipped;});
+  var skippedTexts=QS.filter(function(q){return reState.ans[q.id]&&reState.ans[q.id].skipped;}).map(function(q){return q.text;});
+  var maxes={S:25,D:20,T:16,U:6,O:12,R:6,A:10};
+  function norm(k){return Math.min(100,Math.max(0,Math.round((s[k]/maxes[k])*100)));}
+  var sN=norm('S'),dN=norm('D'),tN=norm('T'),uN=norm('U'),oN=norm('O'),rN=norm('R'),aN=norm('A');
+  var risk=sN*0.28+dN*0.22+(100-tN)*0.18+(100-uN)*0.12+(100-oN)*0.1+aN*0.1;
+
+  var signals=[];
+  if(sN>=65)signals.push({c:'#c97a7a',t:'Your answers carry a consistent thread of anxiety. This arrangement is creating more pressure than it should for someone in a healthy position.'});
+  else if(sN>=35)signals.push({c:'#e8a84a',t:'Some underlying tension in your responses. Not alarming in isolation, but worth acknowledging.'});
+  else signals.push({c:'#4ecdc4',t:'Your emotional state around this arrangement reads as settled. That kind of ease is earned, not assumed.'});
+
+  if(dN>=65)signals.push({c:'#c97a7a',t:'This capital sits close to the centre of your financial life. That level of dependency on a single private arrangement is a meaningful risk.'});
+  else if(dN>=35)signals.push({c:'#e8a84a',t:'Moderate dependency. Not alarming, but worth maintaining a clear cushion outside this arrangement.'});
+  else signals.push({c:'#4ecdc4',t:'This capital appears genuinely surplus to your immediate needs. That is the position from which private arrangements work best.'});
+
+  if(tN<=30)signals.push({c:'#c97a7a',t:'Your personal relationship with Jacey reads as thin or indirect. In private lending, the relationship is the security.'});
+  else if(tN>=65)signals.push({c:'#4ecdc4',t:'Your trust appears grounded in a real, long-standing personal relationship. That is the most meaningful protection this arrangement offers.'});
+
+  if(uN<=30)signals.push({c:'#c97a7a',t:'There are gaps in your understanding of what can go wrong here. Uninformed participants make worse decisions at the moments that matter most.'});
+  else if(uN>=65)signals.push({c:'#4ecdc4',t:'You appear to have a clear-eyed understanding of the risks. That clarity is rare and valuable.'});
+
+  if(oN<=30)signals.push({c:'#c97a7a',t:'It is not entirely clear that this decision was fully yours — or that you feel free to change course. That dynamic deserves examination.'});
+  else if(oN>=65)signals.push({c:'#4ecdc4',t:'You made this decision with your eyes open and you know why you are here. That ownership is a quiet strength.'});
+
+  if(rN<=20&&s.R<0)signals.push({c:'#e8a84a',t:'Something in the relationship dynamic may be off-balance — perhaps difficulty saying no, or unresolved tension from a past event.'});
+  if(aN>=60)signals.push({c:'#e8a84a',t:'Your life stage means capital protection matters more than capital growth right now.'});
+
+  // Specific answer mirrors
+  var regretAns=reState.ans['regret'];
+  if(regretAns&&!regretAns.skipped){
+    var rl=QS.find(function(q){return q.id==='regret';}).opts[regretAns.idx].l;
+    if(rl.indexOf('not')>-1||rl.indexOf('sure')>-1)
+      signals.push({c:'#e8a84a',t:'You said you would not make this decision again — or you are not sure. That is one of the loudest signals in the entire assessment.'});
+  }
+  var saynoAns=reState.ans['sayno'];
+  if(saynoAns&&!saynoAns.skipped){
+    var sl=QS.find(function(q){return q.id==='sayno';}).opts[saynoAns.idx].l;
+    if(sl.indexOf('hard to say no')>-1||sl.indexOf('probably say yes')>-1)
+      signals.push({c:'#e8a84a',t:'You said you find it hard to say no to Jacey. In a private financial arrangement, the inability to decline is a vulnerability — for you, not for the arrangement.'});
+  }
+  var whoseAns=reState.ans['whose'];
+  if(whoseAns&&!whoseAns.skipped){
+    var wl=QS.find(function(q){return q.id==='whose';}).opts[whoseAns.idx].l;
+    if(wl.indexOf('borrowed')>-1||wl.indexOf('rely')>-1)
+      signals.push({c:'#c97a7a',t:'You mentioned that some of this capital belongs to, or is relied upon by, others. That changes the risk profile fundamentally.'});
+  }
+  var futureAns=reState.ans['future'];
+  if(futureAns&&!futureAns.skipped){
+    var fl=QS.find(function(q){return q.id==='future';}).opts[futureAns.idx].l;
+    if(fl.indexOf('permission')>-1)
+      signals.push({c:'#e8a84a',t:"You said you were looking for permission to exit. This engine cannot give you that — but the fact that you are looking for it is itself a signal worth acting on."});
+  }
+
+  var dims=[
+    {key:'S',label:'Stress & anxiety',val:sN,color:'#c97a7a',
+     why:'Built from emotional state on return day, dependency signals, relationship tension, family awareness gaps, and answers suggesting hidden worry.',
+     what:sN>=65?'High — meaningful emotional pressure around this arrangement.':sN>=35?'Moderate — some tension present.':'Low — settled and comfortable.'},
+    {key:'D',label:'Capital dependency',val:dN,color:'#e8a84a',
+     why:'Built from impact if corpus vanished, emergency fund availability, income source, life stage, and whether this is your only investment.',
+     what:dN>=65?'High — this capital is close to the centre of your financial life.':dN>=35?'Moderate — some dependency present.':'Low — genuinely surplus capital.'},
+    {key:'T',label:'Trust in Jacey',val:tN,color:'#4ecdc4',
+     why:'Built from how long and directly you know Jacey, return consistency, and how you processed any past delays.',
+     what:tN>=65?'Strong — grounded in real relationship and track record.':tN>=35?'Moderate — some relationship basis.':'Thin — the relationship foundation is not deep.'},
+    {key:'U',label:'Risk understanding',val:uN,color:'#c9a84c',
+     why:'Built from your articulation of worst-case scenarios, whether you know what can go wrong, and gaps revealed by skipped questions.',
+     what:uN>=65?'Clear — you understand this arrangement well.':uN>=35?'Partial — some gaps remain.':'Unclear — significant gaps in understanding.'},
+    {key:'O',label:'Decision ownership',val:oN,color:'#a0cca8',
+     why:'Built from how you came to join, whether you could say no, family transparency, and whether you would join again.',
+     what:oN>=65?'Strong — this was your decision and you own it.':oN>=35?'Partial — some external pressure present.':'Weak — the decision may not have been fully yours.'},
+    {key:'R',label:'Relationship health',val:rN,color:'#9b8fd4',
+     why:'Built from depth of personal relationship with Jacey, ability to say no, and whether past events left unresolved tension.',
+     what:rN>=65?'Healthy — the dynamic between you and Jacey is balanced.':rN>=35?'Functional — but with some imbalance.':'Strained — worth addressing directly.'},
+    {key:'A',label:'Life-stage pressure',val:aN,color:'#d4a0a0',
+     why:'Built from age, life stage, number of dependants, and income source.',
+     what:aN>=65?'High — your life stage means this capital carries more weight.':aN>=35?'Moderate — some life-stage considerations.':'Low — your stage allows for longer horizons.'},
+  ];
+
+  var outcome,badge,badgeStyle,title,body,note,closing;
+  if(risk>=62){
+    badge='Consider stepping back';badgeStyle='color:#c97a7a;border-color:rgba(201,122,122,0.35);background:rgba(201,122,122,0.06)';
+    title='This arrangement may be carrying more than it should — for where you are right now.';
+    body='That is not a verdict. It is a reading of the picture you have painted through your answers.\n\nThe stress signals are meaningful. The dependency is real. The trust or understanding may not be as deep as the arrangement requires. These individually are manageable — together they suggest that something deserves a serious conversation.\n\nNot necessarily an exit. But a deliberate, honest reassessment — with Jacey, with your family, and ideally with someone independent who can see your full financial picture.';
+    note='"Stepping back is not a betrayal. If this arrangement is right, it will survive an honest conversation about whether it should continue."';
+    closing='The most important question is not what this engine said. It is what you already knew before you started.';
+  }else if(risk>=40){
+    badge='Consider reducing exposure';badgeStyle='color:#e8a84a;border-color:rgba(232,168,74,0.35);background:rgba(232,168,74,0.06)';
+    title='You are in the right place — but perhaps carrying more than is comfortable.';
+    body="The arrangement is not broken. But something is slightly off-balance.\n\nIt may be the size of the stake relative to your cushion. It may be some unresolved uncertainty about risk. It may be a dynamic in the relationship that has not been fully aired. None of these are reasons to exit. But they may be reasons to right-size.\n\nA smaller stake you are genuinely comfortable with is worth more than a larger one that keeps you quietly anxious.";
+    note='"Reducing is not retreating. It is making a conscious decision to be in this arrangement on terms that actually suit your life."';
+    closing='You already know which part of your answers made you most uncomfortable. Start there.';
+  }else if(risk>=20){
+    badge='Hold — with awareness';badgeStyle='color:#c9a84c;border-color:rgba(201,168,76,0.35);background:rgba(201,168,76,0.06)';
+    title='You are broadly in the right place. Stay conscious.';
+    body='The signals are mostly positive. You understand the arrangement, the relationship has a real foundation, and the capital sits within reasonable proportion of your overall position.\n\nWhat this reading suggests is not complacency — it is conscious holding. You are in a position of informed participation. Keep it that way. Circumstances change. Come back in a few months and see if the picture has shifted.';
+    note='"The best time to reassess is when nothing urgent has happened. You did that. That is already a sign of financial maturity."';
+    closing='Stay informed. Ask the questions still sitting at the back of your mind.';
+  }else{
+    badge='Settled and grounded';badgeStyle='color:#4ecdc4;border-color:rgba(78,205,196,0.35);background:rgba(78,205,196,0.06)';
+    title='You are here for the right reasons, with the right foundation.';
+    body="Your answers paint a consistent picture: a considered decision, a real personal relationship, a clear understanding of the risks, and capital that genuinely serves this purpose without over-exposing you.\n\nThis is the profile of someone who has earned their place in this arrangement through patience, trust, and honest self-assessment. It does not mean nothing can go wrong. It means you are positioned to handle it if it does.";
+    note='"Being grounded in a private arrangement is not about certainty. It is about being honest enough with yourself to know why you are here — and having that reason hold up under scrutiny."';
+    closing='Keep asking questions. The informed participant is always the best participant.';
+  }
+
+  var html='<div class="result">';
+  html+='<div class="prog-label">Assessment complete &middot; '+Object.keys(reState.ans).length+' of '+QS.length+' answered';
+  if(skipped.length)html+=' &middot; '+skipped.length+' skipped';
+  html+='</div>';
+  html+='<div class="prog-bar"><div class="prog-fill" style="width:100%"></div></div>';
+  html+='<div class="r-badge" style="'+badgeStyle+'">'+badge+'</div>';
+  html+='<div class="r-title">'+title+'</div>';
+  body.split('\n\n').forEach(function(p){html+='<div class="r-body">'+p+'</div>';});
+  html+='<div class="r-mirror"><div class="r-mirror-label">What your answers specifically revealed</div>';
+  signals.forEach(function(sig){html+='<div class="mirror-row"><div class="m-dot" style="background:'+sig.c+'"></div><div class="m-text">'+sig.t+'</div></div>';});
+  html+='</div>';
+  html+='<div class="score-section"><div class="score-label">Score breakdown — what was measured and why</div>';
+  dims.forEach(function(d){
+    html+='<div class="score-row">';
+    html+='<div class="score-row-top"><span class="score-name">'+d.label+'</span><span class="score-val">'+d.val+' / 100</span></div>';
+    html+='<div class="score-bar-wrap"><div class="score-bar-fill" style="width:'+d.val+'%;background:'+d.color+'"></div></div>';
+    html+='<div class="score-why"><strong>What it means:</strong> '+d.what+'</div>';
+    html+='<div class="score-why" style="margin-top:0.15rem;"><strong>How it was scored:</strong> '+d.why+'</div>';
+    html+='</div>';
+  });
+  html+='</div>';
+  if(skipped.length){
+    html+='<div class="skips-note"><strong style="color:rgba(232,226,212,0.5);">On the '+skipped.length+' skipped question'+(skipped.length>1?'s':'')+':</strong> Skipped questions were not ignored — they were scored conservatively, on the assumption that what is hard to answer often needs answering most.';
+    if(skippedTexts.length)html+=' You skipped: <em>'+skippedTexts.join('; ')+'</em>.';
+    html+='</div>';
+  }
+  html+='<div class="r-note">'+note+'</div>';
+  html+='<div class="r-closing">'+closing+'</div>';
+  html+='<div class="r-disclaimer">This is a machine-generated psychological reading — not financial advice. It is a starting point for a conversation, not a conclusion. Talk to Jacey directly. Talk to your family. Talk to a qualified financial advisor before making any decisions.</div>';
+  html+='<button class="restart-btn" onclick="reRestart()">Start again &rarr;</button>';
+  html+='</div>';
+  return html;
+}
+
+function reRestart(){state={cur:0,ans:{},scores:{S:0,D:0,T:0,U:0,O:0,R:0,A:0}};reRender();}
+reRender();
 
 
 </script>
