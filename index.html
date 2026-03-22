@@ -1343,20 +1343,86 @@ body {
                 <label style="font-size:0.52rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);display:block;margin-bottom:0.3rem;">Amount (₹)</label>
                 <input type="number" id="reqAmount" placeholder="e.g. 50000"
                   style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:'IBM Plex Mono',monospace;font-size:0.72rem;padding:0.45rem 0.65rem;outline:none;"
+                  oninput="updateReduceCalc()"
                   onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">
               </div>
             </div>
+            <!-- REDUCE CAPITAL CALCULATOR -->
+            <div id="reduceCalcWrap" style="display:none;border:1px solid rgba(201,168,76,0.2);background:rgba(201,168,76,0.04);padding:0.9rem 1rem;margin-bottom:0.8rem;">
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:0.44rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);opacity:0.7;margin-bottom:0.8rem;">Redemption Calculator</div>
+
+              <!-- NOTICE PERIOD -->
+              <div id="reduceNotice" style="font-size:0.6rem;color:var(--text-muted);line-height:1.7;margin-bottom:0.8rem;padding:0.5rem 0.7rem;border-left:2px solid var(--border-mid);"></div>
+
+              <!-- OPTION SELECTOR -->
+              <div style="font-size:0.5rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.5rem;">Choose redemption type</div>
+              <div style="display:flex;gap:0.5rem;margin-bottom:0.9rem;flex-wrap:wrap;">
+                <button id="optBaseBtn" onclick="selectRedeemOpt('base')"
+                  style="flex:1;min-width:120px;background:none;border:1px solid var(--border-mid);color:var(--text-dim);font-family:'IBM Plex Mono',monospace;font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.5rem 0.7rem;cursor:pointer;transition:all 0.18s;">
+                  10% of Base Corpus
+                </button>
+                <button id="optPloughBtn" onclick="selectRedeemOpt('plough')"
+                  style="flex:1;min-width:120px;background:none;border:1px solid var(--border-mid);color:var(--text-dim);font-family:'IBM Plex Mono',monospace;font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.5rem 0.7rem;cursor:pointer;transition:all 0.18s;">
+                  40% of Ploughback
+                </button>
+              </div>
+
+              <!-- INTEREST OPTION -->
+              <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.9rem;">
+                <input type="checkbox" id="includeInterest" checked onchange="updateReduceCalc()" style="accent-color:var(--gold);width:14px;height:14px;">
+                <label for="includeInterest" style="font-size:0.56rem;color:var(--text-dim);cursor:pointer;">Include this month's accrued interest in redemption</label>
+              </div>
+
+              <!-- RESULTS: SIDE BY SIDE -->
+              <div id="reduceCalcResult" style="display:none;">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;margin-bottom:0.7rem;">
+                  <div id="optBaseCard" style="border:1px solid var(--border);padding:0.7rem 0.8rem;opacity:0.5;transition:all 0.2s;">
+                    <div style="font-family:'IBM Plex Mono',monospace;font-size:0.42rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.4rem;">Option A — Base</div>
+                    <div style="font-size:0.58rem;color:var(--text-dim);margin-bottom:0.2rem;">Corpus redemption: <span id="optBaseAmt" style="color:var(--text);"></span></div>
+                    <div style="font-size:0.58rem;color:var(--text-dim);margin-bottom:0.2rem;">+ Interest: <span id="optBaseInt" style="color:var(--text);"></span></div>
+                    <div style="border-top:1px solid var(--border);padding-top:0.4rem;margin-top:0.4rem;display:flex;justify-content:space-between;">
+                      <span style="font-size:0.52rem;color:var(--text-muted);">Total receivable</span>
+                      <span style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--gold);" id="optBaseTotal"></span>
+                    </div>
+                    <div style="font-size:0.52rem;color:var(--text-muted);margin-top:0.3rem;" id="optBaseAfter"></div>
+                  </div>
+                  <div id="optPloughCard" style="border:1px solid var(--border);padding:0.7rem 0.8rem;opacity:0.5;transition:all 0.2s;">
+                    <div style="font-family:'IBM Plex Mono',monospace;font-size:0.42rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.4rem;">Option B — Ploughback</div>
+                    <div style="font-size:0.58rem;color:var(--text-dim);margin-bottom:0.2rem;">Ploughback redemption: <span id="optPloughAmt" style="color:var(--text);"></span></div>
+                    <div style="font-size:0.58rem;color:var(--text-dim);margin-bottom:0.2rem;">+ Interest: <span id="optPloughInt" style="color:var(--text);"></span></div>
+                    <div style="border-top:1px solid var(--border);padding-top:0.4rem;margin-top:0.4rem;display:flex;justify-content:space-between;">
+                      <span style="font-size:0.52rem;color:var(--text-muted);">Total receivable</span>
+                      <span style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--gold);" id="optPloughTotal"></span>
+                    </div>
+                    <div style="font-size:0.52rem;color:var(--text-muted);margin-top:0.3rem;" id="optPloughAfter"></div>
+                  </div>
+                </div>
+                <div id="reduceCalcNote" style="font-size:0.54rem;color:var(--text-muted);line-height:1.7;font-style:italic;"></div>
+              </div>
+
+              <!-- SWP OPTION -->
+              <div style="border-top:1px solid rgba(201,168,76,0.15);padding-top:0.7rem;margin-top:0.8rem;">
+                <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.4rem;">
+                  <input type="checkbox" id="swpToggle" onchange="toggleSwp()" style="accent-color:var(--gold);width:14px;height:14px;">
+                  <label for="swpToggle" style="font-size:0.56rem;color:var(--text-dim);cursor:pointer;">Set as recurring monthly SWP</label>
+                </div>
+                <div id="swpNote" style="display:none;font-size:0.54rem;color:var(--text-muted);line-height:1.7;padding-left:1.4rem;">This amount will be deducted every month. Useful for ZCN holders planning a structured exit over time.</div>
+              </div>
+            </div>
+
             <div class="fg" style="margin-bottom:0.8rem;">
               <label style="font-size:0.52rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);display:block;margin-bottom:0.3rem;">Note (optional)</label>
               <input type="text" id="reqNote" placeholder="Any message for the principal..."
                 style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:'IBM Plex Mono',monospace;font-size:0.72rem;padding:0.45rem 0.65rem;outline:none;"
                 onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">
             </div>
-            <div style="display:flex;align-items:center;gap:1rem;">
-              <button class="btn" onclick="submitRequest()">Submit Request</button>
-              <div id="reqConfirm" style="font-size:0.58rem;color:var(--low);letter-spacing:0.08em;display:none;">✓ Request submitted. The principal will be in touch.</div>
+            <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;">
+              <button class="btn" onclick="generateRequestClipboard()">Generate &amp; Copy Request</button>
+              <div id="reqConfirm" style="font-size:0.58rem;color:var(--low);letter-spacing:0.08em;display:none;">✓ Copied to clipboard — paste on WhatsApp or email to Jacey.</div>
               <div id="reqError" style="font-size:0.58rem;color:var(--red);letter-spacing:0.08em;display:none;"></div>
             </div>
+            <div id="reqClipboardPreview" style="display:none;margin-top:0.8rem;background:var(--bg3);border:1px solid var(--border);padding:0.8rem;font-family:'IBM Plex Mono',monospace;font-size:0.6rem;line-height:1.8;color:var(--text-dim);white-space:pre-wrap;"></div>
+            <button id="reqCopyAgainBtn" onclick="copyPreviewAgain()" style="display:none;margin-top:0.5rem;background:none;border:1px solid var(--border-mid);color:var(--text-muted);font-family:'IBM Plex Mono',monospace;font-size:0.48rem;letter-spacing:0.14em;text-transform:uppercase;padding:0.4rem 0.9rem;cursor:pointer;transition:all 0.18s;" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border-mid)';this.style.color='var(--text-muted)'">&#9670; Copy to clipboard</button>
           </div>
         </div>
         <div id="myRequests" style="margin-top:0.8rem;display:none;">
@@ -3785,6 +3851,38 @@ body {
 
 
 
+    <article class="post" id="post-B09" data-tag="basics" onclick="askTogglePost(this)">
+      <div class="post-meta"><span class="post-tag">Basics</span><span class="post-date">Mar 2026</span></div>
+      <h2 class="post-title">Can I add or reduce my capital? Are there limits?</h2>
+      <p class="post-excerpt">I want to take some money out — or put more in. What are the rules?</p>
+      <span class="post-read">Read answer &rarr;</span>
+      <div class="post-body">
+        <span class="answer-label">The plain answer</span>
+
+        <p><strong>Adding capital</strong> — you can top up your corpus at any time, subject to your arrangement type and the maximum base corpus limit of Rs 21 lakhs. Additions are always welcome, but timing and amount are discussed with Jacey first.</p>
+
+        <p><strong>Reducing capital</strong> — you can request a partial reduction, but there is a cap: <strong>maximum 10% of your base corpus per instance, and per month.</strong> This is not a restriction designed to trap your capital — it is a structural protection that prevents sudden large outflows from destabilising the pool for everyone else.</p>
+
+        <div class="highlight">
+          <strong>What is base corpus?</strong> Your base corpus is the total capital you have placed through actual bank transfers — not including interest that has been capitalised and added through ploughback. If your base corpus is Rs 5 lakhs, you can reduce by a maximum of Rs 50,000 per instance.
+        </div>
+
+        <p><strong>SWP — Systematic Withdrawal Plan</strong> — if you want to reduce by a fixed amount every month, you can set up a recurring reduction. This works like a SIP in reverse — a defined amount is returned to you each month on a specified date. Once set up, it continues until your corpus approaches the minimum threshold or you cancel it.</p>
+
+        <p><strong>Pro-rata interest</strong> — when you reduce mid-month, interest is calculated daily and paid out for the exact number of days each amount was present. If you reduce Rs 10,000 from a Rs 1,00,000 corpus on day 20 of a 30-day month, you earn interest on Rs 1,00,000 for 20 days and on Rs 90,000 for the remaining 10 days. Not a rounded estimate — the exact daily rate.</p>
+
+        <p>The dashboard's add/reduce section has a built-in calculator that shows you the 10% limit, the pro-rata interest impact, and lets you flag a SWP request — so you can see the numbers before you submit anything.</p>
+
+        <hr style="border:none;border-top:1px solid var(--border);margin:1.2rem 0;">
+
+        <p><strong>Jacey-initiated reductions</strong> — Jacey also has the right to reduce a member's capital in the interests of the overall arrangement. This is used occasionally, typically at end of month, and always for the health of the pool — not for personal reasons. When it happens, the full amount is returned to you. You are always made whole.</p>
+
+        <p>This is not a clause to be alarmed by. In years of operating JaceyTrayd, it has been used rarely and only when the concentration of capital from one source begins to create an imbalance that affects everyone. It is a safeguard, not a risk.</p>
+
+        <button class="post-collapse" onclick="event.stopPropagation();askCollapsePost(this)">&uarr; Collapse</button>
+      </div>
+    </article>
+
     <!-- PARKING LOT SECTION -->
     <div class="series-label" style="opacity:0.35;">Parking Lot &middot; Ideas being thought through</div>
 
@@ -4824,6 +4922,7 @@ function doLogin(role, member) {
   isL1Admin = (role==='l1admin');
   l1AdminMember = isL1Admin ? member : null;
   currentMember = member;
+  window.currentMember = member;
   // Hide split, show inner
   document.getElementById('shell').style.display = 'none';
   document.getElementById('inner').classList.add('active');
@@ -6589,47 +6688,200 @@ function closeEditModal() {
 }
 
 // ─── REQUESTS ─────────────────────────────────────────
+var currentRedeemOpt = 'base';
+
 function toggleReqAmount() {
-  const type = document.getElementById('reqType').value;
-  const wrap = document.getElementById('reqAmountWrap');
-  wrap.style.display = type ? 'block' : 'none';
+  var type = document.getElementById('reqType').value;
+  var wrap = document.getElementById('reqAmountWrap');
+  var rc = document.getElementById('reduceCalcWrap');
+  if(wrap) wrap.style.display = type ? 'block' : 'none';
+  if(rc) rc.style.display = (type === 'Reduce Capital') ? '' : 'none';
+  if(type === 'Reduce Capital') { selectRedeemOpt('base'); }
 }
 
-function submitRequest() {
-  const type   = document.getElementById('reqType').value;
-  const amount = parseInt(document.getElementById('reqAmount').value) || 0;
-  const note   = document.getElementById('reqNote').value.trim();
-  const err    = document.getElementById('reqError');
-  const conf   = document.getElementById('reqConfirm');
+function selectRedeemOpt(opt) {
+  currentRedeemOpt = opt;
+  var baseBtn = document.getElementById('optBaseBtn');
+  var ploughBtn = document.getElementById('optPloughBtn');
+  var baseCard = document.getElementById('optBaseCard');
+  var ploughCard = document.getElementById('optPloughCard');
+  if (opt === 'base') {
+    if(baseBtn){baseBtn.style.borderColor='var(--gold)';baseBtn.style.color='var(--gold)';}
+    if(ploughBtn){ploughBtn.style.borderColor='var(--border-mid)';ploughBtn.style.color='var(--text-dim)';}
+    if(baseCard){baseCard.style.opacity='1';baseCard.style.borderColor='rgba(201,168,76,0.4)';}
+    if(ploughCard){ploughCard.style.opacity='0.45';ploughCard.style.borderColor='var(--border)';}
+  } else {
+    if(ploughBtn){ploughBtn.style.borderColor='var(--gold)';ploughBtn.style.color='var(--gold)';}
+    if(baseBtn){baseBtn.style.borderColor='var(--border-mid)';baseBtn.style.color='var(--text-dim)';}
+    if(ploughCard){ploughCard.style.opacity='1';ploughCard.style.borderColor='rgba(201,168,76,0.4)';}
+    if(baseCard){baseCard.style.opacity='0.45';baseCard.style.borderColor='var(--border)';}
+  }
+  updateReduceCalc();
+}
+
+function updateReduceCalc() {
+  var m = window.currentMember;
+  if (!m) return;
+  var baseCorpus = m.baseCorpus || 0;
+  var ploughback = m.ploughback || 0;
+  var monthly = m.monthly || (m.corpus ? calcMo(m.corpus) : 0);
+  var inclInt = document.getElementById('includeInterest') ? document.getElementById('includeInterest').checked : true;
+  var interest = inclInt ? monthly : 0;
+
+  var noticeEl = document.getElementById('reduceNotice');
+  if (noticeEl) {
+    var mtype = typeof getMemberType === 'function' ? getMemberType(m) : '';
+    var nt = '';
+    if (mtype === 'lender') nt = 'Senior Creditor &mdash; <strong style="color:var(--text);">30-day notice.</strong> Your request will be processed approximately 30 days from submission.';
+    else if (mtype === 'friendly') nt = 'ZCN &mdash; exits are planned in advance with Jacey. Your exit schedule will be structured together.';
+    else if (mtype === 'shortTerm') nt = 'Bridge &mdash; <strong style="color:var(--text);">60-day notice.</strong> Your request will be processed approximately 60 days from submission.';
+    else if (mtype === 'administered') nt = 'Introduced Capital &mdash; processed as quickly as possible. No formal notice period enforced.';
+    noticeEl.innerHTML = nt;
+  }
+
+  var baseAmt = Math.floor(baseCorpus * 0.1);
+  var baseTot = baseAmt + interest;
+  var ploughAmt = ploughback > 0 ? Math.floor(ploughback * 0.4) : 0;
+  var ploughTot = ploughAmt + interest;
+
+  var el = function(id){ return document.getElementById(id); };
+  if(el('optBaseAmt')) el('optBaseAmt').textContent = f(baseAmt);
+  if(el('optBaseInt')) el('optBaseInt').textContent = inclInt ? f(interest) : '(not included)';
+  if(el('optBaseTotal')) el('optBaseTotal').textContent = f(baseTot);
+  if(el('optBaseAfter')) el('optBaseAfter').textContent = 'Base after: ' + f(baseCorpus - baseAmt) + (ploughback > 0 ? ' · Ploughback: ' + f(ploughback) : '');
+  if(el('optPloughAmt')) el('optPloughAmt').textContent = ploughAmt > 0 ? f(ploughAmt) : 'None available';
+  if(el('optPloughInt')) el('optPloughInt').textContent = inclInt ? f(interest) : '(not included)';
+  if(el('optPloughTotal')) el('optPloughTotal').textContent = ploughAmt > 0 ? f(ploughTot) : '—';
+  if(el('optPloughAfter')) el('optPloughAfter').textContent = ploughAmt > 0 ? 'Base: ' + f(baseCorpus) + ' · Ploughback after: ' + f(ploughback - ploughAmt) : 'Option not available';
+  if(el('reduceCalcNote')) el('reduceCalcNote').textContent = 'Choose one option only. Pro-rata interest applies on the actual effective date confirmed by Jacey.';
+
+  var reqAmt = document.getElementById('reqAmount');
+  if(reqAmt) reqAmt.value = currentRedeemOpt === 'base' ? baseAmt : (ploughAmt > 0 ? ploughAmt : '');
+
+  var resultEl = document.getElementById('reduceCalcResult');
+  if(resultEl) resultEl.style.display = '';
+}
+
+function copyPreviewAgain() {
+  var preview = document.getElementById('reqClipboardPreview');
+  if (!preview) return;
+  var text = preview.textContent;
+  var btn = document.getElementById('reqCopyAgainBtn');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function() {
+      if(btn){ btn.textContent = '✓ Copied!'; setTimeout(function(){ btn.innerHTML = '&#9670; Copy to clipboard'; }, 2000); }
+    });
+  } else {
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); if(btn){ btn.textContent='✓ Copied!'; setTimeout(function(){ btn.innerHTML='&#9670; Copy to clipboard'; },2000); } } catch(e){}
+    document.body.removeChild(ta);
+  }
+}
+
+function toggleSwp() {
+  var checked = document.getElementById('swpToggle') ? document.getElementById('swpToggle').checked : false;
+  var note = document.getElementById('swpNote');
+  if(note) note.style.display = checked ? '' : 'none';
+  var noteField = document.getElementById('reqNote');
+  if(noteField && checked) noteField.value = 'SWP request — recurring monthly redemption';
+}
+
+function generateRequestClipboard() {
+  var type   = document.getElementById('reqType').value;
+  var amount = parseInt(document.getElementById('reqAmount').value) || 0;
+  var note   = document.getElementById('reqNote').value.trim();
+  var err    = document.getElementById('reqError');
+  var conf   = document.getElementById('reqConfirm');
+  var preview = document.getElementById('reqClipboardPreview');
 
   err.style.display = 'none';
   conf.style.display = 'none';
 
   if (!type) { err.textContent = 'Please select a request type.'; err.style.display = 'block'; return; }
-  if (!amount) {
-    err.textContent = 'Please enter an amount.'; err.style.display = 'block'; return;
+  if (!amount && type === 'Reduce Capital') { err.textContent = 'Please enter an amount.'; err.style.display = 'block'; return; }
+
+  var m = currentMember;
+  var now = new Date();
+  var dateStr = now.toLocaleDateString('en-IN', {day:'2-digit', month:'short', year:'numeric'});
+  var timeStr = now.toLocaleTimeString('en-IN', {hour:'2-digit', minute:'2-digit'});
+
+  // Determine redemption type if reduce
+  var redeemType = '';
+  var optBase = document.getElementById('optBaseBtn');
+  if (type === 'Reduce Capital') {
+    redeemType = (currentRedeemOpt === 'plough') ? '40% of Ploughback' : '10% of Base Corpus';
   }
 
-  const req = {
-    id: Date.now(),
-    memberName: currentMember.name,
-    memberType: currentMember.type,
-    requestType: type,
-    amount: amount,
-    note: note,
-    timestamp: new Date().toLocaleString('en-IN', {day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}),
-    status: 'Pending'
-  };
-  requests.push(req);
+  // Notice period
+  var mtype = typeof getMemberType === 'function' ? getMemberType(m) : '';
+  var notice = '';
+  if (mtype === 'lender') notice = '30-day notice applies';
+  else if (mtype === 'shortTerm') notice = '60-day notice applies';
+  else if (mtype === 'friendly') notice = 'To be planned with Jacey';
+  else if (mtype === 'administered') notice = 'As quickly as possible';
 
-  // Reset form
-  document.getElementById('reqType').value = '';
-  document.getElementById('reqAmount').value = '';
-  document.getElementById('reqNote').value = '';
-  document.getElementById('reqAmountWrap').style.display = 'none';
-  conf.style.display = 'block';
-  setTimeout(() => conf.style.display = 'none', 4000);
-  renderMyRequests();
+  var swpChecked = document.getElementById('swpToggle') && document.getElementById('swpToggle').checked;
+  var inclInt = document.getElementById('includeInterest') && document.getElementById('includeInterest').checked;
+
+  var baseCorpus = m.baseCorpus || 0;
+  var ploughback = m.ploughback || 0;
+  var monthly = m.monthly || (m.corpus ? calcMo(m.corpus) : 0);
+
+  var lines = [
+    '─────────────────────────────',
+    'JaceyTrayd — Capital Request',
+    '─────────────────────────────',
+    'Date       : ' + dateStr + ', ' + timeStr,
+    'Member     : ' + (m.legalName || m.name),
+    'Request    : ' + type,
+  ];
+
+  if (type === 'Reduce Capital') {
+    lines.push('Option     : ' + redeemType);
+    lines.push('Amount     : ' + f(amount));
+    if (inclInt) lines.push("+ Interest : " + f(monthly) + " (this month accrued)");
+    lines.push('Total out  : ' + f(amount + (inclInt ? monthly : 0)));
+    if (notice) lines.push('Notice     : ' + notice);
+    if (swpChecked) lines.push('SWP        : Yes — recurring monthly');
+  } else {
+    lines.push('Amount     : ' + f(amount));
+  }
+
+  if (note) lines.push('Note       : ' + note);
+  lines.push('─────────────────────────────');
+  lines.push('Base corpus   : ' + f(baseCorpus));
+  if (ploughback > 0) lines.push('Ploughback    : ' + f(ploughback));
+  lines.push('─────────────────────────────');
+
+  var text = lines.join("\n");
+
+  // Show preview and copy button
+  if (preview) { preview.textContent = text; preview.style.display = 'block'; }
+  var copyBtn = document.getElementById('reqCopyAgainBtn');
+  if (copyBtn) copyBtn.style.display = 'inline-block';
+
+  // Copy to clipboard
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function() {
+      conf.style.display = 'block';
+      setTimeout(function(){ conf.style.display = 'none'; }, 5000);
+    }).catch(function() {
+      conf.textContent = 'Preview shown above — select all and copy manually.';
+      conf.style.display = 'block';
+    });
+  } else {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); conf.style.display = 'block'; setTimeout(function(){ conf.style.display='none'; },5000); }
+    catch(e) { conf.textContent = 'Preview shown above — copy manually.'; conf.style.display = 'block'; }
+    document.body.removeChild(ta);
+  }
 }
 
 function renderMyRequests() {
