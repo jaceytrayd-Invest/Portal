@@ -8647,7 +8647,7 @@ const historicalLoans = [
 //           status: 'pending'|'locked'|'repaid', pledgedAt, lockedAt }
 let capitalCalls = [];
 let ccIdSeq = 1;
-const CC_API = 'https://script.google.com/macros/s/AKfycbwVpVoLTI6eN6SZLmDNMepV4t3ZIIP8_UyGSZacHj8Gkvo761OwqERy1UD5CCNgVSqY/exec';
+const CC_API = 'https://script.google.com/macros/s/AKfycbzVNEkLSrHfaauoVcHQN9wVn1rTHBF2cJS8dv6fYD7fTPrrGaTjiVVtZ9dq9Hn7JzNdkg/exec';
 
 // ── Market Ticker ──────────────────────────────────
 let _mktInterval = null;
@@ -8797,7 +8797,8 @@ function sheetCall(action, body) {
     const cbName = '_cb' + Date.now() + Math.floor(Math.random()*10000);
     const url = CC_API + '?action=' + action
       + (body ? '&body=' + encodeURIComponent(JSON.stringify(body)) : '')
-      + '&callback=' + cbName;
+      + '&callback=' + cbName
+      + '&_t=' + Date.now();
     window[cbName] = function(data) {
       resolve(data);
       delete window[cbName];
