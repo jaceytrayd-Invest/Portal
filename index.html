@@ -4895,10 +4895,15 @@ function startPolling() {
   stopPolling();
   _pollInterval = setInterval(function() {
     fetchMemberData(function() {
-      if (currentMember) renderDetails(currentMember);
+      if (currentMember) {
+        const allMembers = [...lenders, ...friendly, ...shortTerm, ...administered];
+        const fresh = allMembers.find(function(m) { return m.id === currentMember.id; });
+        if (fresh) { currentMember = fresh; window.currentMember = fresh; }
+        renderDetails(currentMember);
+      }
       if (isAdmin) renderAdmin();
     });
-  }, 10000); // refresh every 10 seconds
+  }, 10000);
 }
 
 function stopPolling() {
@@ -4912,6 +4917,10 @@ function manualSync() {
       console.log('[JaceyTrayd] Admin view synced from sheet');
     }
     if (currentMember) {
+      // Re-find from updated arrays so we always have the latest object
+      const allMembers = [...lenders, ...friendly, ...shortTerm, ...administered];
+      const fresh = allMembers.find(function(m) { return m.id === currentMember.id; });
+      if (fresh) { currentMember = fresh; window.currentMember = fresh; }
       renderDetails(currentMember);
       console.log('[JaceyTrayd] Member view synced from sheet');
     }
