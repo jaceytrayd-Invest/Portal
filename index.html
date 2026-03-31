@@ -1059,6 +1059,7 @@ body {
   </div>
   <div class="nav-right">
     <div class="session-badge" id="sessionBadge"></div>
+    <button class="logout-btn" id="refreshBtn" onclick="manualSync()" style="display:none;">↻ Refresh</button>
     <button class="logout-btn" id="logoutBtn" onclick="logout()">End Session</button>
   </div>
 </div>
@@ -1457,9 +1458,12 @@ body {
 
   <div class="page" id="page-admin">
     <div class="inner-page">
-      <div class="sec-header">
-        <div class="sec-title">Admin</div>
-        <div class="sec-sub">Principal operator — restricted</div>
+      <div class="sec-header" style="display:flex;align-items:flex-end;justify-content:space-between;">
+        <div>
+          <div class="sec-title">Admin</div>
+          <div class="sec-sub">Principal operator — restricted</div>
+        </div>
+        <button class="logout-btn" onclick="manualSync()" style="margin-bottom:0.9rem;font-size:0.56rem;padding:0.25rem 0.8rem;border-color:var(--border-mid);color:var(--gold);">↻ Sync Now</button>
       </div>
       <div class="agrid" id="adminStats"></div>
       <div class="acard">
@@ -4883,14 +4887,50 @@ function goStep1() {
 }
 
 // ─── FETCH LIVE BALANCES + HOLDINGS FROM SHEETS ──────────────────
-// Called on every login — merges sheet data onto hardcoded member objects
+// Google Sheets is the single source of truth. All views read from fresh data.
+
+let _pollInterval = null;
+
+function startPolling() {
+  stopPolling();
+  _pollInterval = setInterval(function() {
+    fetchMemberData(function() {
+      if (currentMember) renderDetails(currentMember);
+      if (isAdmin) renderAdmin();
+    });
+  }, 10000); // refresh every 10 seconds
+}
+
+function stopPolling() {
+  if (_pollInterval) { clearInterval(_pollInterval); _pollInterval = null; }
+}
+
+function manualSync() {
+  fetchMemberData(function() {
+    if (isAdmin) {
+      renderAdmin();
+      console.log('[JaceyTrayd] Admin view synced from sheet');
+    }
+    if (currentMember) {
+      renderDetails(currentMember);
+      console.log('[JaceyTrayd] Member view synced from sheet');
+    }
+  });
+}
+
 function fetchMemberData(callback) {
+  function snapshotMember(m) {
+    return JSON.stringify([m.baseCorpus, m.ploughback, m.amount, m.capitalPlaced,
+      m.unpaidInterest, m.fundsReceivable, m.status, m.note]);
+  }
   function applyBalances(data) {
+    console.log('[JaceyTrayd] Balances from sheet:', data);
     if (data && data.ok && data.balances) {
       const allMembers = [...lenders, ...friendly, ...shortTerm, ...administered];
       allMembers.forEach(function(m) {
         const b = data.balances[String(m.id)];
         if (!b) return;
+        const before = snapshotMember(m);
         // Corpus fields (lenders)
         if (b.baseCorpus  > 0) m.baseCorpus  = b.baseCorpus;
         if (b.ploughback  > 0) m.ploughback  = b.ploughback;
@@ -4908,13 +4948,18 @@ function fetchMemberData(callback) {
         if (b.status) m.status = b.status;
         // Note — only override if sheet has a value
         if (b.note) m.note = b.note;
+        const after = snapshotMember(m);
+        if (before !== after) console.log('[JaceyTrayd] Balance updated for member id', m.id);
       });
     }
     if (callback) callback();
   }
-  sheetCall('getMemberBalances', {}).then(applyBalances).catch(function() {
-    if (callback) callback(); // render with hardcoded fallback
-  });
+  sheetCall('getMemberBalances', {})
+    .then(applyBalances)
+    .catch(function(err) {
+      console.error('[JaceyTrayd] getMemberBalances failed:', err);
+      if (callback) callback(); // still render with last-known data
+    });
 }
 
 function doLogin(role, member) {
@@ -4931,14 +4976,15 @@ function doLogin(role, member) {
   badge.style.display = 'block';
   badge.textContent = isAdmin ? 'Admin Session' : isL1Admin ? 'Level 1 Admin' : 'Member Session';
   document.getElementById('logoutBtn').style.display = 'block';
+  document.getElementById('refreshBtn').style.display = (isAdmin || isL1Admin) ? 'none' : 'block';
   showTicker();
   // Nav
   if (isAdmin) {
     ['nl-rates','nl-about','nl-admin','nl-call'].forEach(id => document.getElementById(id).classList.remove('hidden'));
-    renderAdmin(); goPage('admin');
+    fetchMemberData(function() { renderAdmin(); goPage('admin'); startPolling(); });
   } else if (isL1Admin) {
     ['nl-rates','nl-about','nl-l1admin',].forEach(id => document.getElementById(id).classList.remove('hidden'));
-    renderL1AdminPage(); goPage('l1admin');
+    fetchMemberData(function() { renderL1AdminPage(); goPage('l1admin'); startPolling(); });
   } else {
     ['nl-rates','nl-about','nl-details','nl-call'].forEach(id => document.getElementById(id).classList.remove('hidden'));
     if (permanentNicks[member.pin]) {
@@ -4961,7 +5007,7 @@ function doLogin(role, member) {
       document.getElementById('nickGreeting').innerHTML = member.name + ', welcome to JaceyTrayd';
       document.getElementById('nickOverlay').classList.add('on');
     } else {
-      fetchMemberData(function() { renderDetails(member); goPage('details'); });
+      fetchMemberData(function() { renderDetails(member); goPage('details'); startPolling(); });
     }
   }
 }
@@ -4983,10 +5029,12 @@ function goPage(name) {
 
 
 function logout() {
+  stopPolling();
   isAdmin=false; isL1Admin=false; l1AdminMember=null; currentMember=null; pin=''; selectedCat=null; nicknames={}; updateDots();
   document.getElementById('pinErr').textContent='';
   document.getElementById('sessionBadge').style.display='none';
   document.getElementById('logoutBtn').style.display='none';
+  document.getElementById('refreshBtn').style.display='none';
   hideTicker();
   ['nl-rates','nl-about','nl-details','nl-admin','nl-l1admin','nl-call'].forEach(id=>document.getElementById(id).classList.add('hidden'));
   document.getElementById('inner').classList.remove('active');
@@ -4999,7 +5047,7 @@ function logout() {
 // ─── NICKNAME ──────────────────────────────────────────
 function retainHardcodedNick() {
   document.getElementById('nickOverlay').classList.remove('on');
-  fetchMemberData(function() { renderDetails(currentMember); goPage('details'); });
+  fetchMemberData(function() { renderDetails(currentMember); goPage('details'); startPolling(); });
 }
 
 function showNickInput() {
@@ -5034,7 +5082,7 @@ function backToNickStep1() {
 function skipNick() {
   if (currentMember) nicknames[currentMember.pin] = currentMember.name;
   document.getElementById('nickOverlay').classList.remove('on');
-  fetchMemberData(function() { renderDetails(currentMember); goPage('details'); });
+  fetchMemberData(function() { renderDetails(currentMember); goPage('details'); startPolling(); });
 }
 
 function editNick() {
@@ -5067,7 +5115,7 @@ function confirmNickPermanent(keep) {
     nicknames[currentMember.pin] = nicknames[currentMember.pin]; // keep for session
   }
   document.getElementById('nickOverlay').classList.remove('on');
-  fetchMemberData(function() { renderDetails(currentMember); goPage('details'); });
+  fetchMemberData(function() { renderDetails(currentMember); goPage('details'); startPolling(); });
 }
 
 // ─── RENDER RATES ──────────────────────────────────────
@@ -6198,7 +6246,7 @@ function renderAdminApprovals() {
   wrap.innerHTML = html;
 }
 
-function renderAdmin() { renderAdminStats(); renderAdminTables(); renderAdminRequests(); updateReqBadge(); renderAdminPayments(); renderAdminApprovals(); renderAdminSellRequests(); }
+function renderAdmin() { console.log('[JaceyTrayd] renderAdmin — lenders:', lenders.length, 'friendly:', friendly.length, 'shortTerm:', shortTerm.length); renderAdminStats(); renderAdminTables(); renderAdminRequests(); updateReqBadge(); renderAdminPayments(); renderAdminApprovals(); renderAdminSellRequests(); }
 
 // ─── ADMIN SELL REQUESTS ─────────────────────────────────────────
 function renderAdminSellRequests() {
