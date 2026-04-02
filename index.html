@@ -4896,8 +4896,7 @@ function startPolling() {
   _pollInterval = setInterval(function() {
     fetchMemberData(function() {
       if (currentMember) {
-        const allMembers = [...lenders, ...friendly, ...shortTerm, ...administered];
-        const fresh = allMembers.find(function(m) { return m.id === currentMember.id; });
+        const fresh = allM().find(function(m) { return m.id === currentMember.id; });
         if (fresh) { currentMember = fresh; window.currentMember = fresh; }
         renderDetails(currentMember);
       }
@@ -4917,9 +4916,7 @@ function manualSync() {
       console.log('[JaceyTrayd] Admin view synced from sheet');
     }
     if (currentMember) {
-      // Re-find from updated arrays so we always have the latest object
-      const allMembers = [...lenders, ...friendly, ...shortTerm, ...administered];
-      const fresh = allMembers.find(function(m) { return m.id === currentMember.id; });
+      const fresh = allM().find(function(m) { return m.id === currentMember.id; });
       if (fresh) { currentMember = fresh; window.currentMember = fresh; }
       renderDetails(currentMember);
       console.log('[JaceyTrayd] Member view synced from sheet');
@@ -8656,7 +8653,7 @@ const historicalLoans = [
 //           status: 'pending'|'locked'|'repaid', pledgedAt, lockedAt }
 let capitalCalls = [];
 let ccIdSeq = 1;
-const CC_API = 'https://script.google.com/macros/s/AKfycbzVNEkLSrHfaauoVcHQN9wVn1rTHBF2cJS8dv6fYD7fTPrrGaTjiVVtZ9dq9Hn7JzNdkg/exec';
+const CC_API = 'https://script.google.com/macros/s/AKfycbzLQWmIAlSZ2byNSenfc6vTKMXHh0ibmLuzCUmGBKteXEnuC2S559wulpKcGvpf490Mpw/exec';
 
 // ── Market Ticker ──────────────────────────────────
 let _mktInterval = null;
