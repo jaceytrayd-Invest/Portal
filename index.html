@@ -1058,6 +1058,7 @@ body {
     <button class="nav-link hidden" id="nl-call" onclick="goPage('call');ccLoadFromSheet();">Capital Call</button>
   </div>
   <div class="nav-right">
+    <a href="trayd-arena.html" style="font-size:0.54rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold);text-decoration:none;padding:0.22rem 0.65rem;border:1px solid var(--border-mid);background:rgba(232,196,90,0.05);transition:all 0.18s;" onmouseover="this.style.background='rgba(232,196,90,0.1)'" onmouseout="this.style.background='rgba(232,196,90,0.05)'">⚔ Arena</a>
     <div class="session-badge" id="sessionBadge"></div>
     <button class="logout-btn" id="refreshBtn" onclick="manualSync()" style="display:none;">↻ Refresh</button>
     <button class="logout-btn" id="logoutBtn" onclick="logout()">End Session</button>
@@ -2701,7 +2702,7 @@ body {
                 <div style="display:flex;flex-direction:column;gap:0.3rem;">
                   <div style="font-size:0.68rem;color:var(--text-dim);"><span style="color:var(--gold);font-family:'Cormorant Garamond',serif;font-size:0.82rem;">JaceyTrayd</span> &nbsp;&mdash;&nbsp; Private credit &middot; No fees</div>
                   <div style="font-size:0.68rem;color:var(--text-dim);"><span style="color:var(--text);font-family:'Cormorant Garamond',serif;font-size:0.82rem;">JaceyLang</span> &nbsp;&mdash;&nbsp; English &middot; Reports &middot; Poetry &middot; Fees apply</div>
-                  <div style="font-size:0.68rem;color:var(--text-dim);"><span style="color:var(--text);font-family:'Cormorant Garamond',serif;font-size:0.82rem;">Ask Jacey</span> &nbsp;&mdash;&nbsp; Personal finance Q&amp;A &middot; IB training &middot; No fees &middot; <a href="mailto:askjaceynow@gmail.com" style="color:var(--text-muted);text-decoration:none;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">askjaceynow@gmail.com</a></div>
+                  <div style="font-size:0.68rem;color:var(--text-dim);"><span style="color:var(--text);font-family:'Cormorant Garamond',serif;font-size:0.82rem;">Ask Jacey</span> &nbsp;&mdash;&nbsp; Personal finance Q&amp;A &middot; IB training &middot; No fees &middot; <a href="/cdn-cgi/l/email-protection#87e6f4ecede6e4e2fee9e8f0c7e0eae6eeeba9e4e8ea" style="color:var(--text-muted);text-decoration:none;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'"><span class="__cf_email__" data-cfemail="88e9fbe3e2e9ebedf1e6e7ffc8efe5e9e1e4a6ebe7e5">[email&#160;protected]</span></a></div>
                 </div>
               </div>
             </div>
@@ -4042,7 +4043,7 @@ body {
   <div style="font-family:'IBM Plex Mono',monospace;font-size:0.44rem;letter-spacing:0.1em;color:var(--text-muted);text-align:center;margin-top:0.8rem;opacity:0.5;">Demo only &middot; Aug 2026 &middot; No real transactions &middot; Eligibility checks simplified</div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 (function(){
 function fmt(n){return'₹'+Math.round(n).toLocaleString('en-IN');}
 
@@ -4153,7 +4154,7 @@ window.ccUpdateBorrow=function(){
       <div class="sidebar-label">Who writes this</div>
       <p class="sidebar-about">JaceyTrayd is a private trader based in Bengaluru. This blog exists because too many good people had questions they never knew how to ask.</p>
       <a onclick="openPublic('aboutj')" class="about-link-btn" style="cursor:pointer;">Read the full story &rarr;</a>
-      <a href="mailto:askjaceynow@gmail.com" style="display:block;margin-top:0.5rem;font-family:'IBM Plex Mono',monospace;font-size:0.48rem;letter-spacing:0.12em;color:var(--text-muted);text-decoration:none;text-align:center;opacity:0.6;" onmouseover="this.style.opacity='1';this.style.color='var(--gold)'" onmouseout="this.style.opacity='0.6';this.style.color='var(--text-muted)'">askjaceynow@gmail.com</a>
+      <a href="/cdn-cgi/l/email-protection#c4a5b7afaea5a7a1bdaaabb384a3a9a5ada8eaa7aba9" style="display:block;margin-top:0.5rem;font-family:'IBM Plex Mono',monospace;font-size:0.48rem;letter-spacing:0.12em;color:var(--text-muted);text-decoration:none;text-align:center;opacity:0.6;" onmouseover="this.style.opacity='1';this.style.color='var(--gold)'" onmouseout="this.style.opacity='0.6';this.style.color='var(--text-muted)'"><span class="__cf_email__" data-cfemail="4b2a3820212a282e3225243c0b2c262a222765282426">[email&#160;protected]</span></a>
     </div>
     <div class="sidebar-card">
       <div class="sidebar-label">Disclaimer</div>
@@ -4609,7 +4610,7 @@ window.ccUpdateBorrow=function(){
 
 <div class="toast" id="toast"></div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 
 
 // ─── DATA ─────────────────────────────────────────────
@@ -9659,16 +9660,4 @@ function reBuildResult(){
   }
   html+='<div class="r-note">'+note+'</div>';
   html+='<div class="r-closing">'+closing+'</div>';
-  html+='<div class="r-disclaimer">This is a machine-generated psychological reading — not financial advice. It is a starting point for a conversation, not a conclusion. Talk to Jacey directly. Talk to your family. Talk to a qualified financial advisor before making any decisions.</div>';
-  html+='<button class="restart-btn" onclick="reRestart()">Start again &rarr;</button>';
-  html+='</div>';
-  return html;
-}
-
-function reRestart(){state={cur:0,ans:{},scores:{S:0,D:0,T:0,U:0,O:0,R:0,A:0}};reRender();}
-reRender();
-
-
-</script>
-</body>
-</html>
+  html+='<div class="r-disclaimer">This is a machine-ge
