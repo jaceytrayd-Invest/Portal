@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JaceyTrayd — Month-End Statements</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #e8c45a;
+  --gold-light: #f0d878;
+  --gold-dim: #7a6230;
+  --bg: #080809;
+  --bg2: #0f0f11;
+  --bg3: #161619;
+  --border: rgba(201,168,76,0.15);
+  --border-mid: rgba(201,168,76,0.3);
+  --text: #ffffff;
+  --text-dim: #c8c5be;
+  --text-muted: #908c84;
+  --low: #5cb87a;
+  --mid: #d4a843;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { min-height:100vh; background:var(--bg); color:var(--text); font-family:'IBM Plex Mono',monospace; }
+
+/* ══ NAV ══════════════════════════════════════════════════════════ */
+#nav {
+  height:52px; background:var(--bg2); border-bottom:1px solid var(--border);
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 2.5rem; position:sticky; top:0; z-index:100;
+}
+.brand {
+  font-family:'Cormorant Garamond',serif; font-size:1.25rem; font-weight:600;
+  letter-spacing:0.14em; color:var(--gold); text-transform:uppercase;
+}
+.brand span {
+  font-size:0.72rem; font-family:'IBM Plex Mono',monospace; font-weight:300;
+  letter-spacing:0.18em; color:var(--text-muted); margin-left:1rem;
+  text-transform:uppercase; vertical-align:middle;
+}
+#whoLabel {
+  font-size:0.72rem; letter-spacing:0.14em; color:var(--gold);
+  text-transform:uppercase; display:none;
+}
+
+/* ══ LOGIN PAGE ════════════════════════════════════════════════════ */
+#loginPage {
+  min-height:calc(100vh - 52px);
+  display:flex; align-items:center; justify-content:center;
+}
+.login-card {
+  width:380px; background:var(--bg2); border:1px solid var(--border-mid);
+  padding:3rem 2.8rem;
+}
+.login-card h2 {
+  font-family:'Cormorant Garamond',serif; font-size:1.9rem; font-weight:300;
+  letter-spacing:0.05em; color:var(--text); margin-bottom:0.4rem;
+}
+.login-card h2 em { color:var(--gold); font-style:italic; }
+.login-card p {
+  font-size:0.75rem; color:var(--text-muted); letter-spacing:0.08em;
+  line-height:1.7; margin-bottom:2rem;
+}
+.login-card label {
+  display:block; font-size:0.65rem; letter-spacing:0.18em; text-transform:uppercase;
+  color:var(--text-muted); margin-bottom:0.55rem;
+}
+.login-card input {
+  width:100%; background:var(--bg3); border:1px solid var(--border-mid);
+  color:var(--text); font-family:'IBM Plex Mono',monospace; font-size:1rem;
+  letter-spacing:0.2em; padding:0.75rem 1rem; outline:none;
+  text-align:center; margin-bottom:1rem; transition:border-color 0.18s;
+}
+.login-card input:focus { border-color:var(--gold); }
+.login-card button {
+  width:100%; background:var(--gold); color:#080809; border:none;
+  font-family:'IBM Plex Mono',monospace; font-size:0.72rem; font-weight:500;
+  letter-spacing:0.18em; text-transform:uppercase; padding:0.85rem;
+  cursor:pointer; transition:background 0.18s;
+}
+.login-card button:hover { background:var(--gold-light); }
+#loginErr {
+  font-size:0.68rem; color:#c97a7a; letter-spacing:0.1em;
+  text-align:center; margin-top:0.8rem; display:none;
+}
+
+/* ══ MAIN APP ══════════════════════════════════════════════════════ */
+#appPage { display:none; padding:2.5rem 2.5rem 6rem; max-width:1100px; margin:0 auto; }
+
+/* Member selector (admin) */
+.member-selector {
+  background:var(--bg2); border:1px solid var(--border);
+  padding:1.5rem 1.8rem; margin-bottom:2rem;
+}
+.member-selector-label {
+  font-size:0.62rem; letter-spacing:0.22em; text-transform:uppercase;
+  color:var(--text-muted); margin-bottom:1rem;
+}
+.member-chips { display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:1.2rem; }
+.chip {
+  font-size:0.72rem; letter-spacing:0.08em; padding:0.5rem 1.1rem;
+  border:1px solid var(--border); background:var(--bg3); color:var(--text-dim);
+  cursor:pointer; transition:all 0.15s; text-transform:none;
+}
+.chip:hover { border-color:var(--border-mid); color:var(--text); }
+.chip.active { border-color:var(--gold); color:var(--gold); background:rgba(232,196,90,0.08); }
+.selector-actions { display:flex; gap:0.75rem; align-items:center; }
+.btn-primary {
+  background:var(--gold); color:#080809; border:none;
+  font-family:'IBM Plex Mono',monospace; font-size:0.68rem; font-weight:500;
+  letter-spacing:0.14em; text-transform:uppercase; padding:0.6rem 1.3rem;
+  cursor:pointer; transition:background 0.18s;
+}
+.btn-primary:hover { background:var(--gold-light); }
+.btn-primary:disabled { opacity:0.35; cursor:not-allowed; }
+.btn-secondary {
+  background:none; border:1px solid var(--border-mid); color:var(--text-dim);
+  font-family:'IBM Plex Mono',monospace; font-size:0.68rem; letter-spacing:0.14em;
+  text-transform:uppercase; padding:0.6rem 1.3rem; cursor:pointer; transition:all 0.18s;
+}
+.btn-secondary:hover { border-color:var(--gold); color:var(--gold); }
+.sync-ts { font-size:0.62rem; color:var(--text-muted); letter-spacing:0.08em; margin-left:auto; }
+
+/* Selection bar */
+.sel-bar {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0.8rem 1.2rem; background:var(--bg2); border:1px solid var(--border);
+  margin-bottom:1.2rem;
+}
+.sel-label { font-size:0.68rem; color:var(--text-muted); letter-spacing:0.1em; }
+.sel-label strong { color:var(--gold); font-weight:500; }
+.sel-actions { display:flex; gap:0.6rem; }
+
+/* ══ STATEMENT CARDS ══════════════════════════════════════════════ */
+.stmt-list { display:flex; flex-direction:column; gap:1px; background:var(--border); border:1px solid var(--border); }
+
+.stmt-card {
+  background:var(--bg2); cursor:pointer; position:relative;
+  transition:background 0.15s; user-select:none;
+  display:grid; grid-template-columns:1fr 1fr;
+}
+.stmt-card:hover { background:var(--bg3); }
+.stmt-card.selected { background:rgba(232,196,90,0.05); }
+.stmt-card.selected::before {
+  content:''; position:absolute; left:0; top:0; bottom:0; width:3px;
+  background:var(--gold);
+}
+
+.card-left {
+  padding:1.5rem 2rem; border-right:1px solid var(--border);
+}
+.card-right {
+  padding:1.5rem 2rem; display:flex; flex-direction:column; justify-content:center;
+}
+
+/* Member name as the header */
+.card-member-name {
+  font-family:'Cormorant Garamond',serif; font-size:1.5rem; font-weight:400;
+  color:var(--text); letter-spacing:0.04em; margin-bottom:0.3rem;
+}
+.card-arrangement {
+  font-size:0.65rem; letter-spacing:0.16em; text-transform:uppercase;
+  color:var(--text-muted); margin-bottom:1rem;
+}
+.card-period-badge {
+  font-size:0.65rem; letter-spacing:0.14em; text-transform:uppercase;
+  color:var(--text-muted); margin-bottom:0.3rem;
+}
+.card-period-value {
+  font-family:'IBM Plex Mono',monospace; font-size:1rem; color:var(--text-dim);
+  letter-spacing:0.04em;
+}
+
+/* Right card: financial data */
+.card-data-row {
+  display:flex; justify-content:space-between; align-items:baseline;
+  padding:0.55rem 0; border-bottom:1px solid var(--border);
+}
+.card-data-row:last-child { border-bottom:none; }
+.card-data-label { font-size:0.62rem; letter-spacing:0.1em; color:var(--text-muted); }
+.card-data-value { font-family:'IBM Plex Mono',monospace; font-size:0.88rem; color:var(--text); font-weight:500; }
+.card-data-value.gold { color:var(--gold); }
+.card-data-value.green { color:var(--low); }
+.card-data-value.amber { color:var(--mid); }
+.card-data-value.purple { color:#b48cd2; }
+
+/* Status badge */
+.status-pill {
+  font-size:0.6rem; letter-spacing:0.14em; text-transform:uppercase;
+  padding:0.22rem 0.65rem; display:inline-block; margin-top:0.8rem;
+}
+.status-pill.paid    { background:rgba(92,184,122,0.12);  color:var(--low);  }
+.status-pill.plough  { background:rgba(180,140,210,0.12); color:#b48cd2; }
+.status-pill.payable { background:rgba(212,168,67,0.12);  color:var(--mid);  }
+
+/* Selected tick */
+.card-tick {
+  position:absolute; top:1.2rem; right:1.2rem;
+  font-size:0.8rem; color:var(--gold); display:none;
+}
+.stmt-card.selected .card-tick { display:block; }
+
+/* Empty / loading */
+.state-msg {
+  padding:4rem 2rem; text-align:center; background:var(--bg2); border:1px solid var(--border);
+  font-size:0.72rem; color:var(--text-muted); letter-spacing:0.1em; line-height:2.5;
+}
+.state-msg strong { color:var(--text-dim); font-weight:400; display:block; font-size:1rem; margin-bottom:0.5rem; }
+
+/* ══ LOG MODAL ════════════════════════════════════════════════════ */
+.modal-overlay {
+  display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85);
+  z-index:500; align-items:center; justify-content:center;
+}
+.modal-overlay.open { display:flex; }
+.modal-box {
+  background:var(--bg2); border:1px solid var(--border-mid);
+  width:540px; max-width:96vw; max-height:94vh; overflow-y:auto; padding:2.2rem 2.5rem;
+}
+.modal-box h3 {
+  font-family:'Cormorant Garamond',serif; font-size:1.5rem; font-weight:400;
+  color:var(--text); margin-bottom:0.25rem;
+}
+.modal-box .modal-who {
+  font-size:0.65rem; letter-spacing:0.16em; text-transform:uppercase;
+  color:var(--gold); margin-bottom:1.8rem;
+}
+.field { margin-bottom:1.1rem; }
+.field label {
+  display:block; font-size:0.62rem; letter-spacing:0.18em; text-transform:uppercase;
+  color:var(--text-muted); margin-bottom:0.4rem;
+}
+.field input, .field select, .field textarea {
+  width:100%; background:var(--bg3); border:1px solid var(--border-mid);
+  color:var(--text); font-family:'IBM Plex Mono',monospace; font-size:0.8rem;
+  padding:0.65rem 0.85rem; outline:none; transition:border-color 0.18s;
+}
+.field input:focus, .field select:focus, .field textarea:focus { border-color:var(--gold); }
+.field select option { background:var(--bg3); }
+.field-row { display:grid; grid-template-columns:1fr 1fr; gap:0.8rem; }
+.txn-row { display:grid; grid-template-columns:100px 1fr 90px 30px; gap:0.4rem; align-items:center; margin-bottom:0.45rem; }
+.txn-row input, .txn-row select {
+  background:var(--bg3); border:1px solid var(--border-mid); color:var(--text);
+  font-family:'IBM Plex Mono',monospace; font-size:0.72rem; padding:0.35rem 0.5rem; width:100%;
+}
+.txn-del {
+  width:30px; height:30px; background:none; border:1px solid var(--border);
+  color:var(--text-muted); cursor:pointer; font-size:0.9rem; display:flex;
+  align-items:center; justify-content:center; flex-shrink:0; transition:all 0.15s;
+}
+.txn-del:hover { border-color:#a0302a; color:#c97a7a; }
+.modal-actions { display:flex; gap:0.75rem; margin-top:1.8rem; }
+.modal-actions button { flex:1; }
+#logFeedback { font-size:0.68rem; letter-spacing:0.08em; margin-top:0.9rem; display:none; }
+
+/* ══ PREVIEW MODAL ════════════════════════════════════════════════ */
+.preview-overlay {
+  display:none; position:fixed; inset:0; background:rgba(0,0,0,0.93);
+  z-index:600; overflow-y:auto; padding:2rem 1rem;
+}
+.preview-overlay.open { display:flex; align-items:flex-start; justify-content:center; }
+.preview-sheet {
+  background:#ffffff; width:720px; max-width:98vw; padding:0;
+  font-family:Georgia,serif; position:relative; flex-shrink:0; margin-bottom:2rem;
+}
+.preview-topbar {
+  background:#111; color:#fff; padding:0.9rem 1.5rem;
+  display:flex; align-items:center; justify-content:space-between;
+  font-family:'IBM Plex Mono',monospace; font-size:0.65rem; letter-spacing:0.14em;
+  text-transform:uppercase; position:sticky; top:0; z-index:10;
+}
+.preview-topbar button {
+  background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.2);
+  color:#fff; font-family:'IBM Plex Mono',monospace; font-size:0.62rem;
+  letter-spacing:0.14em; text-transform:uppercase; padding:0.3rem 0.8rem;
+  cursor:pointer; transition:background 0.15s; margin-left:0.6rem;
+}
+.preview-topbar button:hover { background:rgba(255,255,255,0.2); }
+.preview-body { padding:3rem 3.5rem; }
+
+/* ══ TOAST ════════════════════════════════════════════════════════ */
+#toast {
+  position:fixed; bottom:2rem; right:2rem; background:var(--bg3);
+  border:1px solid var(--border-mid); color:var(--gold);
+  padding:0.7rem 1.3rem; font-size:0.68rem; letter-spacing:0.1em;
+  text-transform:uppercase; z-index:999; display:none;
+}
+
+@media(max-width:700px){
+  #appPage { padding:1.5rem 1rem 5rem; }
+  .stmt-card { grid-template-columns:1fr; }
+  .card-left { border-right:none; border-bottom:1px solid var(--border); }
+  .field-row { grid-template-columns:1fr; }
+  .preview-body { padding:1.8rem 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<div id="nav">
+  <div class="brand">JaceyTrayd <span>Statements</span></div>
+  <div id="whoLabel"></div>
+</div>
+
+<!-- ══ LOGIN ═══════════════════════════════════════════════════════ -->
+<div id="loginPage">
+  <div class="login-card">
+    <h2>Month-End <em>Statements</em></h2>
+    <p>Enter your member PIN or admin PIN to access your statement archive.</p>
+    <label for="pinInput">PIN</label>
+    <input type="password" id="pinInput" placeholder="· · · ·" maxlength="8"
+      autofocus onkeydown="if(event.key==='Enter')doLogin()">
+    <button onclick="doLogin()">Access Statements →</button>
+    <div id="loginErr">Incorrect PIN. Please try again.</div>
+  </div>
+</div>
+
+<!-- ══ APP ══════════════════════════════════════════════════════════ -->
+<div id="appPage">
+
+  <!-- Admin: member selector -->
+  <div id="memberSelector" class="member-selector" style="display:none;">
+    <div class="member-selector-label">Select Member</div>
+    <div class="member-chips" id="memberChips"></div>
+    <div class="selector-actions">
+      <button class="btn-primary" onclick="openLogModal()">+ Log Statement</button>
+      <button class="btn-secondary" onclick="loadFromSheet()">↻ Sync Sheet</button>
+      <div class="sync-ts" id="syncTs"></div>
+    </div>
+  </div>
+
+  <!-- Selection bar -->
+  <div class="sel-bar" id="selBar" style="display:none;">
+    <div class="sel-label" id="selLabel">Select statements to download</div>
+    <div class="sel-actions">
+      <button class="btn-secondary" onclick="selectAll()" style="font-size:0.62rem;padding:0.45rem 0.9rem;">Select All</button>
+      <button class="btn-secondary" onclick="clearSel()" style="font-size:0.62rem;padding:0.45rem 0.9rem;">Clear</button>
+      <button class="btn-primary" id="dlBtn" onclick="generatePDF()" disabled style="font-size:0.62rem;padding:0.45rem 0.9rem;">↓ Download PDF</button>
+    </div>
+  </div>
+
+  <!-- Statement list -->
+  <div class="stmt-list" id="stmtList"></div>
+
+  <!-- States -->
+  <div class="state-msg" id="emptyMsg" style="display:none;">
+    <strong>No statements yet</strong>
+    Use + Log Statement to record the first month-end entry.
+  </div>
+  <div class="state-msg" id="loadingMsg" style="display:none;">
+    <strong>Loading</strong>
+    Fetching from Google Sheets…
+  </div>
+
+</div>
+
+
+<!-- ══ LOG MODAL ════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="logModal">
+  <div class="modal-box">
+    <h3>Log Statement</h3>
+    <div class="modal-who" id="logWho"></div>
+
+    <div class="field"><label>Period</label><select id="fPeriod"></select></div>
+    <div class="field-row">
+      <div class="field"><label>Corpus / Principal (₹)</label>
+        <input type="number" id="fCorpus" placeholder="e.g. 850000">
+      </div>
+      <div class="field" id="fMonthlyWrap"><label>Interest Due (₹)</label>
+        <input type="number" id="fMonthly" placeholder="Auto-calculated">
+      </div>
+    </div>
+    <div class="field"><label>Interest Status</label>
+      <select id="fStatus">
+        <option value="payable">Payable — accrued, not yet settled</option>
+        <option value="paid">Paid — transferred to member</option>
+        <option value="plough">Ploughed Back — reinvested into corpus</option>
+      </select>
+    </div>
+    <div class="field-row">
+      <div class="field" id="fPaidWrap"><label>Amount Paid / Ploughed (₹)</label>
+        <input type="number" id="fPaid" placeholder="Blank = same as due">
+      </div>
+      <div class="field" id="fDateWrap"><label>Date</label>
+        <input type="text" id="fDate" placeholder="e.g. 05 Apr 2026">
+      </div>
+    </div>
+    <div class="field">
+      <label>Transactions <span style="color:var(--text-muted);font-size:0.85em;">(optional)</span></label>
+      <div id="txnRows"></div>
+      <button class="btn-secondary" onclick="addTxnRow()" style="font-size:0.6rem;padding:0.35rem 0.8rem;margin-top:0.4rem;">+ Add Row</button>
+    </div>
+    <div class="field"><label>Note <span style="color:var(--text-muted);font-size:0.85em;">(optional)</span></label>
+      <textarea id="fNote" rows="2" style="resize:vertical;font-size:0.78rem;"></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-primary" onclick="saveLog()">Save Statement</button>
+      <button class="btn-secondary" onclick="closeLogModal()">Cancel</button>
+    </div>
+    <div id="logFeedback"></div>
+  </div>
+</div>
+
+
+<!-- ══ PREVIEW MODAL ════════════════════════════════════════════════ -->
+<div class="preview-overlay" id="previewModal">
+  <div class="preview-sheet">
+    <div class="preview-topbar">
+      <span>JaceyTrayd — Statement Preview</span>
+      <div>
+        <button onclick="doPrint()">↓ Print / Save PDF</button>
+        <button onclick="closePreview()">✕ Close</button>
+      </div>
+    </div>
+    <div class="preview-body" id="previewBody"></div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────
+const ADMIN_PIN = '0000';
+const CC_API = 'https://script.google.com/macros/s/AKfycbzLQWmIAlSZ2byNSenfc6vTKMXHh0ibmLuzCUmGBKteXEnuC2S559wulpKcGvpf490Mpw/exec';
+
+function calcMo(c) {
+  if (!c) return 0;
+  if (c <= 500000) return Math.round(c * 0.03);
+  if (c < 1000000) return 15000 + Math.round((c - 500000) * 0.01);
+  return Math.round(c * 0.02);
+}
+
+var lenders = [
+  {id:1,  name:'Rashmi',         legalName:'Rashmi Dayal',          corpus:850000,  baseCorpus:550000,  ploughback:300000, status:'active', pin:'5245', accountSince:'20 Feb 2023'},
+  {id:2,  name:'Sandeep Daniel', legalName:'Sandeep Daniel',        corpus:2100000, baseCorpus:1600000, ploughback:500000, status:'active', pin:'1473', accountSince:'28 Feb 2020'},
+  {id:3,  name:'Sushma',         legalName:'Sushma Dayal',          corpus:250000,  baseCorpus:200000,  ploughback:50000,  status:'active', pin:'1372', monthly:7500, accountSince:'19 Nov 2022'},
+  {id:4,  name:'Hema',           legalName:'Hema Dayal',            corpus:250000,  baseCorpus:200000,  ploughback:50000,  status:'active', pin:'3748', monthly:7500, accountSince:'19 Nov 2022'},
+  {id:5,  name:'Ahalya',         legalName:'Ahalya Dayal',          corpus:250000,  baseCorpus:143700,  ploughback:106300, status:'active', pin:'2811', accountSince:'19 Aug 2023'},
+];
+var friendly = [
+  {id:101, name:'Daniel',  legalName:'Daniel Christopher',  amount:840000,  status:'active', pin:'2497'},
+  {id:102, name:'Herbert', legalName:'Herbert Manoah',      amount:100000,  status:'active', pin:'6408'},
+  {id:103, name:'Hannah',  legalName:'Hannah Christopher',  amount:1600000, status:'active', pin:'3901'},
+  {id:104, name:'Glory',   legalName:'Glory Florence',      amount:125000,  status:'active', pin:'2604'},
+  {id:105, name:'Deborah', legalName:'Deborah Christopher', amount:50000,   status:'active', pin:'2824'},
+  {id:106, name:'Shruthi', legalName:'Shruthi Daniel',      amount:10000,   status:'active', pin:'1409'},
+];
+var shortTerm = [
+  {id:203, name:'Ananda', legalName:'Ananda Gowda', amount:300000, status:'active', pin:'9949'},
+  {id:204, name:'Nanda',  legalName:'Nanda',         amount:120000, status:'active', pin:'8300'},
+];
+var administered = [
+  {id:301, name:'Dox',     capitalPlaced:100000, status:'active', pin:'4721', adminName:'Sushma'},
+  {id:302, name:'Nirwana', capitalPlaced:50000,  status:'active', pin:'6183', adminName:'Hema'},
+  {id:303, name:'Cossack', capitalPlaced:50000,  status:'active', pin:'3956', adminName:'Hema'},
+];
+
+// ── STATE ─────────────────────────────────────────────────────────────
+var isAdmin = false;
+var currentMember = null;
+var activeMemberId = null;
+var stmtData = [];
+var selected = new Set();
+var logTarget = null;
+
+// ── UTILS ─────────────────────────────────────────────────────────────
+function f(n){ return '₹' + (n||0).toLocaleString('en-IN'); }
+
+function periodLabel(ym){
+  var p = ym.split('-');
+  return ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][parseInt(p[1],10)-1] + ' ' + p[0];
+}
+
+function sortDesc(arr){ return arr.slice().sort(function(a,b){ return b.period.localeCompare(a.period); }); }
+
+function typeLabel(t){
+  return t==='lender'?'Senior Creditor':t==='friendly'?'Zero-Coupon Note':t==='short'?'Bridge Capital':t==='administered'?'Introduced Capital':'Member';
+}
+
+function allMembers(){
+  return [].concat(
+    lenders.map(function(m){ return Object.assign({},m,{type:'lender'}); }),
+    friendly.map(function(m){ return Object.assign({},m,{type:'friendly'}); }),
+    shortTerm.map(function(m){ return Object.assign({},m,{type:'short'}); }),
+    administered.map(function(m){ return Object.assign({},m,{type:'administered'}); })
+  );
+}
+
+function findMember(id){ return allMembers().find(function(m){ return m.id===id; })||null; }
+
+function toast(msg){
+  var t=document.getElementById('toast'); t.textContent=msg; t.style.display='block';
+  setTimeout(function(){t.style.display='none';},2500);
+}
+
+function buildPeriodOpts(sel){
+  sel.innerHTML='';
+  var now=new Date();
+  for(var i=0;i<24;i++){
+    var d=new Date(now.getFullYear(),now.getMonth()-i,1);
+    var ym=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+    var o=document.createElement('option'); o.value=ym; o.textContent=periodLabel(ym);
+    if(i===0)o.selected=true;
+    sel.appendChild(o);
+  }
+}
+
+// ── SHEET ─────────────────────────────────────────────────────────────
+function sheetCall(action,body){
+  return new Promise(function(resolve){
+    var cb='_cb'+Date.now()+Math.floor(Math.random()*9999);
+    var url=CC_API+'?action='+action+(body?'&body='+encodeURIComponent(JSON.stringify(body)):'')+
+      '&callback='+cb+'&_t='+Date.now();
+    window[cb]=function(d){ resolve(d); delete window[cb]; var s=document.getElementById(cb); if(s)s.remove(); };
+    var s=document.createElement('script'); s.id=cb; s.src=url;
+    s.onerror=function(){ resolve({ok:false}); delete window[cb]; s.remove(); };
+    document.head.appendChild(s);
+  });
+}
+
+// ── LOGIN ─────────────────────────────────────────────────────────────
+function doLogin(){
+  var pin=document.getElementById('pinInput').value.trim();
+  document.getElementById('loginErr').style.display='none';
+  if(pin===ADMIN_PIN){ isAdmin=true; launchApp(); return; }
+  var found=allMembers().find(function(m){ return m.pin===pin; });
+  if(found){ currentMember=found; activeMemberId=found.id; launchApp(); return; }
+  document.getElementById('loginErr').style.display='block';
+  document.getElementById('pinInput').value='';
+  document.getElementById('pinInput').focus();
+}
+
+function launchApp(){
+  document.getElementById('loginPage').style.display='none';
+  document.getElementById('appPage').style.display='block';
+  var who=document.getElementById('whoLabel');
+  if(isAdmin){
+    who.textContent='Admin'; who.style.display='block';
+    document.getElementById('memberSelector').style.display='block';
+    buildChips();
+  } else {
+    who.textContent=currentMember.legalName||currentMember.name; who.style.display='block';
+    document.getElementById('selBar').style.display='flex';
+  }
+  showLoading();
+  loadFromSheet();
+}
+
+// ── CHIPS ─────────────────────────────────────────────────────────────
+function buildChips(){
+  var wrap=document.getElementById('memberChips'); wrap.innerHTML='';
+  var all=[].concat(
+    lenders.filter(function(m){return m.status==='active';}).map(function(m){return{id:m.id,name:m.name};}),
+    friendly.filter(function(m){return m.status==='active';}).map(function(m){return{id:m.id,name:m.name};}),
+    shortTerm.filter(function(m){return m.status==='active'&&m.amount;}).map(function(m){return{id:m.id,name:m.name};})
+  );
+  if(!activeMemberId&&all.length) activeMemberId=all[0].id;
+  all.forEach(function(m){
+    var c=document.createElement('button'); c.className='chip'+(m.id===activeMemberId?' active':'');
+    c.textContent=m.name;
+    c.onclick=function(){
+      activeMemberId=m.id; selected.clear();
+      document.querySelectorAll('.chip').forEach(function(x){x.classList.remove('active');});
+      c.classList.add('active');
+      renderList();
+      document.getElementById('selBar').style.display='flex';
+    };
+    wrap.appendChild(c);
+  });
+  document.getElementById('selBar').style.display=activeMemberId?'flex':'none';
+}
+
+// ── LOAD ──────────────────────────────────────────────────────────────
+function showLoading(){
+  document.getElementById('stmtList').innerHTML='';
+  document.getElementById('emptyMsg').style.display='none';
+  document.getElementById('loadingMsg').style.display='block';
+}
+
+function loadFromSheet(){
+  sheetCall('getStatements',{}).then(function(data){
+    document.getElementById('loadingMsg').style.display='none';
+    stmtData=(data&&data.ok&&data.statements)?data.statements:seedData();
+    renderList();
+    var ts=document.getElementById('syncTs');
+    if(ts) ts.textContent='Synced '+new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+  }).catch(function(){
+    document.getElementById('loadingMsg').style.display='none';
+    stmtData=seedData(); renderList();
+  });
+}
+
+// ── SEED DATA ─────────────────────────────────────────────────────────
+function seedData(){
+  var rows=[]; var p='2026-04';
+  lenders.forEach(function(m){
+    if(m.status!=='active')return;
+    rows.push({memberId:m.id,memberName:m.name,memberType:'lender',period:p,
+      corpus:m.corpus,monthlyDue:m.monthly||calcMo(m.corpus),amountPaid:0,
+      status:'payable',paymentDate:'',transactions:[],note:''});
+  });
+  friendly.forEach(function(m){
+    if(m.status!=='active')return;
+    rows.push({memberId:m.id,memberName:m.name,memberType:'friendly',period:p,
+      corpus:m.amount,monthlyDue:0,amountPaid:0,status:'payable',paymentDate:'',transactions:[],note:''});
+  });
+  shortTerm.forEach(function(m){
+    if(m.status!=='active'||!m.amount)return;
+    rows.push({memberId:m.id,memberName:m.name,memberType:'short',period:p,
+      corpus:m.amount,monthlyDue:Math.round(m.amount*0.03),amountPaid:0,
+      status:'payable',paymentDate:'',transactions:[],note:''});
+  });
+  return rows;
+}
+
+// ── RENDER LIST ───────────────────────────────────────────────────────
+function renderList(){
+  var list=document.getElementById('stmtList');
+  var empty=document.getElementById('emptyMsg');
+  if(!activeMemberId){list.innerHTML='';empty.style.display='none';return;}
+  var rows=sortDesc(stmtData.filter(function(r){return r.memberId===activeMemberId;}));
+  if(!rows.length){list.innerHTML='';empty.style.display='block';return;}
+  empty.style.display='none';
+  var m=findMember(activeMemberId)||{};
+  list.innerHTML=rows.map(function(r){
+    var sl=r.status==='paid'?'Paid':r.status==='plough'?'Ploughed Back':'Payable';
+    var amtClass=r.status==='paid'?'green':r.status==='plough'?'purple':'amber';
+    var corpus=r.corpus||m.corpus||m.amount||0;
+    var monthly=r.monthlyDue||0;
+    var name=m.legalName||m.name||r.memberName;
+    var tl=typeLabel(r.memberType);
+    var isSel=selected.has(r.period);
+    return '<div class="stmt-card'+(isSel?' selected':'')+'" data-period="'+r.period+'" onclick="toggleCard(this)">'
+      +'<div class="card-tick">✓</div>'
+      // LEFT: identity
+      +'<div class="card-left">'
+        +'<div class="card-member-name">'+name+'</div>'
+        +'<div class="card-arrangement">'+tl+'</div>'
+        +'<div class="card-period-badge">Period</div>'
+        +'<div class="card-period-value">'+periodLabel(r.period)+'</div>'
+        +(r.paymentDate?'<div style="font-size:0.62rem;color:var(--text-muted);margin-top:0.6rem;letter-spacing:0.08em;">'+r.paymentDate+'</div>':'')
+      +'</div>'
+      // RIGHT: financials
+      +'<div class="card-right">'
+        +(corpus?'<div class="card-data-row"><span class="card-data-label">Corpus / Principal</span><span class="card-data-value">'+f(corpus)+'</span></div>':'')
+        +(monthly>0?'<div class="card-data-row"><span class="card-data-label">Interest Due</span><span class="card-data-value gold">'+f(monthly)+'</span></div>':'')
+        +(r.amountPaid>0&&r.status!=='payable'?'<div class="card-data-row"><span class="card-data-label">'+(r.status==='plough'?'Ploughed Back':'Amount Paid')+'</span><span class="card-data-value '+amtClass+'">'+f(r.amountPaid)+'</span></div>':'')
+        +(r.note?'<div class="card-data-row"><span class="card-data-label">Note</span><span class="card-data-value" style="font-size:0.72rem;color:var(--text-dim);font-family:\'IBM Plex Mono\',monospace;">'+r.note+'</span></div>':'')
+        +'<div><span class="status-pill '+r.status+'">'+sl+'</span></div>'
+      +'</div>'
+    +'</div>';
+  }).join('');
+  updateSelBar();
+}
+
+// ── SELECTION ─────────────────────────────────────────────────────────
+function toggleCard(el){
+  var p=el.dataset.period;
+  if(selected.has(p)){selected.delete(p);el.classList.remove('selected');}
+  else{selected.add(p);el.classList.add('selected');}
+  updateSelBar();
+}
+function selectAll(){
+  document.querySelectorAll('.stmt-card').forEach(function(c){selected.add(c.dataset.period);c.classList.add('selected');});
+  updateSelBar();
+}
+function clearSel(){
+  selected.clear();
+  document.querySelectorAll('.stmt-card').forEach(function(c){c.classList.remove('selected');});
+  updateSelBar();
+}
+function updateSelBar(){
+  var n=selected.size;
+  var lbl=document.getElementById('selLabel');
+  var btn=document.getElementById('dlBtn');
+  lbl.innerHTML=n===0?'Select statements to download':'<strong>'+n+'</strong> month'+(n>1?'s':'')+' selected';
+  btn.disabled=(n===0);
+}
+
+// ── LOG MODAL ─────────────────────────────────────────────────────────
+function openLogModal(){
+  if(!activeMemberId){toast('Select a member first.');return;}
+  logTarget=findMember(activeMemberId); if(!logTarget)return;
+  document.getElementById('logWho').textContent=logTarget.name+' · '+typeLabel(logTarget.type);
+  var corpus=logTarget.corpus||logTarget.amount||0;
+  document.getElementById('fCorpus').value=corpus||'';
+  var mo=logTarget.type==='lender'?(logTarget.monthly||calcMo(corpus)):0;
+  document.getElementById('fMonthly').placeholder=mo>0?'Auto: '+f(mo):'N/A for this type';
+  buildPeriodOpts(document.getElementById('fPeriod'));
+  var isF=logTarget.type==='friendly';
+  document.getElementById('fMonthlyWrap').style.display=logTarget.type==='lender'?'block':'none';
+  document.getElementById('fPaidWrap').style.display=isF?'none':'block';
+  document.getElementById('fDateWrap').style.display=isF?'none':'block';
+  document.getElementById('txnRows').innerHTML='';
+  document.getElementById('fNote').value='';
+  document.getElementById('fStatus').value='payable';
+  document.getElementById('logFeedback').style.display='none';
+  document.getElementById('logModal').classList.add('open');
+}
+function closeLogModal(){document.getElementById('logModal').classList.remove('open');logTarget=null;}
+
+function addTxnRow(){
+  var row=document.createElement('div'); row.className='txn-row';
+  row.innerHTML='<input type="text" placeholder="Date" class="txnD">'
+    +'<select class="txnT" style="background:var(--bg3);border:1px solid var(--border-mid);color:var(--text);font-family:\'IBM Plex Mono\',monospace;font-size:0.72rem;padding:0.35rem 0.5rem;outline:none;"><option>Interest paid</option><option>Ploughback</option><option>Top-up</option><option>Partial redemption</option><option>Other</option></select>'
+    +'<input type="number" placeholder="₹" class="txnA">'
+    +'<button class="txn-del" onclick="this.parentNode.remove()">×</button>';
+  document.getElementById('txnRows').appendChild(row);
+}
+
+function saveLog(){
+  var m=logTarget; if(!m)return;
+  var period=document.getElementById('fPeriod').value;
+  var corpus=parseInt(document.getElementById('fCorpus').value)||0;
+  var status=document.getElementById('fStatus').value;
+  var note=document.getElementById('fNote').value.trim();
+  var paidAmt=parseInt(document.getElementById('fPaid').value)||0;
+  var paidDate=document.getElementById('fDate').value.trim();
+  var monthlyDue=0;
+  if(m.type==='lender') monthlyDue=parseInt(document.getElementById('fMonthly').value)||m.monthly||calcMo(corpus);
+  else if(m.type==='short') monthlyDue=Math.round(corpus*0.03);
+  var txns=[];
+  document.querySelectorAll('#txnRows .txn-row').forEach(function(row){
+    var d=row.querySelector('.txnD').value.trim();
+    var t=row.querySelector('.txnT').value;
+    var a=parseInt(row.querySelector('.txnA').value)||0;
+    if(d||a)txns.push({date:d,type:t,amount:a});
+  });
+  var entry={memberId:m.id,memberName:m.name,memberType:m.type,period:period,
+    corpus:corpus,monthlyDue:monthlyDue,amountPaid:paidAmt||monthlyDue,
+    status:status,paymentDate:paidDate,transactions:txns,note:note};
+  var idx=stmtData.findIndex(function(r){return r.memberId===m.id&&r.period===period;});
+  if(idx>=0)stmtData[idx]=entry; else stmtData.push(entry);
+  sheetCall('postStatement',entry).then(function(res){
+    var fb=document.getElementById('logFeedback');
+    fb.textContent=(res&&res.ok)?'✓ Saved to Google Sheet.':'✓ Saved locally — Sheet sync pending.';
+    fb.style.color=(res&&res.ok)?'var(--low)':'var(--mid)';
+    fb.style.display='block';
+  });
+  renderList();
+  setTimeout(closeLogModal,1600);
+}
+
+// ── PDF ───────────────────────────────────────────────────────────────
+function generatePDF(){
+  if(!selected.size||!activeMemberId)return;
+  var m=findMember(activeMemberId); if(!m)return;
+  var rows=sortDesc(Array.from(selected).map(function(p){
+    return stmtData.find(function(r){return r.memberId===activeMemberId&&r.period===p;});
+  }).filter(Boolean));
+  if(!rows.length)return;
+  document.getElementById('previewBody').innerHTML=buildPDF(m,rows);
+  document.getElementById('previewModal').classList.add('open');
+}
+
+function doPrint(){
+  var body=document.getElementById('previewBody').innerHTML;
+  var w=window.open('','_blank');
+  if(!w){toast('Allow pop-ups to save PDF.');return;}
+  w.document.write('<!DOCTYPE html><html><head><meta charset="utf-8"><title>JaceyTrayd Statements</title>'
+  +'<style>'
+  +'*{box-sizing:border-box;margin:0;padding:0;}'
+  +'html,body{background:#fff;color:#111;font-family:Georgia,serif;font-size:14px;}'
+  +'body{padding:3rem;max-width:680px;margin:0 auto;}'
+  +'h1{font-size:1.5rem;font-weight:normal;color:#000;margin-bottom:0.2rem;letter-spacing:0.03em;}'
+  +'.eyebrow{font-family:Arial,sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:0.14em;color:#888;margin-bottom:0.6rem;}'
+  +'.cover-table{width:100%;border-collapse:collapse;margin-top:1rem;}'
+  +'.cover-table td{padding:0.55rem 0.75rem;border:1px solid #e0e0e0;font-size:13px;vertical-align:top;}'
+  +'.cover-table td:first-child{background:#f8f8f8;color:#555;font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;width:36%;}'
+  +'.divider{border:none;border-top:2px solid #111;margin:2.5rem 0;}'
+  +'.month-name{font-size:1.2rem;font-weight:normal;color:#000;margin-bottom:0.8rem;padding-bottom:0.5rem;border-bottom:1px solid #e0e0e0;}'
+  +'.data-table{width:100%;border-collapse:collapse;margin-bottom:1.8rem;}'
+  +'.data-table td{padding:0.55rem 0.75rem;border:1px solid #e8e8e8;font-size:13px;}'
+  +'.data-table td:first-child{background:#f8f8f8;color:#555;font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;width:36%;}'
+  +'.data-table strong{color:#000;font-size:14px;}'
+  +'.badge{display:inline-block;font-family:Arial,sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;padding:0.25rem 0.65rem;}'
+  +'.badge.paid{background:#edf7f0;color:#1a6b3c;border:1px solid #b3d9c0;}'
+  +'.badge.plough{background:#f0ebff;color:#5c2d91;border:1px solid #c9b0f0;}'
+  +'.badge.payable{background:#fffbec;color:#7a5500;border:1px solid #e0cc80;}'
+  +'.txn-table{width:100%;border-collapse:collapse;margin-top:0.8rem;margin-bottom:1.8rem;}'
+  +'.txn-table th{background:#f0f4ff;font-family:Arial,sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:#3a5a8a;padding:0.45rem 0.75rem;text-align:left;border:1px solid #d4e0f0;}'
+  +'.txn-table td{padding:0.5rem 0.75rem;border:1px solid #e8e8e8;font-size:13px;color:#333;}'
+  +'.txn-table td:first-child{color:#666;font-size:12px;}'
+  +'.footer{margin-top:3rem;padding-top:0.8rem;border-top:1px solid #e0e0e0;font-family:Arial,sans-serif;font-size:11px;color:#999;line-height:1.9;}'
+  +'@media print{body{padding:2rem;}}'
+  +'</style></head><body>'+body+'</body></html>');
+  w.document.close(); w.focus(); setTimeout(function(){w.print();},500);
+}
+
+function closePreview(){document.getElementById('previewModal').classList.remove('open');}
+
+function buildPDF(m,rows){
+  var today=new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'long',year:'numeric'});
+  var corpus=m.corpus||m.amount||m.capitalPlaced||0;
+  var sorted=sortDesc(rows);
+  var range=sorted.length===1?periodLabel(sorted[0].period)
+    :periodLabel(sorted[sorted.length-1].period)+' – '+periodLabel(sorted[0].period);
+
+  var html='<div class="eyebrow">JaceyTrayd · Private Arrangement</div>'
+    +'<h1>'+(m.legalName||m.name)+'</h1>'
+    +'<table class="cover-table">'
+    +'<tr><td>Arrangement</td><td>'+typeLabel(m.type)+'</td></tr>'
+    +'<tr><td>Corpus / Principal</td><td><strong>'+f(corpus)+'</strong></td></tr>'
+    +(m.baseCorpus?'<tr><td>Base Capital</td><td>'+f(m.baseCorpus)+'</td></tr>':'')
+    +(m.ploughback?'<tr><td>Ploughed Back</td><td>'+f(m.ploughback)+'</td></tr>':'')
+    +(m.accountSince?'<tr><td>Member Since</td><td>'+m.accountSince+'</td></tr>':'')
+    +'<tr><td>Periods Covered</td><td>'+rows.length+' month'+(rows.length>1?'s':'')+'</td></tr>'
+    +'<tr><td>Statement Date</td><td>'+today+'</td></tr>'
+    +'</table>';
+
+  sorted.forEach(function(r,i){
+    var sl=r.status==='paid'?'Paid':r.status==='plough'?'Ploughed Back':'Payable';
+    var monthly=r.monthlyDue||0;
+    var paid=r.amountPaid||0;
+    html+='<hr class="divider">';
+    html+='<div class="month-name">'+periodLabel(r.period)+'</div>';
+    html+='<table class="data-table">';
+    html+='<tr><td>Corpus / Principal</td><td><strong>'+f(r.corpus||corpus)+'</strong></td></tr>';
+    if(r.memberType==='lender'){
+      if(monthly>0)html+='<tr><td>Interest Due</td><td><strong>'+f(monthly)+'</strong></td></tr>';
+      html+='<tr><td>Interest Status</td><td><span class="badge '+r.status+'">'+sl+'</span></td></tr>';
+      if(r.status!=='payable'){
+        var lbl=r.status==='plough'?'Ploughed Back':'Amount Paid';
+        if(paid>0)html+='<tr><td>'+lbl+'</td><td>'+f(paid)+'</td></tr>';
+        if(r.paymentDate)html+='<tr><td>Date</td><td>'+r.paymentDate+'</td></tr>';
+      }
+    } else if(r.memberType==='friendly'){
+      html+='<tr><td>Structure</td><td>Zero-Coupon — interest consolidated in repayment amount</td></tr>';
+      html+='<tr><td>Status</td><td><span class="badge '+r.status+'">'+sl+'</span></td></tr>';
+    } else {
+      if(monthly>0)html+='<tr><td>Interest Accrued</td><td>'+f(monthly)+'</td></tr>';
+      html+='<tr><td>Status</td><td><span class="badge '+r.status+'">'+sl+'</span></td></tr>';
+      if(r.status!=='payable'&&r.paymentDate)html+='<tr><td>Date</td><td>'+r.paymentDate+'</td></tr>';
+    }
+    if(r.note)html+='<tr><td>Note</td><td style="font-style:italic;color:#555;">'+r.note+'</td></tr>';
+    html+='</table>';
+    var txns=r.transactions||[];
+    if(txns.length){
+      html+='<table class="txn-table"><tr><th>Date</th><th>Description</th><th style="text-align:right;">Amount</th></tr>';
+      txns.forEach(function(t){
+        html+='<tr><td>'+(t.date||'—')+'</td><td>'+t.type+'</td><td style="text-align:right;">'+(t.amount?'₹'+t.amount.toLocaleString('en-IN'):'—')+'</td></tr>';
+      });
+      html+='</table>';
+    }
+  });
+
+  html+='<div class="footer">JaceyTrayd &nbsp;·&nbsp; Private &amp; Confidential &nbsp;·&nbsp; Not for public circulation &nbsp;·&nbsp; For queries, contact John Christopher directly.</div>';
+  return html;
+}
+
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'){closeLogModal();closePreview();}
+});
+</script>
+</body>
+</html>
