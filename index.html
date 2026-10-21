@@ -4681,7 +4681,7 @@ const rashmiStocks = [
   { name: 'Indian Hotels (Taj)', ticker: 'INDHOTEL', nse: 'INDHOTEL', qty: 13 },
   { name: 'Infosys', ticker: 'INFY', nse: 'INFY', qty: 10 },
   { name: 'IRFC', ticker: 'IRFC', nse: 'IRFC', qty: 5 },
-  { name: 'Kellton Tech Solutions', ticker: 'KELLTONTEC', nse: 'KELLTONTEC', qty: 26 },
+  { name: 'Kellton Tech Solutions', ticker: 'KELLTONTEC', nse: 'KELLTONTEC', qty: 130 },
   { name: 'Lemon Tree Hotels', ticker: 'LEMONTREE', nse: 'LEMONTREE', qty: 20 },
   { name: 'Muthoot Capital Services', ticker: 'MUTHOOTCAP', nse: 'MUTHOOTCAP', qty: 2 },
   { name: 'NELCO Limited', ticker: 'NELCO', nse: 'NELCO', qty: 5 },
@@ -8264,7 +8264,7 @@ function _showCorpActionsReport() {
       </div>
     </div>
     <div style="font-family:Georgia,serif;color:#111;">
-      <div style="font-size:13px;line-height:1.7;color:#222;">Four corporate actions have changed the securities in the holdings schedule. Two changed the share count, one split a holding in two, and one replaced a holding with a different listed company.</div>
+      <div style="font-size:13px;line-height:1.7;color:#222;">Five corporate actions have affected the holdings schedule: a bonus issue, a share split, a demerger and two mergers.</div>
 
       <table style="width:100%;border-collapse:collapse;margin:1rem 0;">
         <thead><tr>
@@ -8275,6 +8275,7 @@ function _showCorpActionsReport() {
           <tr style="background:#f7f6f2;"><td style="${td}"><strong>Tata Motors</strong></td><td style="${td}">Demerger</td><td style="${td}">14 Oct 2025</td><td style="${td}">1 : 1</td><td style="${td}">10 shares</td><td style="${td}"><strong>10 TMPV + 10 TMCV</strong></td></tr>
           <tr><td style="${td}"><strong>TV18 Broadcast</strong></td><td style="${td}">Merger into Network18</td><td style="${td}">16 Oct 2024</td><td style="${td}">100 : 172</td><td style="${td}">19 shares</td><td style="${td}"><strong>11 Network18 shares</strong></td></tr>
           <tr style="background:#f7f6f2;"><td style="${td}"><strong>Piramal Enterprises (PEL)</strong></td><td style="${td}">Merger into Piramal Finance</td><td style="${td}">23 Sep 2025</td><td style="${td}">1 : 1</td><td style="${td}">7 shares</td><td style="${td}"><strong>7 Piramal Finance shares</strong></td></tr>
+          <tr><td style="${td}"><strong>Kellton Tech Solutions</strong></td><td style="${td}">Share split</td><td style="${td}">25 Jul 2025</td><td style="${td}">1 : 5</td><td style="${td}">26 shares</td><td style="${td}"><strong>130 shares</strong></td></tr>
         </tbody>
       </table>
 
@@ -8317,6 +8318,15 @@ function _showCorpActionsReport() {
         <li><strong>Background:</strong> The subsidiary was itself renamed from Piramal Capital &amp; Housing Finance to Piramal Finance on 22 March 2025.</li>
       </ul>
 
+      <div style="${h2}">5. Kellton Tech Solutions &mdash; share split</div>
+      <ul style="${ul}">
+        <li><strong>Action:</strong> Each share of &#8377;5 face value was split into five shares of &#8377;1 face value (1 : 5). This was the company's first stock split.</li>
+        <li><strong>Record date:</strong> 25 July 2025.</li>
+        <li><strong>Effect on the holding:</strong> 26 shares became <strong>130 shares</strong> (5 &times; 26).</li>
+        <li><strong>Notes:</strong> The total value of the holding did not change. The share price adjusted to one-fifth on the ex-date, and the cost per share is divided by five. The original purchase date and total cost carry over.</li>
+        <li><strong>Identifiers:</strong> The ticker is unchanged (NSE: KELLTONTEC). The ISIN changed to INE164B01030, so the demat statement shows the new ISIN.</li>
+      </ul>
+
       <div style="${h2}">Holdings after these actions</div>
       <table style="width:100%;border-collapse:collapse;margin:0.6rem 0;">
         <thead><tr><th style="${th}">Security</th><th style="${th}">Ticker</th><th style="${th};text-align:right;">Quantity</th></tr></thead>
@@ -8326,6 +8336,7 @@ function _showCorpActionsReport() {
           <tr><td style="${td}">Tata Motors (Commercial)</td><td style="${td}">TMCV</td><td style="${td};text-align:right;">10</td></tr>
           <tr style="background:#f7f6f2;"><td style="${td}">Network18 Media &amp; Investments</td><td style="${td}">NETWORK18</td><td style="${td};text-align:right;">11</td></tr>
           <tr><td style="${td}">Piramal Finance</td><td style="${td}">PIRAMALFIN</td><td style="${td};text-align:right;">7</td></tr>
+          <tr style="background:#f7f6f2;"><td style="${td}">Kellton Tech Solutions</td><td style="${td}">KELLTONTEC</td><td style="${td};text-align:right;">130</td></tr>
         </tbody>
       </table>
 
