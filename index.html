@@ -5448,7 +5448,10 @@ function renderDetails(m) {
     stocksEl.innerHTML = '<div style="margin-top:1rem;border:1px solid var(--border);background:var(--bg2);">'
       + '<div style="padding:0.7rem 0.8rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">'
       + '<div style="font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);">Stock Holdings</div>'
+      + '<div style="display:flex;align-items:center;gap:0.6rem;">'
+      + '<button onclick="_showCorpActionsReport()" style="font-size:0.46rem;padding:0.2rem 0.6rem;background:transparent;color:var(--text-muted);border:1px solid var(--border);cursor:pointer;letter-spacing:0.08em;text-transform:uppercase;font-family:\'IBM Plex Mono\',monospace;">Corp. Actions</button>'
       + '<div style="font-size:0.52rem;color:var(--text-muted);" id="stk-count">' + rashmiStocks.length + ' securities</div>'
+      + '</div>'
       + '</div>'
       + '<div style="padding:0.6rem 0.8rem;background:rgba(201,168,76,0.04);border-bottom:1px solid var(--border);font-size:0.6rem;color:var(--text-dim);line-height:1.7;">'
       + 'These shares are held in my trading account on your behalf. I commit to transferring them to you on request or as mutually agreed. \u2014 <em>John Christopher</em>'
@@ -8004,7 +8007,7 @@ function unlockHoldings() {
       '<div style="padding:1.2rem 0 1rem 0;border-bottom:1px solid var(--border);margin-bottom:1.2rem;">'
       + '<div style="font-size:0.5rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);opacity:0.7;margin-bottom:0.5rem;">Your Holdings</div>'
       + '<div style="font-family:\'Cormorant Garamond\',serif;font-size:1.6rem;font-weight:300;color:var(--text);margin-bottom:0.3rem;">Welcome, <em style="color:var(--gold);">' + nick + '</em></div>'
-      + (cnt > 0 ? '<div style="font-size:0.62rem;color:var(--text-dim);">You hold <strong style="color:var(--text);">' + cnt + ' securities</strong>' + (val > 0 ? ' &nbsp;&middot;&nbsp; Portfolio value <strong style="color:var(--gold);">\u20b9' + val.toLocaleString('en-IN') + '</strong>' : '') + '</div>' : '')
+      + (cnt > 0 ? '<div style="font-size:0.62rem;color:var(--text-dim);">You hold <strong style="color:var(--text);">' + cnt + ' securities</strong>' + (val > 0 ? ' &nbsp;&middot;&nbsp; Portfolio value <strong style="color:var(--gold);">\u20b9' + val.toLocaleString('en-IN') + '</strong>' : '') + ' &nbsp;&middot;&nbsp; <a onclick=\"_showCorpActionsReport()\" style=\"color:var(--gold);cursor:pointer;border-bottom:1px dotted var(--gold);\">Corporate actions report</a></div>' : '')
       + '</div>';
   }
 
@@ -8231,6 +8234,104 @@ function _buildStockHoldingsPDF(memberLabel, stocks, asOf) {
     </div>
     <div style="margin-top:1.2rem;padding:0.75rem 1rem;background:#fafafa;border:1px solid #ddd;font-size:11.5px;color:#555;font-family:Georgia,serif;font-style:italic;line-height:1.7;">
       These shares are held in trust on behalf of the account holder. Ticker and quantity are the record of custody; prices are end-of-day values sourced via Google Finance and may not reflect real-time market movement.
+    </div>`;
+
+  overlay.setAttribute('style', 'display:block;position:fixed;inset:0;background:#ffffff;z-index:9999;overflow-y:auto;padding:3rem;font-family:Georgia,serif;color:#111;');
+  printBody.setAttribute('style', 'max-width:760px;margin:0 auto;background:#ffffff;color:#111111;font-family:Georgia,serif;');
+  document.getElementById('printBtnWrap').innerHTML =
+    '<button onclick="triggerPrint()" style="background:#111;color:#fff;border:none;padding:0.65rem 2.5rem;font-size:13px;cursor:pointer;letter-spacing:0.05em;margin-right:0.5rem;">\ud83d\udda8 Print / Save PDF</button>' +
+    '<button onclick="closePrintOverlay()" style="background:none;border:1px solid #ccc;color:#555;padding:0.65rem 1.5rem;font-size:13px;cursor:pointer;">\u2715 Close</button>';
+}
+
+// ─── CORPORATE ACTIONS REPORT (Rashmi's holdings) ─────────────────────
+// Opens the report in the same print overlay as the holdings statement; "Print / Save PDF" makes the PDF.
+function _showCorpActionsReport() {
+  const th  = 'text-align:left;padding:0.5rem 0.6rem;border-bottom:2px solid #111;font-size:11px;text-transform:uppercase;letter-spacing:0.06em;color:#333;';
+  const td  = 'padding:0.5rem 0.6rem;border-bottom:1px solid #e2e2e2;font-size:13px;color:#111;vertical-align:top;line-height:1.4;';
+  const h2  = 'font-size:15px;margin:1.5rem 0 0.3rem;color:#111;font-weight:bold;';
+  const ul  = 'margin:0.3rem 0 0 1.1rem;padding:0;font-size:13px;line-height:1.7;color:#222;';
+  const today = todayStr();
+
+  const overlay  = document.getElementById('printOverlay');
+  const printBody = document.getElementById('printBody');
+  printBody.innerHTML = `
+    <div style="display:flex;align-items:center;gap:0.85rem;justify-content:center;margin-bottom:1.4rem;padding-bottom:1.2rem;border-bottom:2px solid #111;font-family:Georgia,serif;">
+      <img src="${JT_LOGO}" style="width:52px;height:52px;border-radius:50%;object-fit:cover;flex-shrink:0;">
+      <div style="text-align:left;">
+        <div style="font-size:1.5rem;font-weight:bold;letter-spacing:0.05em;line-height:1.15;">JaceyTrayd</div>
+        <div style="font-size:0.9rem;color:#555;margin-top:0.15rem;">Corporate Actions Report &mdash; Rashmi Dayal</div>
+        <div style="font-size:0.75rem;color:#999;margin-top:0.1rem;">Stock holdings &middot; Prepared ${today}</div>
+      </div>
+    </div>
+    <div style="font-family:Georgia,serif;color:#111;">
+      <div style="font-size:13px;line-height:1.7;color:#222;">Four corporate actions have changed the securities in the holdings schedule. Two changed the share count, one split a holding in two, and one replaced a holding with a different listed company.</div>
+
+      <table style="width:100%;border-collapse:collapse;margin:1rem 0;">
+        <thead><tr>
+          <th style="${th}">Holding</th><th style="${th}">Action</th><th style="${th}">Record date</th><th style="${th}">Ratio</th><th style="${th}">Before</th><th style="${th}">After</th>
+        </tr></thead>
+        <tbody>
+          <tr><td style="${td}"><strong>HDFC Bank</strong></td><td style="${td}">Bonus issue</td><td style="${td}">27 Aug 2025</td><td style="${td}">1 : 1</td><td style="${td}">5 shares</td><td style="${td}"><strong>10 shares</strong></td></tr>
+          <tr style="background:#f7f6f2;"><td style="${td}"><strong>Tata Motors</strong></td><td style="${td}">Demerger</td><td style="${td}">14 Oct 2025</td><td style="${td}">1 : 1</td><td style="${td}">10 shares</td><td style="${td}"><strong>10 TMPV + 10 TMCV</strong></td></tr>
+          <tr><td style="${td}"><strong>TV18 Broadcast</strong></td><td style="${td}">Merger into Network18</td><td style="${td}">16 Oct 2024</td><td style="${td}">100 : 172</td><td style="${td}">19 shares</td><td style="${td}"><strong>11 Network18 shares</strong></td></tr>
+          <tr style="background:#f7f6f2;"><td style="${td}"><strong>Piramal Enterprises (PEL)</strong></td><td style="${td}">Merger into Piramal Finance</td><td style="${td}">23 Sep 2025</td><td style="${td}">1 : 1</td><td style="${td}">7 shares</td><td style="${td}"><strong>7 Piramal Finance shares</strong></td></tr>
+        </tbody>
+      </table>
+
+      <div style="${h2}">1. HDFC Bank &mdash; bonus issue</div>
+      <ul style="${ul}">
+        <li><strong>Action:</strong> 1 : 1 bonus issue, the first in the bank's history. One new share was issued for every share held.</li>
+        <li><strong>Dates:</strong> ex-date 26 August 2025; record date 27 August 2025.</li>
+        <li><strong>Effect on the holding:</strong> 5 shares became <strong>10 shares</strong>.</li>
+        <li><strong>Notes:</strong> Bonus shares are credited at no cost. The market price halved on the ex-date, so the total value of the holding did not change.</li>
+        <li><strong>Ticker:</strong> unchanged (NSE: HDFCBANK).</li>
+      </ul>
+
+      <div style="${h2}">2. Tata Motors &mdash; demerger</div>
+      <ul style="${ul}">
+        <li><strong>Action:</strong> Tata Motors demerged its commercial vehicles business into a separately listed company. The demerger took effect on 1 October 2025.</li>
+        <li><strong>Record date:</strong> 14 October 2025. Shareholders received 1 share of the new commercial vehicles company for every 1 Tata Motors share held.</li>
+        <li><strong>Effect on the holding:</strong> 10 Tata Motors shares became <strong>two holdings of 10 shares each</strong>:
+          <ul style="margin:0.2rem 0 0.2rem 1.1rem;padding:0;">
+            <li><strong>TMPV</strong> &mdash; Tata Motors Passenger Vehicles (passenger vehicles, EVs and Jaguar Land Rover): 10 shares. This is the original listed company, renamed.</li>
+            <li><strong>TMCV</strong> &mdash; Tata Motors Ltd (commercial vehicles): 10 shares. Listed on NSE and BSE on 12 November 2025.</li>
+          </ul>
+        </li>
+        <li><strong>Notes:</strong> The original purchase date and cost carry over to both holdings, with the cost split between them. The price drop on 14 October 2025 reflects the value moving into the new company, not a loss.</li>
+      </ul>
+
+      <div style="${h2}">3. TV18 Broadcast &mdash; merger into Network18</div>
+      <ul style="${ul}">
+        <li><strong>Action:</strong> TV18 Broadcast was merged into Network18 Media &amp; Investments. The merger became effective on 3 October 2024. This was a merger and share swap, not only a change of name.</li>
+        <li><strong>Ratio:</strong> 100 Network18 shares for every 172 TV18 shares, with a record date of 16 October 2024.</li>
+        <li><strong>Effect on the holding:</strong> 19 TV18 shares &times; 100 &divide; 172 = 11.05, so the holding is <strong>11 Network18 shares</strong>. The 0.05 fraction is not allotted as a share.</li>
+        <li><strong>Ticker:</strong> TV18BRDCST (BSE 532800) no longer trades. The holding is now <strong>NETWORK18</strong> on NSE; BSE scrip code 532798; ISIN INE870H01013.</li>
+      </ul>
+
+      <div style="${h2}">4. Piramal Enterprises (PEL) &mdash; merger into Piramal Finance (PFL)</div>
+      <ul style="${ul}">
+        <li><strong>Action:</strong> Piramal Enterprises was amalgamated into its subsidiary, Piramal Finance Limited, which continues as the listed company. The merger took effect on 16 September 2025. This was a merger, not only a change of name.</li>
+        <li><strong>Ratio and dates:</strong> 1 : 1. Record date 23 September 2025, the last day PEL traded. Piramal Finance shares listed on 7 November 2025.</li>
+        <li><strong>Effect on the holding:</strong> 7 shares bought as PEL are now held as <strong>7 Piramal Finance shares</strong>.</li>
+        <li><strong>Identifiers:</strong> NSE: PIRAMALFIN; BSE: 544597. The PEL ticker is retired.</li>
+        <li><strong>Background:</strong> The subsidiary was itself renamed from Piramal Capital &amp; Housing Finance to Piramal Finance on 22 March 2025.</li>
+      </ul>
+
+      <div style="${h2}">Holdings after these actions</div>
+      <table style="width:100%;border-collapse:collapse;margin:0.6rem 0;">
+        <thead><tr><th style="${th}">Security</th><th style="${th}">Ticker</th><th style="${th};text-align:right;">Quantity</th></tr></thead>
+        <tbody>
+          <tr><td style="${td}">HDFC Bank</td><td style="${td}">HDFCBANK</td><td style="${td};text-align:right;">10</td></tr>
+          <tr style="background:#f7f6f2;"><td style="${td}">Tata Motors (PV &amp; JLR)</td><td style="${td}">TMPV</td><td style="${td};text-align:right;">10</td></tr>
+          <tr><td style="${td}">Tata Motors (Commercial)</td><td style="${td}">TMCV</td><td style="${td};text-align:right;">10</td></tr>
+          <tr style="background:#f7f6f2;"><td style="${td}">Network18 Media &amp; Investments</td><td style="${td}">NETWORK18</td><td style="${td};text-align:right;">11</td></tr>
+          <tr><td style="${td}">Piramal Finance</td><td style="${td}">PIRAMALFIN</td><td style="${td};text-align:right;">7</td></tr>
+        </tbody>
+      </table>
+
+      <div style="margin-top:1.2rem;padding:0.75rem 1rem;background:#fafafa;border:1px solid #ddd;font-size:11.5px;color:#555;font-style:italic;line-height:1.7;">
+        Dates and ratios are taken from public company and exchange announcements. Please confirm final quantities against your demat statement.
+      </div>
     </div>`;
 
   overlay.setAttribute('style', 'display:block;position:fixed;inset:0;background:#ffffff;z-index:9999;overflow-y:auto;padding:3rem;font-family:Georgia,serif;color:#111;');
